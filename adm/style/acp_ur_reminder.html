@@ -1,0 +1,104 @@
+{% include 'overall_header.html' %}
+
+<h1>{{ lang('ACP_USERREMINDER_REMINDER') }}</h1>
+<p>{{ lang('ACP_USERREMINDER_REMINDER_EXPLAIN') }}</p>
+
+<form id="acp_userreminder_reminder" method="post" action="{{ U_ACTION }}">
+	{% if pagination %}
+	<div class="pagination top-pagination">
+		{% include 'pagination.html' %}
+	</div>
+	{% endif %}
+
+	<table class="table1 zebra-table fixed-width-table">
+		<thead>
+			<tr>
+				<th rowspan="2" style="width: 180px;">{{ lang('USERNAME') }}</th>
+				<th rowspan="2" style="text-align: center;">{{ lang('USER_POSTS') }}</th>
+				<th rowspan="2" style="text-align: center;">{{ lang('JOINED') }}</th>
+				<th colspan="2" style="text-align: center;">{{ lang('LAST_VISIT') }}</th>
+				<th colspan="2" style="text-align: center;">{{ lang('ACP_USERREMINDER_REMINDER_ONE') }}</th>
+				<th colspan="2" style="text-align: center;">{{ lang('ACP_USERREMINDER_REMINDER_TWO') }}</th>
+				<th rowspan="2" style="width: 70px; text-align: center;">{{ lang('MARK_REMIND') }}</th>
+				<th rowspan="2" style="width: 70px; text-align: center;">{{ lang('MARK_DELETE') }}</th>
+			</tr>
+			<tr>
+				<th style="text-align: center;">{{ lang('AT_DATE') }}</th>
+				<th style="text-align: center;">{{ lang('DAYS_AGO') }}</th>
+				<th style="text-align: center;">{{ lang('AT_DATE') }}</th>
+				<th style="text-align: center;">{{ lang('DAYS_AGO') }}</th>
+				<th style="text-align: center;">{{ lang('AT_DATE') }}</th>
+				<th style="text-align: center;">{{ lang('DAYS_AGO') }}</th>
+			</tr>
+		</thead>
+		<tbody>
+		{% for reminder in reminders %}
+			<tr>
+				<td><a href="{{ SERVER_CONFIG }}/memberlist.php?mode=viewprofile&u={{ reminder.USER_ID }}" target="_blank"><span style="font-weight: bold; color: #{{ reminder.USER_COLOUR }};">{{ reminder.USERNAME }}</span></a></td>
+				<td style="text-align: center;">{{ reminder.USER_POSTS }}</td>
+				<td style="text-align: center;">{{ reminder.JOINED }}</td>
+				<td style="text-align: center;">{{ reminder.LAST_VISIT }}</td>
+				<td style="text-align: center;">{{ reminder.OFFLINE_DAYS }}</td>
+				<td style="text-align: center;">{{ reminder.REMINDER_ONE }}</td>
+				<td style="text-align: center;">{{ reminder.ONE_AGO }}</td>
+				<td style="text-align: center;">{{ reminder.REMINDER_TWO }}</td>
+				<td style="text-align: center;">{{ reminder.TWO_AGO }}</td>
+				<td style="text-align: center;">{% if reminder.REMINDER_ENABLED == 1 %}<input type="checkbox" class="radio" name="mark_remind[]" value="{{ reminder.USER_ID }}" />{% endif %}</td>
+				<td style="text-align: center;">{% if reminder.DEL_ENABLED == 1 %}<input type="checkbox" class="radio" name="mark_delete[]" value="{{ reminder.USER_ID }}" />{% endif %}</td>
+			</tr>
+		{% else %}
+		<tr>
+			<td colspan="10" style="text-align: center;">{{ lang('ACP_USERREMINDER_NO_ENTRIES') }}</td>
+		</tr>
+		{% endfor %}
+		</tbody>
+	</table>
+
+	{% if pagination %}
+		<div class="pagination">
+			{% include 'pagination.html' %}
+		</div>
+	{% endif %}
+
+	<fieldset class="display-options">
+		{{ lang('SORT_BY') }}{{ lang('COLON') }}
+		<select name="sort_key">
+			<option value="user_lastvisit" {% if SORT_KEY == 'user_lastvisit' %} selected {% endif %}>{{ lang('ACP_USERREMINDER_KEY_LV') }}</option>
+			<option value="user_regdate" {% if SORT_KEY == 'user_regdate' %} selected {% endif %}>{{ lang('ACP_USERREMINDER_KEY_RD') }}</option>
+	 		{% if SORT_ONE_ABLE %}
+				<option value="mot_reminded_one"{% if SORT_KEY == 'mot_reminded_one' %} selected {% endif %}>{{ lang('ACP_USERREMINDER_KEY_RO') }}</option>
+			{% endif %}
+	 		{% if SORT_TWO_ABLE %}
+				<option value="mot_reminded_two"{% if SORT_KEY == 'mot_reminded_two' %} selected {% endif %}>{{ lang('ACP_USERREMINDER_KEY_RT') }}</option>
+			{% endif %}
+		</select>&nbsp;
+		<select name="sort_dir">
+			<option value="DESC" {% if SORT_DIR == 'DESC' %} selected {% endif %}>{{ lang('ACP_USERREMINDER_SORT_DESC') }}</option>
+			<option value="ASC" {% if SORT_DIR == 'ASC' %} selected {% endif %}>{{ lang('ACP_USERREMINDER_SORT_ASC') }}</option>
+		</select>
+		<input class="button2" type="submit" value="{{ lang('GO') }}" name="sort" />
+	</fieldset>
+	<hr />
+	
+	{% if ENABLE_REMIND %}
+	<fieldset class="quick">
+		<input class="button2" type="submit" name="rem_marked" value="{{ lang('REMIND_MARKED') }}" /><br />
+		<p class="small"><a href="#" onclick="marklist('acp_userreminder_reminder', 'mark_remind', true); return false;">{{ lang('MARK_ALL') }}</a> &bull; <a href="#" onclick="marklist('acp_userreminder_reminder', 'mark_remind', false); return false;">{{ lang('UNMARK_ALL') }}</a></p>
+	</fieldset>
+	{% endif %}
+	
+	{% if ENABLE_REMIND and ENABLE_DELETE %}		{# Let's show the horizontal ruler only if both sets of buttons are shown #}
+	<hr />
+	{% endif %}
+	
+	{% if ENABLE_DELETE %}
+	<fieldset class="quick">
+		<input class="button2" type="submit" name="delmarked" value="{{ lang('DELETE_MARKED') }}" /><br />
+		<p class="small"><a href="#" onclick="marklist('acp_userreminder_reminder', 'mark_delete', true); return false;">{{ lang('MARK_ALL') }}</a> &bull; <a href="#" onclick="marklist('acp_userreminder_reminder', 'mark_delete', false); return false;">{{ lang('UNMARK_ALL') }}</a></p>
+	</fieldset>
+	{% endif %}
+	{{ S_FORM_TOKEN }}
+
+</form>
+
+{% include 'overall_footer.html' %}

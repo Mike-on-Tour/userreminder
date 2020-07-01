@@ -1,0 +1,21 @@
+services:
+    mot.userreminder.listener:
+        class: mot\userreminder\event\main_listener
+        arguments:
+            - '@config'
+            - '@dbal.conn'
+            - '@mot.userreminder.common'
+        tags:
+            - { name: event.listener }
+
+    mot.userreminder.common:
+        class: mot\userreminder\common
+        arguments:
+            - '@config'
+            - '@config_text'
+            - '@dbal.conn'
+            - '@user'
+            - '@log'
+            - '%core.root_path%'
+            - '%core.php_ext%'
+

@@ -1,0 +1,70 @@
+ver 1.2.0
+June 29, 2020
+-	Switched all ACP templates to TWIG syntax
+-	js and css files are only included in 'settings_module.html' now, no longer through 'adm/style/event/*' everywhere
+-	The directory 'adm/style/event' and all its files have been removed from the extension
+-	It is now possible to save the e-mail text without doing the preview before
+-	Edited e-mail texts are no longer saved in the text file but in a config_text variable
+-	Since edited files are now stored in the config_text table it is no longer necessary to purge the cache, language packs adjusted accordingly
+-	Corrected a broken character in the en language file
+-	Optimized the code counting the number of different users in order to set variables for pagination
+-	Some minor code changes to iron out small irregularities (w/o impact on the functionality)
+-	Enhanced security by checking requested variables from user input ('settings_module.php')
+
+ver 1.1.0
+May 10, 2020
+-	Corrected some warnings due to unused and undefined variables in 'registrated_only_module.php', 'reminder_module.php', 'zeroposter_module.php' and
+	'settings_module.php'
+-	Rebuilt js and css by transferring js code into 'admin_mot_userreminder.js', css definitions into 'admin_mot_userreminder.css' and include both
+	in 'acp_overall_footer_after.html' and 'acp_overall_header_stylesheets_after.html' respectively
+-	/* This version has not been published!! */
+
+ver 1.0.1
+April 12, 2020
+-	Added Spanish language file and email texts (courtesy of Jorge (Jorup16 at www.phpbb.com))
+
+ver 1.0.0
+February 26, 2020
+-	Stable version for submission
+
+ver 0.5.1
+February 25, 2020
+-	Some improvements in the fr language files
+
+ver 0.5.0
+February 23, 2020
+-	Replaced <br /> with <br> in all language files
+-	Corrected one typo (line 48) and one forgotten translation (line 56) in the en language file
+-	Optimized the sql queries in common.php
+-	Optimized the sql queries (only normal users and founders are checked; no bots, guests, deactivated or inactive users) in the files:
+	registrated_only_module.php, reminder_module.php, zeroposter_info.php, main_listener.php
+-	Replaced the date formatting ( date('d.m.Y', "date") ) with $user->format_date("date') to present it in the current users notation in
+	the files: registrated_only_module.php, reminder_module.php, settings_module.php, zeroposter_info.php
+-	Corrected two incorrect date/time formattings with the email preview in settings_module.php
+-	New migration file 'ur_v_0_5_0.php' with a custom function to set the initial values for column 'mot_last_login' from
+	column 'user_lastvisit' in users table. This replaces the function 'init_ur' in the file 'main_listener.php' to make certain
+	that the admin doesn't have to wait to the next login to see the tabs in the ACP filled properly
+-	Added French language file and email texts (courtesy of Claude (stone23 at www.phpbb.com))
+-	Added a function in common.php to format date/time according to the addressed user's preferences and language in emails
+-	Put the "Delete users automatically" radio buttons under the selection for the number of days since last reminder antil deletion in
+	'acp_ur_settings.html'
+
+ver 0.4.0
+February 2, 2020
+-	Renamed the extension into 'userreminder' (instead of 'user_reminder'; no underscores allowed in ext names)
+-	Set the name space according to the changed name in all files
+-	Corrected some errors in Line Feed format of (mainly) ACP php files and in common.php
+
+ver 0.3.0
+January 3, 2020
+-	Added a setting to edit the text of the reminding mails
+-	Added a column in the remind users section with the number of posts
+-	Fixed a problem with the date format while automatic reminder mails are enabled in common.php, lines 127 and 184
+
+ver 0.2.0
+December 19, 2019
+-	Added a setting to save an email address for bcc and/or cc reminding mails
+
+ver 0.1.0
+November 20, 2019
+-	First working version
