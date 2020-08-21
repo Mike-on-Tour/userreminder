@@ -1,7 +1,7 @@
 <?php
 /**
 *
-* @package UserReminder v1.2.0
+* @package UserReminder v1.2.1
 * @copyright (c) 2019, 2020 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
@@ -33,8 +33,11 @@ class main_listener implements EventSubscriberInterface
 	/** @var \phpbb\db\driver\driver_interface */
 	protected $db;
 
-	/** @var \ext\mot\userreminder\common */
+	/** @var \mot\userreminder\common */
 	protected $common;
+
+	/** @var int Usermap seconds per day */
+	const SECS_PER_DAY = 86400;
 
 	/**
 	 * Constructor
@@ -47,8 +50,6 @@ class main_listener implements EventSubscriberInterface
 		$this->config = $config;
 		$this->db = $db;
 		$this->common = $common;
-
-		$this->secs_per_day = 86400;
 	}
 
 
@@ -90,19 +91,19 @@ class main_listener implements EventSubscriberInterface
 			*/
 			if ($this->config['mot_ur_autoremind'] == 1)
 			{
-				$day_limit = $now - ($this->secs_per_day * $this->config['mot_ur_inactive_days']);
+				$day_limit = $now - (SECS_PER_DAY * $this->config['mot_ur_inactive_days']);
 
 				// ignore inactive users, anonymous (=== guest) and bots
 				// ignore users who have never posted anything
 				$query = 'SELECT user_id ' .
 						'FROM  ' . USERS_TABLE . '
-						WHERE (user_type = ' . USER_NORMAL . ' OR user_type = ' . USER_FOUNDER . ')
+						WHERE ' . $this->db->sql_in_set('user_type', array(USER_NORMAL,USER_FOUNDER)) . '
 						AND user_posts > 0
 						AND (
 						(mot_last_login <= ' . (int) $day_limit . ' AND mot_reminded_one = 0) ' .	// get all inactive users who have not been reminded yet
 						'OR (mot_reminded_one > 0 AND mot_reminded_two = 0)) ';						// get all inactive users due for the second reminder
 
-				if ($this->config['mot_ur_protected_members'] <> '')			// prevent sql errors due to empty string
+				if ($this->config['mot_ur_protected_members'] != '')			// prevent sql errors due to empty string
 				{
 					$query .= ' AND user_id NOT IN (' . $this->config['mot_ur_protected_members'] . ')';
 				}
@@ -125,7 +126,7 @@ class main_listener implements EventSubscriberInterface
 			*/
 			if ($this->config['mot_ur_autodelete'] == 1)
 			{
-				$day_limit = $now - ($this->secs_per_day * $this->config['mot_ur_days_until_deleted']);
+				$day_limit = $now - (SECS_PER_DAY * $this->config['mot_ur_days_until_deleted']);
 
 				$marked_users = array();
 
@@ -133,12 +134,12 @@ class main_listener implements EventSubscriberInterface
 				// get only users who have been reminded twice
 				$query = 'SELECT user_id
 						FROM  ' . USERS_TABLE . '
-						WHERE (user_type = ' . USER_NORMAL . ' OR user_type = ' . USER_FOUNDER . ')
+						WHERE ' . $this->db->sql_in_set('user_type', array(USER_NORMAL,USER_FOUNDER)) . '
 						AND user_posts > 0
 						AND mot_reminded_two > 0
 						AND mot_reminded_two <= ' . (int) $day_limit;			// get all users who have been inactive since the 2nd reminder for at least the number of days specified in settings
 
-				if ($this->config['mot_ur_protected_members'] <> '')	// prevent sql errors due to empty string
+				if ($this->config['mot_ur_protected_members'] != '')	// prevent sql errors due to empty string
 				{
 					$query .= ' AND user_id NOT IN (' . $this->config['mot_ur_protected_members'] . ')';
 				}

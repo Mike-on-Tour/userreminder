@@ -18,16 +18,16 @@ class reminder_module
 
 	public function main($id, $mode)
 	{
-		global $db, $language, $template, $request, $config, $phpbb_container, $user;
+		global $db, $language, $template, $request, $config, $phpbb_container, $user, $phpEx;
 
 		$secs_per_day = 86400;
 		$now = time();
 		$day_limit = $now - ($secs_per_day * $config['mot_ur_inactive_days']);
 		$server_config = $config['server_protocol'].$config['server_name'].$config['script_path'];
+		$memberlist_config = '/memberlist.' . $phpEx . '?mode=viewprofile&u=';
 		$common = $phpbb_container->get('mot.userreminder.common');
 
-		// set parameters for pagination
-		$start = 0;
+		// set parameter for pagination
 		$limit = 25;	// max 25 lines per page
 
 		// get sort variables from template (if we are in a loop of the pagination). At first call there are no variables from the (so far uncalled) template
@@ -64,10 +64,10 @@ class reminder_module
 		if ($request->is_set_post('rem_marked'))
 		{
 			$marked = $request->variable('mark_remind', array(0));
-			if (sizeof($marked) > 0)
+			if (count($marked) > 0)
 			{
 				$common->remind_users($marked);
-				trigger_error($language->lang('USER_REMINDED', sizeof($marked)) . adm_back_link($this->u_action), E_USER_NOTICE);
+				trigger_error($language->lang('USER_REMINDED', count($marked)) . adm_back_link($this->u_action), E_USER_NOTICE);
 			}
 			else
 			{
@@ -75,20 +75,20 @@ class reminder_module
 			}
 		}
 
-		$deletemark = (isset($_POST['delmarked'])) ? true : false;
+		$deletemark = ($request->is_set_post('delmarked')) ? true : false;
 		if ($deletemark)
 		{
 			$marked = $request->variable('mark_delete', array(0));
-			if (sizeof($marked) > 0)
+			if (count($marked) > 0)
 			{
 				if (confirm_box(true))
 				{
 					$common->delete_users($marked);
-					trigger_error($language->lang('USER_DELETED', sizeof($marked)) . adm_back_link($this->u_action), E_USER_NOTICE);
+					trigger_error($language->lang('USER_DELETED', count($marked)) . adm_back_link($this->u_action), E_USER_NOTICE);
 				}
 				else
 				{
-					confirm_box(false, '<p>'.$language->lang('CONFIRM_USER_DELETE', sizeof($marked)).'</p>', build_hidden_fields(array(
+					confirm_box(false, '<p>'.$language->lang('CONFIRM_USER_DELETE', count($marked)).'</p>', build_hidden_fields(array(
 						'delmarked'		=> $deletemark,
 						'mark_delete'	=> $marked,
 						'sk'			=> $sort_key,
@@ -109,19 +109,19 @@ class reminder_module
 		// ignore users who have never posted anything (they are dealt with in the "zeroposter" tab)
 		$query = 'SELECT user_id, user_regdate, username, user_posts, mot_last_login, user_colour, mot_reminded_one, mot_reminded_two ' .
 				'FROM  ' . USERS_TABLE . '
-				WHERE (user_type = ' . USER_NORMAL . ' OR user_type = ' . USER_FOUNDER . ')
+				WHERE ' . $db->sql_in_set('user_type', array(USER_NORMAL, USER_FOUNDER)) . '
 				AND user_posts > 0
 				AND mot_last_login <= ' . (int) $day_limit;					// get all users who have been inactive for at least the number of days specified in settings
 
-		if ($config['mot_ur_protected_members'] <> '')						// prevent sql errors due to empty string
+		if ($config['mot_ur_protected_members'] != '')						// prevent sql errors due to empty string
 		{
-			$query .= ' AND user_id NOT IN (' . $config['mot_ur_protected_members'] . ')';
+			$query .= ' AND ' . $db->sql_in_set('user_id', explode(',', $config['mot_ur_protected_members']), true);
 		}
 		$query .= ' ORDER BY ' . $db->sql_escape($sort_key) . ' ' . $db->sql_escape($sort_dir);
 
 		$result = $db->sql_query($query);
 		$reminders = $db->sql_fetchrowset($result);
-		$count_reminders = sizeof($reminders);
+		$count_reminders = count($reminders);
 		$db->sql_freeresult($result);
 		foreach ($reminders as $row)			// those variables need to be set here because otherwise it would depend on the values of users shown on the current pagination page
 		{
@@ -188,6 +188,7 @@ class reminder_module
 
 		$template->assign_vars(array(
 			'SERVER_CONFIG'	=> $server_config,
+			'MEMBERLIST'	=> $memberlist_config,
 			'SORT_KEY'		=> $sort_key,
 			'SORT_DIR'		=> $sort_dir,
 			'SORT_ONE_ABLE'	=> $enable_sort_one,

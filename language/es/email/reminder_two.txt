@@ -1,4 +1,4 @@
-Asunto: {SITENAME}: ¡Te seguimos extrañando!
+Subject: {SITENAME}: ¡Te seguimos extrañando!
 
 Hola {USERNAME},
 

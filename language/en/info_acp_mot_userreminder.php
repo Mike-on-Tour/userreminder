@@ -65,14 +65,14 @@ $lang = array_merge($lang, array(
 	'ACP_USERREMINDER_TIME_SETTING_TEXT'		=> 'Configure the time in days until a user is viewed as inactive, the time in days between the first and second e-mail to remind this member that a login is necessary and the following period until this user is deleted.<br>You can also name users who are protected against any reminder emails and deletion.',
 	'ACP_USERREMINDER_INACTIVE'					=> 'Number of days a user is offline until this user is viewed as inactive',
 	'ACP_USERREMINDER_DAYS_REMINDED'			=> 'Number of days until a user counting as inactive is getting the second reminder mail;<br>
-													sending a second mail is shut off if you input "0"',
+													sending a second mail is shut off if you input ´0´',
 	'ACP_USERREMINDER_AUTOREMIND'				=> 'Send reminder mails automatically?',
 	'ACP_USERREMINDER_DAYS_UNTIL_DELETED'		=> 'Number of days after last reminder until a user can be deleted',
 	'ACP_USERREMINDER_AUTODELETE'				=> 'Delete users automatically?',
 	'ACP_USERREMINDER_PROTECTED_MEMBERS'		=> 'Enter the <i>user_id</i> of those users whom you wish to protect from getting reminded or deleted. Entries must be seperated by commas!',
 	// ACP Mail settings
 	'ACP_USERREMINDER_MAIL_SETTINGS_TITLE'		=> 'Email configuration',
-	'ACP_USERREMINDER_EMAIL_BCC_TEXT'			=> 'Here you can set one email address each for sending a blind carbon copy or a carbon copy of the reminding emails to.',
+	'ACP_USERREMINDER_EMAIL_BCC_TEXT'			=> 'Here you can set one email address each for sending a blind carbon copy and/or a carbon copy of the reminding emails to.',
 	'ACP_USERREMINDER_EMAIL_BCC'				=> 'Send a blind carbon copy to',
 	'ACP_USERREMINDER_EMAIL_CC'					=> 'Send a carbon copy to',
 	// ACP Mail text edit
@@ -82,7 +82,7 @@ $lang = array_merge($lang, array(
 	'ACP_USERREMINDER_MAIL_FILE'				=> 'Select the file you want to edit',
 	'ACP_USERREMINDER_MAIL_ONE'					=> '1st. reminder',
 	'ACP_USERREMINDER_MAIL_TWO'					=> '2nd. reminder',
-	'ACP_USERREMINDER_MAIL_PREVIEW'				=> 'In the window to the right you can edit the text of the choosen email. By clicking on the "Preview" button the text is shown below like
+	'ACP_USERREMINDER_MAIL_PREVIEW'				=> 'In the window to the right you can edit the text of the choosen email. By clicking on the ´Preview´ button the text is shown below like
 													it will be shown in the sent email. The tokens will be replaced with your respective dta. Together with the preview there will be shown a button
 													to save the text as a file on your server.<br>
 													You can use the following tokens as placeholders for the respective data of the addressed user:<br>
@@ -91,7 +91,7 @@ $lang = array_merge($lang, array(
 													- {LAST_REMIND}: Date of the first reminding mail<br>
 													The following tokens can be used as placeholders for system data:<br>
 													- {SITENAME}: Name of your forum<br>
-													- {FORGOT_PASS}: Link to "I have forgotten my password"<br>
+													- {FORGOT_PASS}: Link to ´I have forgotten my password´<br>
 													- {ADMIN_MAIL}: The admins email address<br>
 													- {EMAIL_SIG}: Salutation<br>
 													- {DAYS_INACTIVE}: The above defined number of days of inactivity<br>
@@ -99,9 +99,9 @@ $lang = array_merge($lang, array(
 	'ACP_USERREMINDER_MAIL_LOAD_FILE'			=> 'Load file',
 	'ACP_USERREMINDER_PREVIEW_TEXT'				=> 'Please note:<br>In the preview text the tokens for the data of the addressed user are replaced with your respective data, this means that the resulting text logically might not make any sense.',
 	'ACP_USERREMINDER_MAIL_SAVE_FILE'			=> 'Save file',
-	'ACP_USERREMINDER_FILE_NOT_FOUND'			=> 'Unable to load file "%s".',
-	'ACP_USERREMINDER_FILE_ERROR'				=> 'An error occurred while saving the file "%s"!<br>The File <strong>has not been saved</strong>!',
-	'ACP_USERREMINDER_FILE_SAVED'				=> 'Successfully saved the file "%s".',
+	'ACP_USERREMINDER_FILE_NOT_FOUND'			=> 'Unable to load file ´%s´.',
+	'ACP_USERREMINDER_FILE_ERROR'				=> 'An error occurred while saving the file ´%s´!<br>The File <strong>has not been saved</strong>!',
+	'ACP_USERREMINDER_FILE_SAVED'				=> 'Successfully saved the file ´%s´.',
 	// ACP Reminder
 	'ACP_USERREMINDER_REMINDER'					=> 'Remind users',
 	'ACP_USERREMINDER_REMINDER_EXPLAIN'			=> 'A list of those users who were online and posted something but have been offline for the number of days defined in the settings tab to qualify as inactive.

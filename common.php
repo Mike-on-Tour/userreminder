@@ -6,7 +6,6 @@
 * @copyright (c) 2019, 2020 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
-* Fixed a problem with the date format while automatic reminder mails are enabled in lines 127 and 184 (v0.3.0)
 */
 
 namespace mot\userreminder;
@@ -29,7 +28,7 @@ class common
 	/** @var \phpbb\user */
 	protected $user;
 
-	/** @var \phpbb\log $log */
+	/** @var \phpbb\log\log $log */
 	protected $log;
 
 	/** @var string phpBB root path */
@@ -50,7 +49,8 @@ class common
 		$this->phpEx = $phpEx;
 
 		$this->sitename = htmlspecialchars_decode($this->config['sitename']);
-		$this->forgot_pass = $this->config['server_protocol'].$this->config['server_name']."/ucp.".$this->phpEx."?mode=sendpassword";
+		$script_path = (strlen($this->config['script_path']) > 1) ? $this->config['script_path'] : '';
+		$this->forgot_pass = $this->config['server_protocol'] . $this->config['server_name'] . $script_path . "/ucp.".$this->phpEx."?mode=sendpassword";
 		$this->admin_mail = $this->config['board_contact'];
 		$this->email_sig = str_replace('<br />', "\n", "-- \n" . htmlspecialchars_decode($this->config['board_email_sig']));
 		$this->days_inactive = $this->config['mot_ur_inactive_days'];
@@ -63,11 +63,14 @@ class common
 	**/
 	public function delete_users($users_marked)
 	{
-		// first include the user functions (one of which is "user_delete")
-		include_once($this->root_path . 'includes/functions_user.' . $this->phpEx);
-
-		if (sizeof($users_marked) > 0)					// lets check for an empty array; just to be certain that none of the called functions throws an error or an exception
+		if (count($users_marked) > 0)					// lets check for an empty array; just to be certain that none of the called functions throws an error or an exception
 		{
+			// first include the user functions ("user_get_id_name" and "user_delete") if they don't exist
+			if (!functions_exists('user_get_id_name'))
+			{
+				include($this->root_path . 'includes/functions_user.' . $this->phpEx);
+			}
+
 			// now we translate the given array of user_id's into an array of usernames for logging purposes
 			$username_ary = array();
 			user_get_id_name($users_marked, $username_ary);
@@ -76,7 +79,6 @@ class common
 			user_delete('retain', $users_marked);
 			$this->log->add('admin', $this->user->data['user_id'], $this->user->ip, 'LOG_USER_DELETED', false, array(implode(', ', $username_ary)));
 		}
-
 	}
 
 
@@ -87,18 +89,22 @@ class common
 	**/
 	public function remind_users($users_marked)
 	{
-		include_once($this->root_path . 'includes/functions_messenger.' . $this->phpEx);
-		$messenger = new \messenger(false);
-
-		if (sizeof($users_marked) > 0)					// lets check for an empty array; just to be certain that none of the called functions throws an error or an exception
+		if (count($users_marked) > 0)					// lets check for an empty array; just to be certain that none of the called functions throws an error or an exception
 		{
+			// since we have at least one user to remind we check for messenger class, include it if necessary and construct an instance
+			if (!class_exists('messenger'))
+			{
+				include($this->root_path . 'includes/functions_messenger.' . $this->phpEx);
+			}
+			$messenger = new \messenger(false);
+
 			/**
 			*	There is only one select box to select users for reminding so we have to discern here what users are supposed to get the first and the second reminder mail.
 			*	This is done by firstly getting those users where the date of the first mail is greater than Zero (which means they have already received the first mail and are due for the second one)
 			*	and secondly those users who have a value of Zero (which means they have not been reminded yet) .
 			*	This sequence is necessary due to the fact that we set this date in the DB while sending the first mail and thus we would be sending both mails if we did it the other way round.
 			*/
-			$email_arr = json_decode($this->config_text->get('mot_ur_email_texts'), true);
+			$this->email_arr = json_decode($this->config_text->get('mot_ur_email_texts'), true);
 			$secs_per_day = 86400;
 			$now = time();
 			$reminder1 = $now - ($secs_per_day * $this->config['mot_ur_days_reminded']);
@@ -116,7 +122,7 @@ class common
 			$second_reminders = $this->db->sql_fetchrowset($result);
 			$this->db->sql_freeresult($result);
 
-			if (sizeof($second_reminders) > 0)				// to prevent error messages if there are no results (in auto_reminder mode)
+			if (count($second_reminders) > 0)				// to prevent error messages if there are no results (in auto_reminder mode)
 			{
 				$second_reminders_ary = array();
 				$username_ary = array();
@@ -125,83 +131,7 @@ class common
 				{
 					$second_reminders_ary[] = $row['user_id'];
 					$username_ary[] = $row['username'];
-
-					if (array_key_exists($row['user_lang'], $email_arr) && array_key_exists('reminder_two', $email_arr[$row['user_lang']]))
-					{
-						$ur_email_text = $email_arr[$row['user_lang']]['reminder_two'];
-
-						$username = htmlspecialchars_decode($row['username']);
-						$last_visit = $this->format_date_time($row['user_lang'], $row['user_timezone'], $row['user_dateformat'], $row['mot_last_login']);
-						$last_remind = $this->format_date_time($row['user_lang'], $row['user_timezone'], $row['user_dateformat'], $row['mot_reminded_one']);
-
-						$search_arr = array ('{SITENAME}', '{USERNAME}', '{LAST_VISIT}', '{LAST_REMIND}', '{FORGOT_PASS}', '{ADMIN_MAIL}', '{EMAIL_SIG}', '{DAYS_INACTIVE}', '{DAYS_TIL_DELETE}');
-						$replace_arr = array ($this->sitename, $username, $last_visit, $last_remind, $this->forgot_pass, $this->admin_mail, $this->email_sig, $this->days_inactive, $this->days_til_delete);
-						$ur_email_text = str_replace($search_arr, $replace_arr, $ur_email_text);
-
-						$text_arr = preg_split('/[\n]+/', $ur_email_text, 2);
-						$subject = preg_split('/[\s]/', $text_arr[0], 2);		// get rid of the 'Subject: ' substring
-						$messenger->subject($subject[1]);
-						$messenger->msg = $text_arr[1];
-
-						$messenger->set_addresses($row);
-						if ($this->config['mot_ur_email_bcc'] != '')
-						{
-							$messenger->bcc($this->config['mot_ur_email_bcc']);
-						}
-						if ($this->config['mot_ur_email_cc'] != '')
-						{
-							$messenger->bcc($this->config['mot_ur_email_cc']);
-						}
-						$messenger->anti_abuse_headers($this->config, $this->user);
-
-						switch ($row['user_notify_type'])
-						{
-							case NOTIFY_EMAIL:
-								$messenger->msg_email();
-							break;
-
-							case NOTIFY_IM:
-								$messenger->msg_jabber();
-							break;
-
-							case NOTIFY_BOTH:
-								$messenger->msg_email();
-								$messenger->msg_jabber();
-							break;
-						}
-					}
-					// email is not in the config_text variable, load it from the file
-					else
-					{
-						$mail_template_path = $this->root_path . 'ext/mot/userreminder/language/' . $row['user_lang'] . '/email/';
-						$messenger->template('reminder_two', $row['user_lang'], $mail_template_path);
-
-						$messenger->set_addresses($row);
-
-						if ($this->config['mot_ur_email_bcc'] != '')
-						{
-							$messenger->bcc($this->config['mot_ur_email_bcc']);
-						}
-
-						if ($this->config['mot_ur_email_cc'] != '')
-						{
-							$messenger->bcc($this->config['mot_ur_email_cc']);
-						}
-
-						$messenger->anti_abuse_headers($this->config, $this->user);
-
-						$messenger->assign_vars(array(
-							'USERNAME'			=> htmlspecialchars_decode($row['username']),
-							'LAST_VISIT'		=> $this->format_date_time($row['user_lang'], $row['user_timezone'], $row['user_dateformat'], $row['mot_last_login']),
-							'LAST_REMIND'		=> $this->format_date_time($row['user_lang'], $row['user_timezone'], $row['user_dateformat'], $row['mot_reminded_one']),
-							'DAYS_INACTIVE'		=> $this->days_inactive,
-							'FORGOT_PASS'		=> $this->forgot_pass,
-							'ADMIN_MAIL'		=> $this->admin_mail,
-							'DAYS_TIL_DELETE'	=> $this->days_til_delete,
-						));
-
-						$messenger->send($row['user_notify_type']);
-					}
+					$this->reminder_mail($row, $messenger, 'reminder_two');
 				}
 
 				// all mails have been sent, let's set the reminder time
@@ -210,10 +140,9 @@ class common
 				);
 
 				$query = 'UPDATE ' . USERS_TABLE . '
-								SET ' . $this->db->sql_build_array('UPDATE', $sql_ary) .'
-								WHERE user_id IN (' . implode(", ", $second_reminders_ary) . ')';
-
-				$result = $this->db->sql_query($query);
+						SET ' . $this->db->sql_build_array('UPDATE', $sql_ary) .'
+						WHERE user_id IN (' . implode(", ", $second_reminders_ary) . ')';
+				$this->db->sql_query($query);
 
 				// emails are sent, time is set in the DB, so we can log this action in the admin log
 				$this->log->add('admin', $this->user->data['user_id'], $this->user->ip, 'LOG_INACTIVE_REMIND_TWO', false, array(implode(', ', $username_ary)));
@@ -233,7 +162,7 @@ class common
 			$first_reminders = $this->db->sql_fetchrowset($result);
 			$this->db->sql_freeresult($result);
 
-			if (sizeof($first_reminders) > 0)				// to prevent error messages if there are no results (in auto_reminder mode)
+			if (count($first_reminders) > 0)				// to prevent error messages if there are no results (in auto_reminder mode)
 			{
 				$first_reminders_ary = array();
 				$first_username_ary = array();
@@ -241,81 +170,7 @@ class common
 				{
 					$first_reminders_ary[] = $row['user_id'];
 					$first_username_ary[] = $row['username'];
-
-					// First check whether email text has been edited and saved in the config_text table
-					if (array_key_exists($row['user_lang'], $email_arr) && array_key_exists('reminder_one', $email_arr[$row['user_lang']]))
-					{
-						$ur_email_text = $email_arr[$row['user_lang']]['reminder_one'];
-
-						$username = htmlspecialchars_decode($row['username']);
-						$last_visit = $this->format_date_time($row['user_lang'], $row['user_timezone'], $row['user_dateformat'], $row['mot_last_login']);
-						$last_remind = $this->format_date_time($row['user_lang'], $row['user_timezone'], $row['user_dateformat'], $row['mot_reminded_one']);
-
-						$search_arr = array ('{SITENAME}', '{USERNAME}', '{LAST_VISIT}', '{LAST_REMIND}', '{FORGOT_PASS}', '{ADMIN_MAIL}', '{EMAIL_SIG}', '{DAYS_INACTIVE}', '{DAYS_TIL_DELETE}');
-						$replace_arr = array ($this->sitename, $username, $last_visit, $last_remind, $this->forgot_pass, $this->admin_mail, $this->email_sig, $this->days_inactive, $this->days_til_delete);
-						$ur_email_text = str_replace($search_arr, $replace_arr, $ur_email_text);
-
-						$text_arr = preg_split('/[\n]+/', $ur_email_text, 2);
-						$subject = preg_split('/[\s]/', $text_arr[0], 2);		// get rid of the 'Subject: ' substring
-						$messenger->subject($subject[1]);
-						$messenger->msg = $text_arr[1];
-
-						$messenger->set_addresses($row);
-						if ($this->config['mot_ur_email_bcc'] != '')
-						{
-							$messenger->bcc($this->config['mot_ur_email_bcc']);
-						}
-						if ($this->config['mot_ur_email_cc'] != '')
-						{
-							$messenger->bcc($this->config['mot_ur_email_cc']);
-						}
-						$messenger->anti_abuse_headers($this->config, $this->user);
-
-						switch ($row['user_notify_type'])
-						{
-							case NOTIFY_EMAIL:
-								$messenger->msg_email();
-							break;
-
-							case NOTIFY_IM:
-								$messenger->msg_jabber();
-							break;
-
-							case NOTIFY_BOTH:
-								$messenger->msg_email();
-								$messenger->msg_jabber();
-							break;
-						}
-					}
-					// email is not in the config_text variable, load it from the file
-					else
-					{
-						$mail_template_path = $this->root_path . 'ext/mot/userreminder/language/' . $row['user_lang'] . '/email/';
-						$messenger->template('reminder_one', $row['user_lang'], $mail_template_path);
-
-						$messenger->set_addresses($row);
-						if ($this->config['mot_ur_email_bcc'] != '')
-						{
-							$messenger->bcc($this->config['mot_ur_email_bcc']);
-						}
-						if ($this->config['mot_ur_email_cc'] != '')
-						{
-							$messenger->bcc($this->config['mot_ur_email_cc']);
-						}
-						$messenger->anti_abuse_headers($this->config, $this->user);
-
-						$messenger->assign_vars(array(
-							'USERNAME'			=> htmlspecialchars_decode($row['username']),
-							'LAST_VISIT'		=> $this->format_date_time($row['user_lang'], $row['user_timezone'], $row['user_dateformat'], $row['mot_last_login']),
-							'LAST_REMIND'		=> $this->format_date_time($row['user_lang'], $row['user_timezone'], $row['user_dateformat'], $row['mot_reminded_one']),
-							'DAYS_INACTIVE'		=> $this->days_inactive,
-							'FORGOT_PASS'		=> $this->forgot_pass,
-							'ADMIN_MAIL'		=> $this->admin_mail,
-							'DAYS_TIL_DELETE'	=> $this->days_til_delete,
-						));
-
-						$messenger->send($row['user_notify_type']);
-					}
+					$this->reminder_mail($row, $messenger, 'reminder_one');
 				}
 
 				// all mails have been sent, let's set the reminder time(s)
@@ -327,7 +182,7 @@ class common
 				}
 
 				$query .= ' WHERE user_id IN (' . implode(', ', $first_reminders_ary) . ')';
-				$result = $this->db->sql_query($query);
+				$this->db->sql_query($query);
 
 				// emails are sent, time is set in the DB, so we can log this action in the admin log
 				$this->log->add('admin', $this->user->data['user_id'], $this->user->ip, 'LOG_INACTIVE_REMIND_ONE', false, array(implode(', ', $first_username_ary)));
@@ -337,7 +192,85 @@ class common
 
 /* ------------------------------------------------------------------------------------------------------------------------------------------------ */
 
-	/*
+	/**
+	* @param array	$row			user data
+	* @param object	$messenger		messenger object to send the mails
+	* @param string	$reminder_type	either 'reminder_one' or 'reinder_two'
+	*
+	* @return		no return value
+	*/
+	private function reminder_mail($row, $messenger, $reminder_type)
+	{
+		// Reset the messenger variables to prevent errors
+		$messenger->reset();
+
+		// Set addresses and e-mail header
+		$messenger->set_addresses($row);
+		if ($this->config['mot_ur_email_bcc'] != '')
+		{
+			$messenger->bcc($this->config['mot_ur_email_bcc']);
+		}
+		if ($this->config['mot_ur_email_cc'] != '')
+		{
+			$messenger->cc($this->config['mot_ur_email_cc']);
+		}
+		$messenger->anti_abuse_headers($this->config, $this->user);
+
+		// First check whether email text has been edited and saved in the config_text table since in this case we have to take care of setting all the variables and do the correct sending ourselves
+		if (array_key_exists($row['user_lang'], $this->email_arr) && array_key_exists($reminder_type, $this->email_arr[$row['user_lang']]))
+		{
+			$ur_email_text = $this->email_arr[$row['user_lang']][$reminder_type];
+
+			$username = htmlspecialchars_decode($row['username']);
+			$last_visit = $this->format_date_time($row['user_lang'], $row['user_timezone'], $row['user_dateformat'], $row['mot_last_login']);
+			$last_remind = $this->format_date_time($row['user_lang'], $row['user_timezone'], $row['user_dateformat'], $row['mot_reminded_one']);
+
+			$search_arr = array ('{SITENAME}', '{USERNAME}', '{LAST_VISIT}', '{LAST_REMIND}', '{FORGOT_PASS}', '{ADMIN_MAIL}', '{EMAIL_SIG}', '{DAYS_INACTIVE}', '{DAYS_TIL_DELETE}');
+			$replace_arr = array ($this->sitename, $username, $last_visit, $last_remind, $this->forgot_pass, $this->admin_mail, $this->email_sig, $this->days_inactive, $this->days_til_delete);
+			$ur_email_text = str_replace($search_arr, $replace_arr, $ur_email_text);
+
+			$text_arr = preg_split('/[\n]+/', $ur_email_text, 2);
+			$subject = preg_split('/[\s]/', $text_arr[0], 2);		// get rid of the 'Subject: ' substring
+			$messenger->subject($subject[1]);
+			$messenger->msg = $text_arr[1];
+
+			switch ($row['user_notify_type'])
+			{
+				case NOTIFY_EMAIL:
+					$messenger->msg_email();
+				break;
+
+				case NOTIFY_IM:
+					$messenger->msg_jabber();
+				break;
+
+				case NOTIFY_BOTH:
+					$messenger->msg_email();
+					$messenger->msg_jabber();
+				break;
+			}
+		}
+		// email is not in the config_text variable, load it from the file (which makes things easier since there are some convenient functions available to set variables and for sending)
+		else
+		{
+			$mail_template_path = $this->root_path . 'ext/mot/userreminder/language/' . $row['user_lang'] . '/email/';
+			$messenger->template($reminder_type, $row['user_lang'], $mail_template_path);
+
+			$messenger->assign_vars(array(
+				'USERNAME'			=> htmlspecialchars_decode($row['username']),
+				'LAST_VISIT'		=> $this->format_date_time($row['user_lang'], $row['user_timezone'], $row['user_dateformat'], $row['mot_last_login']),
+				'LAST_REMIND'		=> $this->format_date_time($row['user_lang'], $row['user_timezone'], $row['user_dateformat'], $row['mot_reminded_one']),
+				'DAYS_INACTIVE'		=> $this->days_inactive,
+				'FORGOT_PASS'		=> $this->forgot_pass,
+				'ADMIN_MAIL'		=> $this->admin_mail,
+				'DAYS_TIL_DELETE'	=> $this->days_til_delete,
+			));
+
+			$messenger->send($row['user_notify_type']);
+		}
+	}
+
+	/**
 	* @param string	$user_lang			addressed user's language
 	* @param string	$user_timezone		addressed user's time zone
 	* @param string	$user_dateformat	addressed user's date/time format
@@ -347,6 +280,8 @@ class common
 	*/
 	private function format_date_time($user_lang, $user_timezone, $user_dateformat, $user_timestamp)
 	{
+		$user_timezone = (empty($user_timezone) || $user_timezone == '0') ? 'UTC' : $user_timezone;		// fallback value, just in case
+
 		$default_tz = date_default_timezone_get();
 		$date = new \DateTime('now', new \DateTimeZone($default_tz));
 		$date->setTimestamp($user_timestamp);
@@ -359,7 +294,7 @@ class common
 
 		// Find all words in date/time string and replace them with the translations from user's language
 		preg_match_all("/[a-zA-Z]+/", $time, $matches, PREG_PATTERN_ORDER);
-		if (sizeof ($matches[0]) > 0)
+		if (count($matches[0]) > 0)
 		{
 			foreach ($matches[0] as $value)
 			{

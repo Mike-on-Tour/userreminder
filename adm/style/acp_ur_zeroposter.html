@@ -26,7 +26,7 @@
 		<tbody>
 		{% for zeroposter  in zeroposter %}
 			<tr>
-				<td><a href="{{ SERVER_CONFIG }}/memberlist.php?mode=viewprofile&u={{ zeroposter.USER_ID }}" target="_blank"><span style="font-weight: bold; color: #{{ zeroposter.USER_COLOUR }};">{{ zeroposter.USERNAME }}</span></a></td>
+				<td><a href="{{ SERVER_CONFIG }}{{ MEMBERLIST }}{{ zeroposter.USER_ID }}" target="_blank"><span style="font-weight: bold; color: #{{ zeroposter.USER_COLOUR }};">{{ zeroposter.USERNAME }}</span></a></td>
 				<td style="text-align: center;">{{ zeroposter.JOINED }}</td>
 				<td style="text-align: center;">{{ zeroposter.LAST_VISIT }}</td>
 				<td style="text-align: center;">{{ zeroposter.OFFLINE_DAYS }}</td>

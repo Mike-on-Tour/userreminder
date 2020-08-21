@@ -1,0 +1,16 @@
+Subject: {SITENAME}: We missen je!
+
+Hallo {USERNAME},
+
+Je was op {LAST_VISIT} op ons forum {SITENAME}.
+Dat is alweer even geleden en we willen je laten weten dat we hopen je weer snel te zien en wat van je te horen.
+
+Mocht je je inloggegevens vergeten zijn, dan kun je ze altijd achterhalen via de volgende link.
+
+{FORGOT_PASS}
+
+Je kunt natuurlijk ook altijd contact opnemen met de beheerder van het forum via dit e-mailadres: {ADMIN_MAIL}
+
+We hopen je snel weer te zien!
+
+{EMAIL_SIG}

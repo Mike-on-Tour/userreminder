@@ -65,14 +65,14 @@ $lang = array_merge($lang, array(
 	'ACP_USERREMINDER_TIME_SETTING_TEXT'		=> 'Configure el tiempo en días para que un usuario sea visto como inactivo, el tiempo en días entre el primer y el segundo correo electrónico para recordarle a este miembro que es necesario iniciar sesión y el siguiente período hasta que se elimine a este usuario. También puede nombrar a los usuarios que no se les enviará ningún correo de recordatorio ni tampoco serán eliminados.',
 	'ACP_USERREMINDER_INACTIVE'					=> 'Número de días desconectado para que un usuario se considere inactivo',
 	'ACP_USERREMINDER_DAYS_REMINDED'			=> 'Número de días desconectado para que un usuario que es considerado inactivo reciba el segundo correo de recordatorio;<br>
-													esta opción está deshabilitada si usted ingresa "0"',
+													esta opción está deshabilitada si usted ingresa ´0´',
 	'ACP_USERREMINDER_AUTOREMIND'				=> '¿Enviar correos de recordatorio automáticamente?',
 	'ACP_USERREMINDER_DAYS_UNTIL_DELETED'		=> 'Número de días después del último recordatorio para que se pueda eliminar a un usuario:',
 	'ACP_USERREMINDER_AUTODELETE'				=> '¿Eliminar usuarios automáticamente?',
 	'ACP_USERREMINDER_PROTECTED_MEMBERS'		=> 'Ingrese el <i>user_id</i> de aquellos usuarios a los que desea proteger para que no se les recuerde o elimine. ¡Las entradas deben de estar separadas por comas!',
 	// ACP Mail settings
 	'ACP_USERREMINDER_MAIL_SETTINGS_TITLE'		=> 'Configuración del Correo',
-	'ACP_USERREMINDER_EMAIL_BCC_TEXT'			=> 'Aquí puede configurar una dirección de correo electrónico para enviar una copia oculta o una copia de los correos electrónicos de recordatorios.',
+	'ACP_USERREMINDER_EMAIL_BCC_TEXT'			=> 'Aquí puede configurar una dirección de correo electrónico para enviar una copia oculta y/o una copia de los correos electrónicos de recordatorios.',
 	'ACP_USERREMINDER_EMAIL_BCC'				=> 'Enviar una copia oculta a',
 	'ACP_USERREMINDER_EMAIL_CC'					=> 'Enviar una copia a',
 	// ACP Mail text edit
@@ -82,7 +82,7 @@ $lang = array_merge($lang, array(
 	'ACP_USERREMINDER_MAIL_FILE'				=> 'Seleccionar el archivo que desea editar',
 	'ACP_USERREMINDER_MAIL_ONE'					=> '1er. recordatorio',
 	'ACP_USERREMINDER_MAIL_TWO'					=> '2do. recordatorio',
-	'ACP_USERREMINDER_MAIL_PREVIEW'				=> 'En la ventana de la derecha, puede editar el texto del correo electrónico elegido. Al hacer click en "Vista Previa"  el texto se visualiza
+	'ACP_USERREMINDER_MAIL_PREVIEW'				=> 'En la ventana de la derecha, puede editar el texto del correo electrónico elegido. Al hacer click en ´Vista Previa´  el texto se visualiza
 													tal como se mostrará en el correo enviado. Los tokens serán reemplazdos con sus respectivos datos. Junto a la vista previa se mostrará un botón
 													para guardar el mensaje como un archivo en su servidor.<br>
 													Puede usar los siguientes tokens como marcadores de posición para los datos respectivos del usuario dirigido:<br>
@@ -91,7 +91,7 @@ $lang = array_merge($lang, array(
 													- {LAST_REMIND}: Fecha del primer correo de recordatorio<br>
 													Los siguientes tokens se pueden usar como marcadores de posición para los datos del sistema:<br>
 													- {SITENAME}: Nombre de su foro<br>
-													- {FORGOT_PASS}: Enlace a "He olvidado mi clave"<br>
+													- {FORGOT_PASS}: Enlace a ´He olvidado mi clave´<br>
 													- {ADMIN_MAIL}: La dirección de correo electrónico del administrador<br>
 													- {EMAIL_SIG}: Saludo<br>
 													- {DAYS_INACTIVE}: El número de días de inactividad definido anteriormente<br>
@@ -99,9 +99,9 @@ $lang = array_merge($lang, array(
 	'ACP_USERREMINDER_MAIL_LOAD_FILE'			=> 'Cargar archivo',
 	'ACP_USERREMINDER_PREVIEW_TEXT'				=> 'Por favor tome nota:<br>En el texto de la vista previa, los tokens para los datos del usuario a quien se dirige el mensaje se reemplazan con sus datos respectivos, esto significa que el texto resultante lógicamente podría no tener ningún sentido.',
 	'ACP_USERREMINDER_MAIL_SAVE_FILE'			=> 'Guardar archivo',
-	'ACP_USERREMINDER_FILE_NOT_FOUND'			=> 'No se puede cargar el archivo "%s".',
-	'ACP_USERREMINDER_FILE_ERROR'				=> 'Un error ha ocurrido mientras se guardaba el archivo "%s"!<br>El archivo <strong>no ha sido guardado.</strong>!',
-	'ACP_USERREMINDER_FILE_SAVED'				=> 'Se ha guardado el archivo satisfactoriamente "%s".',
+	'ACP_USERREMINDER_FILE_NOT_FOUND'			=> 'No se puede cargar el archivo ´%s´.',
+	'ACP_USERREMINDER_FILE_ERROR'				=> 'Un error ha ocurrido mientras se guardaba el archivo ´%s´!<br>El archivo <strong>no ha sido guardado.</strong>!',
+	'ACP_USERREMINDER_FILE_SAVED'				=> 'Se ha guardado el archivo satisfactoriamente ´%s´.',
 	// ACP Reminder
 	'ACP_USERREMINDER_REMINDER'					=> 'Usuarios recordados',
 	'ACP_USERREMINDER_REMINDER_EXPLAIN'			=> 'Una lista de aquellos usuarios que estuvieron en línea y publicaron algo pero han estado desconectados durante la cantidad de días definidos en la pestaña de configuración para ser tomados como inactivos.

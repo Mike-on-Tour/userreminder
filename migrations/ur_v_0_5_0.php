@@ -33,25 +33,10 @@ class ur_v_0_5_0 extends \phpbb\db\migration\migration
 	{
 		if ($this->config['mot_ur_consec_run'] == 0)
 		{
-			$query = 'SELECT user_id, user_lastvisit
-					FROM  ' . USERS_TABLE . '
-					ORDER BY user_id';
+			$query = 'UPDATE ' . USERS_TABLE . '
+					SET mot_last_login = user_lastvisit';
+			$this->db->sql_query($query);
 
-			$result = $this->db->sql_query($query);
-			$all_users = $this->db->sql_fetchrowset($result);
-			$this->db->sql_freeresult($result);
-
-			foreach ($all_users as $row)
-			{
-				$sql_ary = array(
-					'mot_last_login'	=> $row['user_lastvisit'],
-				);
-
-				$query = 'UPDATE ' . USERS_TABLE . '
-							SET ' . $this->db->sql_build_array('UPDATE', $sql_ary) . '
-							WHERE user_id = ' . (int) $row['user_id'];
-				$this->db->sql_query($query);
-			}
 			$this->config->set('mot_ur_consec_run', 1);
 		}
 	}

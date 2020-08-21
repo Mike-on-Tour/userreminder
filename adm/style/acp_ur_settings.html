@@ -1,11 +1,11 @@
 {% include 'overall_header.html' %}
-{% INCLUDEJS 'admin_mot_userreminder.js' %}
-{% INCLUDECSS 'admin_mot_userreminder.css' %}
+{% INCLUDEJS '@mot_userreminder/admin_mot_userreminder.js' %}
+{% INCLUDECSS '@mot_userreminder/admin_mot_userreminder.css' %}
 
 <h1>{{ lang('SETTINGS') }}</h1>
 <p>{{ lang('ACP_USERREMINDER_SETTINGS_EXPLAIN') }}</p>
 
-<form id="acp_userreminder_settings" method="post" action="{{ U_ACTION }}">
+<form id="acp_userreminder_settings" method="post" enctype="application/x-www-form-urlencoded" action="{{ U_ACTION }}">
 	<fieldset>
 		<legend>{{ lang('ACP_USERREMINDER_TIME_SETTINGS_TITLE') }}</legend>
 		<p>{{ lang('ACP_USERREMINDER_TIME_SETTING_TEXT') }}</p>
@@ -103,7 +103,7 @@
 			</dt>
 			
 			<dd>
-				<textarea name="mot_ur_mail_text" rows="10" cols="60" style="width: 95%;" enctype="application/x-www-form-urlencoded" onselect="storeCaret(this);" onclick="storeCaret(this);" onkeyup="storeCaret(this);" onfocus="initInsertions();">{{ ACP_USERREMINDER_EMAIL_TEXT }}</textarea>
+				<textarea name="mot_ur_mail_text" rows="10" cols="60" style="width: 95%;" onselect="storeCaret(this);" onclick="storeCaret(this);" onkeyup="storeCaret(this);" onfocus="initInsertions();">{{ ACP_USERREMINDER_EMAIL_TEXT }}</textarea>
 				<input class="button2" type="submit" name="preview" value="{{ lang('PREVIEW') }}" />
 			</dd>
 		</dl>

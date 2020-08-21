@@ -1,0 +1,19 @@
+Subject: {SITENAME}: We missen je nog steeds!
+
+Hallo {USERNAME},
+
+Op {LAST_REMIND} heb je een herinneringsmail van ons ontvangen omdat je meer dan {DAYS_INACTIVE} dagen op {SITENAME} bent geweest.
+Sindsdien hebben we je helaas nog steeds niet gezien op {SITENAME}.
+We hopen dat je niet de interesse hebt verloren in ons forum, en hopen je snel weer te zien!
+
+Mocht je je inloggegevens vergeten zijn, dan kun je ze altijd achterhalen via de volgende link.
+
+{FORGOT_PASS}
+
+Je kunt natuurlijk ook altijd contact opnemen met de beheerder van het forum via dit e-mailadres: {ADMIN_MAIL}
+
+Als je niet binnen {DAYS_TIL_DELETE} dagen inlogt op het forum dan word je account verwijderd zonder tegenbericht.
+
+We hopen je snel weer te zien!
+
+{EMAIL_SIG}

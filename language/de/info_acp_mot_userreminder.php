@@ -65,14 +65,14 @@ $lang = array_merge($lang, array(
 	'ACP_USERREMINDER_TIME_SETTING_TEXT'		=> 'Einstellungen für die Zeitdauer, bis ein Mitglied als inaktiv gilt, Dauer zwischen der ersten und zweiten Erinnerung sowie die darauf folgende Dauer bis zur Löschung. Außerdem kann hier ausgewählt werden, ob Erinnerungs-Mails automatisch verschickt und Löschungen automatisch erfolgen sollen.<br>Zusätzlich können Mitglieder benannt werden, die vor Erinnerungen und Löschung geschützt werden sollen.',
 	'ACP_USERREMINDER_INACTIVE'					=> 'Anzahl der Tage, die ein Mitglied offline sein muss, um als inaktiv zu gelten',
 	'ACP_USERREMINDER_DAYS_REMINDED'			=> 'Anzahl der Tage bis ein als inaktiv eingestuftes Mitglied die zweite Erinnerungsmail bekommen soll;<br>
-													die Eingabe von "0" schaltet die zweite Erinnerungsmail ab',
+													die Eingabe von ´0´ schaltet die zweite Erinnerungsmail ab',
 	'ACP_USERREMINDER_AUTOREMIND'				=> 'Erinnerungs-Mails automatisch versenden?',
 	'ACP_USERREMINDER_DAYS_UNTIL_DELETED'		=> 'Anzahl der Tage zwischen letzter Erinnerung und Löschen des Mitgliedes',
 	'ACP_USERREMINDER_AUTODELETE'				=> 'Mitglieder nach Ablauf aller Wartezeiten automatisch löschen?',
 	'ACP_USERREMINDER_PROTECTED_MEMBERS'		=> 'Eingabe der <i>user_id</i> von Mitgliedern, die von Erinnerungen und Löschung ausgenommen werden sollen. Eingaben müssen durch Kommata getrennt sein!',
 	// ACP Mail settings
 	'ACP_USERREMINDER_MAIL_SETTINGS_TITLE'		=> 'Konfiguration der E-Mails',
-	'ACP_USERREMINDER_EMAIL_BCC_TEXT'			=> 'Hier kannst du jeweils eine E-Mail-Adresse angeben, die in Blindkopie oder in Kopie an den Erinnerungs-Mails beteiligt wird.',
+	'ACP_USERREMINDER_EMAIL_BCC_TEXT'			=> 'Hier kannst du jeweils eine E-Mail-Adresse angeben, die in Blindkopie und/oder in Kopie an den Erinnerungs-Mails beteiligt wird.',
 	'ACP_USERREMINDER_EMAIL_BCC'				=> 'Blindkopie der Erinnerungs-Mail an',
 	'ACP_USERREMINDER_EMAIL_CC'					=> 'Kopie der Erinnerungs-Mail an',
 	// ACP Mail text edit
@@ -82,7 +82,7 @@ $lang = array_merge($lang, array(
 	'ACP_USERREMINDER_MAIL_FILE'				=> 'Zu bearbeitende Datei wählen',
 	'ACP_USERREMINDER_MAIL_ONE'					=> '1. Erinnerung',
 	'ACP_USERREMINDER_MAIL_TWO'					=> '2. Erinnerung',
-	'ACP_USERREMINDER_MAIL_PREVIEW'				=> 'Im Fenster rechts kann der Text der ausgewählten E-Mail bearbeitet werden. Durch Anklicken des "Vorschau"-Buttons wird der Text dargestellt,
+	'ACP_USERREMINDER_MAIL_PREVIEW'				=> 'Im Fenster rechts kann der Text der ausgewählten E-Mail bearbeitet werden. Durch Anklicken des ´Vorschau´-Buttons wird der Text dargestellt,
 													wie er später in der E-Mail versandt wird, die Tokens werden dabei durch deine Daten ersetzt. Zusätzlich wird mit der Vorschau auch ein Button
 													zum Speichern des Textes auf dem Server dargestellt.<br>
 													Im Text können folgende Tokens verwendet werden, die als Platzhalter für die entsprechenden Daten des angeschriebenen Mitgliedes stehen:<br>
@@ -91,7 +91,7 @@ $lang = array_merge($lang, array(
 													- {LAST_REMIND}: Datum der ersten Erinnerungs-Mail<br>
 													Die folgenden Tokens können als Platzhalter für systembezogene Daten verwendet werden:<br>
 													- {SITENAME}: Name des Forums<br>
-													- {FORGOT_PASS}: Link zu "Ich habe mein Passwort vergessen"<br>
+													- {FORGOT_PASS}: Link zu ´Ich habe mein Passwort vergessen´<br>
 													- {ADMIN_MAIL}: Email-Adresse des Foren-Admins<br>
 													- {EMAIL_SIG}: Absender-Grußformel<br>
 													- {DAYS_INACTIVE}: Oben angegebene Anzahl Tage der Inaktivität<br>
@@ -99,9 +99,9 @@ $lang = array_merge($lang, array(
 	'ACP_USERREMINDER_MAIL_LOAD_FILE'			=> 'Datei laden',
 	'ACP_USERREMINDER_PREVIEW_TEXT'				=> 'Bitte beachten:<br>Im Vorschautext werden die Tokens für die Daten des angeschriebenen Mitgliedes mit deinen Daten ersetzt, dies muss nicht unbedingt einen logisch sinnvollen Text ergeben.',
 	'ACP_USERREMINDER_MAIL_SAVE_FILE'			=> 'Datei speichern',
-	'ACP_USERREMINDER_FILE_NOT_FOUND'			=> 'Datei "%s" konnte nicht geladen werden.',
-	'ACP_USERREMINDER_FILE_ERROR'				=> 'Beim Speichern der Datei "%s" trat ein Fehler auf!<br>Die Datei wurde <strong>nicht gespeichert</strong>.',
-	'ACP_USERREMINDER_FILE_SAVED'				=> 'Die Datei "%s" wurde erfolgreich gespeichert.',
+	'ACP_USERREMINDER_FILE_NOT_FOUND'			=> 'Datei ´%s´ konnte nicht geladen werden.',
+	'ACP_USERREMINDER_FILE_ERROR'				=> 'Beim Speichern der Datei ´%s´ trat ein Fehler auf!<br>Die Datei wurde <strong>nicht gespeichert</strong>.',
+	'ACP_USERREMINDER_FILE_SAVED'				=> 'Die Datei ´%s´ wurde erfolgreich gespeichert.',
 	// ACP Reminder
 	'ACP_USERREMINDER_REMINDER'					=> 'Mitglieder erinnern',
 	'ACP_USERREMINDER_REMINDER_EXPLAIN'			=> 'Hier werden die Mitglieder aufgelistet, die nach Registrierung und Aktivierung bereits online waren und Beiträge gepostet haben, aber seit der in den Einstellungen vorgegebenen Anzahl von Tagen nicht mehr online waren.

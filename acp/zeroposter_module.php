@@ -18,15 +18,15 @@ class zeroposter_module
 
 	public function main($id, $mode)
 	{
-		global $db, $language, $template, $request, $config, $phpbb_container, $user;
+		global $db, $language, $template, $request, $config, $phpbb_container, $user, $phpEx;
 
 		$secs_per_day = 86400;
 		$now = time();
 		$server_config = $config['server_protocol'].$config['server_name'].$config['script_path'];
+		$memberlist_config = '/memberlist.' . $phpEx . '?mode=viewprofile&u=';
 		$common = $phpbb_container->get('mot.userreminder.common');
 
-		// set parameters for pagination
-		$start = 0;
+		// set parameter for pagination
 		$limit = 25;	// max 25 lines per page
 
 		// get sort variables from template (if we are in a loop of the pagination). At first call there are no variables from the (so far uncalled) template
@@ -45,20 +45,20 @@ class zeroposter_module
 
 		add_form_key('acp_userreminder_zeroposter');
 
-		$deletemark = (isset($_POST['delmarked'])) ? true : false;
+		$deletemark = ($request->is_set_post('delmarked')) ? true : false;
 		if ($deletemark)
 		{
 			$marked = $request->variable('mark', array(0));
-			if (sizeof($marked) > 0)
+			if (count($marked) > 0)
 			{
 				if (confirm_box(true))
 				{
 					$common->delete_users($marked);
-					trigger_error($language->lang('USER_DELETED', sizeof($marked)) . adm_back_link($this->u_action), E_USER_NOTICE);
+					trigger_error($language->lang('USER_DELETED', count($marked)) . adm_back_link($this->u_action), E_USER_NOTICE);
 				}
 				else
 				{
-					confirm_box(false, '<p>'.$language->lang('CONFIRM_USER_DELETE', sizeof($marked)).'</p>', build_hidden_fields(array(
+					confirm_box(false, '<p>'.$language->lang('CONFIRM_USER_DELETE', count($marked)).'</p>', build_hidden_fields(array(
 						'delmarked'	=> $deletemark,
 						'mark'		=> $marked,
 						'sk'		=> $sort_key,
@@ -90,22 +90,22 @@ class zeroposter_module
 
 		$query = 'SELECT user_id, username, user_colour, user_regdate, mot_last_login
 				FROM  ' . USERS_TABLE . '
-				WHERE (user_type = ' . USER_NORMAL . ' OR user_type = ' . USER_FOUNDER . ') ' .		// ignore anonymous (=== guest), bots, inactive and deactivated users
+				WHERE ' . $db->sql_in_set('user_type', array(USER_NORMAL, USER_FOUNDER)) . ' ' .		// ignore anonymous (=== guest), bots, inactive and deactivated users
 				'AND user_posts = 0 ' .							// only users with zero posts (zero posters)
-				'AND mot_last_login > 0 ';						// ignore users who have never been online after registration
-		if ($config['mot_ur_protected_members'] <> '')	// prevent sql errors due to empty string
+				'AND mot_last_login > 0';						// ignore users who have never been online after registration
+		if ($config['mot_ur_protected_members'] != '')	// prevent sql errors due to empty string
 		{
-			$query .= 'AND user_id NOT IN (' . $config['mot_ur_protected_members'] . ') ';
+			$query .= ' AND ' . $db->sql_in_set('user_id', explode(',', $config['mot_ur_protected_members']), true);
 		}
-		$query .= 'ORDER BY ' . $db->sql_escape($sort_key) . ' ' . $db->sql_escape($sort_dir);
+		$query .= ' ORDER BY ' . $db->sql_escape($sort_key) . ' ' . $db->sql_escape($sort_dir);
 
 		$count_query = "SELECT COUNT(user_id) AS 'user_count' FROM " . USERS_TABLE . '
-						WHERE (user_type = ' . USER_NORMAL . ' OR user_type = ' . USER_FOUNDER . ')
+						WHERE ' . $db->sql_in_set('user_type', array(USER_NORMAL, USER_FOUNDER)) . '
 						AND user_posts = 0
-						AND mot_last_login > 0 ';
-		if ($config['mot_ur_protected_members'] <> '')	// prevent sql errors due to empty string
+						AND mot_last_login > 0';
+		if ($config['mot_ur_protected_members'] != '')	// prevent sql errors due to empty string
 		{
-			$count_query .= 'AND user_id NOT IN (' . $config['mot_ur_protected_members'] . ') ';
+			$count_query .= ' AND ' . $db->sql_in_set('user_id', explode(',', $config['mot_ur_protected_members']), true);
 		}
 		$result = $db->sql_query($count_query);
 		$row = $db->sql_fetchrow($result);
@@ -142,6 +142,7 @@ class zeroposter_module
 
 		$template->assign_vars(array(
 			'SERVER_CONFIG'	=> $server_config,
+			'MEMBERLIST'	=> $memberlist_config,
 			'SORT_KEY'		=> $sort_key,
 			'SORT_DIR'		=> $sort_dir,
 			)

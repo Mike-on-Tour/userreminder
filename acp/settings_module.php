@@ -45,11 +45,11 @@ class settings_module
 			}
 
 			// save the settings to the phpbb_config table
-			$config->set('mot_ur_inactive_days', substr($request->variable('mot_ur_inactive_days', ''), 0, 3));
-			$config->set('mot_ur_days_reminded', substr($request->variable('mot_ur_days_reminded', ''), 0, 3));
-			$config->set('mot_ur_autoremind', ($request->variable('mot_ur_autoremind', '')) ? '1' : '0');
+			$config->set('mot_ur_inactive_days', $request->variable('mot_ur_inactive_days', 0, 3));
+			$config->set('mot_ur_days_reminded', $request->variable('mot_ur_days_reminded', 0, 3));
+			$config->set('mot_ur_autoremind', ($request->variable('mot_ur_autoremind', 0)) ? '1' : '0');
 			$config->set('mot_ur_days_until_deleted', $request->variable('mot_ur_days_until_deleted', 0, 3));
-			$config->set('mot_ur_autodelete', ($request->variable('mot_ur_autodelete', '')) ? '1' : '0');
+			$config->set('mot_ur_autodelete', ($request->variable('mot_ur_autodelete', 0)) ? '1' : '0');
 			$protected_members = substr($request->variable('mot_ur_protected_members', ''), 0, 255);
 			$protected_members = preg_replace('/[ ]/', '', $protected_members); // get rid of any spaces
 			$config->set('mot_ur_protected_members', $protected_members);
