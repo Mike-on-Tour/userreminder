@@ -36,9 +36,6 @@ class main_listener implements EventSubscriberInterface
 	/** @var \mot\userreminder\common */
 	protected $common;
 
-	/** @var int Usermap seconds per day */
-	const SECS_PER_DAY = 86400;
-
 	/**
 	 * Constructor
 	 *
@@ -50,6 +47,7 @@ class main_listener implements EventSubscriberInterface
 		$this->config = $config;
 		$this->db = $db;
 		$this->common = $common;
+		define("SECS_PER_DAY", 86400);
 	}
 
 
