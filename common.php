@@ -2,7 +2,7 @@
 
 /**
 *
-* @package UserReminder v1.2.x
+* @package UserReminder v1.3.x
 * @copyright (c) 2019, 2020 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
@@ -66,7 +66,7 @@ class common
 		if (count($users_marked) > 0)					// lets check for an empty array; just to be certain that none of the called functions throws an error or an exception
 		{
 			// first include the user functions ("user_get_id_name" and "user_delete") if they don't exist
-			if (!functions_exists('user_get_id_name'))
+			if (!function_exists('user_get_id_name'))
 			{
 				include($this->root_path . 'includes/functions_user.' . $this->phpEx);
 			}
@@ -92,7 +92,7 @@ class common
 		if (count($users_marked) > 0)					// lets check for an empty array; just to be certain that none of the called functions throws an error or an exception
 		{
 			// since we have at least one user to remind we check for messenger class, include it if necessary and construct an instance
-			if (!class_exists('messenger'))
+			if (!class_exists('\messenger'))
 			{
 				include($this->root_path . 'includes/functions_messenger.' . $this->phpEx);
 			}
@@ -113,7 +113,7 @@ class common
 			// and who have been reminded once before
 			$query = 'SELECT user_id, username, user_email, mot_last_login, user_lang, user_timezone, user_dateformat, user_jabber, user_notify_type, mot_reminded_one
 					FROM  ' . USERS_TABLE . '
-					WHERE user_id IN (' . implode(', ', $users_marked) . ')
+					WHERE ' . $this->db->sql_in_set('user_id', $users_marked) . '
 					AND (mot_reminded_one > 0 AND mot_reminded_one <= ' .	$reminder1 . ')
 					AND mot_reminded_two = 0
 					ORDER BY user_id';
@@ -141,7 +141,7 @@ class common
 
 				$query = 'UPDATE ' . USERS_TABLE . '
 						SET ' . $this->db->sql_build_array('UPDATE', $sql_ary) .'
-						WHERE user_id IN (' . implode(", ", $second_reminders_ary) . ')';
+						WHERE ' . $this->db->sql_in_set('user_id', $second_reminders_ary);
 				$this->db->sql_query($query);
 
 				// emails are sent, time is set in the DB, so we can log this action in the admin log
@@ -153,7 +153,7 @@ class common
 			$day_limit = $now - ($secs_per_day * $this->config['mot_ur_inactive_days']);
 			$query = 'SELECT user_id, username, user_email, mot_last_login, user_lang, user_timezone, user_dateformat, user_jabber, user_notify_type, mot_reminded_one
 					FROM  ' . USERS_TABLE . '
-					WHERE user_id IN (' . implode(', ', $users_marked) . ')
+					WHERE ' . $this->db->sql_in_set('user_id', $users_marked) . '
 					AND mot_last_login <= ' . $day_limit . '
 					AND mot_reminded_one = 0
 					ORDER BY user_id';
@@ -181,7 +181,7 @@ class common
 					$query .= ', mot_reminded_two = ' . $now;		// ... we have to set this column too to enable deletion
 				}
 
-				$query .= ' WHERE user_id IN (' . implode(', ', $first_reminders_ary) . ')';
+				$query .= ' WHERE ' . $this->db->sql_in_set('user_id', $users_marked);
 				$this->db->sql_query($query);
 
 				// emails are sent, time is set in the DB, so we can log this action in the admin log

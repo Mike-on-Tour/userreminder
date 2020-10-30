@@ -4,8 +4,44 @@ All changes to `Userreminder for phpBB` will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
   
+## [1.3.0] - 2020-10-30
+
+### Added
+-	A function to remind zeroposters including a new option on the settings page to enable/disable reminding zeroposters;
+	affected files are `acp/settings_module.php`, `adm/style/acp_ur_settings.html`, `acp/zeroposter_module.php`, `adm/style/acp_ur_zeroposter.html`,
+	`event/main_listener.php` (the latter for automatic reminding and deleting users) and all language files
+-	Added a function in `event/main_listener.php` to check whether the user_id of a user to be deleted is part of the protected members config value
+	and if yes, delete this user_id from the config value array
+-	Added a new settings option to define groups which members will be excluded from being reminded and deleted, this group must be the default group
+-	Migration file to insert the new above mentioned options into the config table and to convert the `protected_members` string into a json_encoded array
+-	Added a check for protected groups affecting the `acp/registrated_only_module.php`, `acp/reminder_module.php`, `acp/zeroposter_module.php`
+	and `event/main_listener.php` files
+
+### Changed
+-	Corrected the list of parameters while calling `$request->variable()` in `acp/settings_module.php`, lines 48, 49 and 51 (new lines 64, 65 and 67)
+-	Inserted a backslash in `common.php` line 95 (new line 107) to adhere to phpBB coding guidelines
+-	Adjusted SQL Queries in `common.php` lines 116, 144, 156 and 184 (new lines 128, 156, 168 and 196) to adhere to phpBB coding guidelines
+-	Adjusted displaying usernames in all tables to the style commands used by phpBB (usernames are no longer in bold letters as a default).
+	Affected files are `adm/style/acp_ur_registratedonly.html`, `adm/style/acp_ur_reminder.html` and `adm/style/acp_ur_zeroposter.html`
+-	Changed the config value of `mot_ur_protected_members` from a comma seperated string into a JSON encoded array to enable conversion into a list of usernames
+	for better readability in `acp/settings_module.php`. This change made it necessary to change all scripts where this config value is used, affected files are
+	`common.php`, `acp/registrated_only_module.php`, `acp/reminder_module.php`, `acp/zeroposter_module.php` and `event/main_listener.php`
+-	In the files `acp/registrated_only_module.php`, `acp/reminder_module.php`, `acp/settings_module.php` and `acp/zeroposter_module.php` the global variable
+	`$language` was used. Since this global variable was introduced in phpBB 3.2.6 with Userreminder 1.2.1 an `ext.php` file was added to prevent installation
+	on phpBB version 3.2.5 and earlier. In Userreminder 1.3.0 the variable `$language` is no longer acquired from the global variable but instead from the
+	`phpbb_container` where it was introduced with phpBB 3.2.0. So the four ACP files are changed accordingly and the `ext.php` file checks now for
+	phpBB versions later or equal to 3.2.0.
+-	`README.md` file changed accordingly to reflect new functions and settings.
+
+### Fixed
+-	Corrected a typo in `common.php`, line 69 (`function_exists()` instead of `functions_exists()`)
+-	Changed the definition of constant `SECS_PER_DAY` in `event/main_listener.php` to prevent warnings in PHP 7.4
+
+### Removed
+  
+  
 ## [1.2.1] - 2020-08-21
-**This version contains three fixes to iron out problems single users reported as well as changes necessary following the denied submission of ver. 1.2.0 to the phpBB extensions database**  
+**This version contains three fixes to iron out problems single users reported as well as changes necessary following the denied approval of ver. 1.2.0 to the phpBB extensions database**  
 
 ### Added
 -	`README.md` file

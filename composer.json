@@ -3,8 +3,8 @@
     "type": "phpbb-extension",
     "description": "Remind and manage inactive users",
     "homepage": "https://www.mike-on-tour.com",
-    "version": "1.2.1",
-    "time": "2020-08-21 11:12:11",
+    "version": "1.3.0",
+    "time": "2020-10-30 12:11:57",
     "license": "GPL-2.0-only",
     "authors": [
         {
@@ -16,11 +16,11 @@
         {
             "name": "Claude (stone23)",
             "homepage": "https://www.encreuse.net/forum/index.php",
-            "role": "French translation"
+            "role": "French (FR) translation"
         },
         {
             "name": "Jorge (Jorup16)",
-            "role": "Spanish translation"
+            "role": "Spanish (ES) translation"
         },
 		{
 			"name": "JJGV",
@@ -36,7 +36,7 @@
     "extra": {
         "display-name": "Userreminder for phpbb",
         "soft-require": {
-            "phpbb/phpbb": ">=3.2.6"
+            "phpbb/phpbb": ">=3.2.0"
         },
         "version-check": {
             "host": "www.mike-on-tour.com",

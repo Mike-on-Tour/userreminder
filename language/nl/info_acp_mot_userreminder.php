@@ -1,7 +1,7 @@
 <?php
 /**
 *
-* @package UserReminder v1.2.0
+* @package UserReminder v1.3.0
 * @copyright (c) 2019, 2020 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
@@ -62,14 +62,22 @@ $lang = array_merge($lang, array(
 	'ACP_USERREMINDER_SETTINGS_EXPLAIN'			=> 'Hier pas je de instellingen aan voor User Reminder.',
 	'ACP_USERREMINDER_SETTING_SAVED'			=> 'Instellingen User Reminder succesvol opgeslagen.',
 	'ACP_USERREMINDER_TIME_SETTINGS_TITLE'		=> 'Stel de herinnerings intervallen in',
-	'ACP_USERREMINDER_TIME_SETTING_TEXT'		=> 'Stel het aantal dagen in waarna een gebruiker als inactief gezien word, het aantal dagen tussen het eerste ne tweede herinneringsmailtje om de gebruiker te herinneren dat inloggen noodzakelijk is, en de periode totdat de gebruiker verwijderd word.<br>Je kunt ook gebruikers opgeven die beschermd zijn tegen herinneringen en verwijderen.',
+	'ACP_USERREMINDER_TIME_SETTING_TEXT'		=> 'Stel het aantal dagen in waarna een gebruiker als inactief gezien word, het aantal dagen tussen het eerste ne tweede herinneringsmailtje om de gebruiker te herinneren dat inloggen noodzakelijk is, en de periode totdat de gebruiker verwijderd word.',
 	'ACP_USERREMINDER_INACTIVE'					=> 'Aantal dagen dat een gebruiker offline is voordat deze al inactief gezien word',
 	'ACP_USERREMINDER_DAYS_REMINDED'			=> 'Aantal dagen voordat een gebruiker als inactief  gezien word en een tweede herinnering verstuurd word;<br>
 													tweede mail versturen word uitgeschakeld als je ´0´ invult',
 	'ACP_USERREMINDER_AUTOREMIND'				=> 'Verstuur herinneringen automatisch?',
 	'ACP_USERREMINDER_DAYS_UNTIL_DELETED'		=> 'Aantal dagen na laatste herinnering voordat een gebruiker verwijderd kan worden',
 	'ACP_USERREMINDER_AUTODELETE'				=> 'Verwijder gebruiker automatisch?',
-	'ACP_USERREMINDER_PROTECTED_MEMBERS'		=> 'Vul de <i>user_id</i> in van de gebruikers genegeerd moeten worden bij herinneren of verwijderen. Meerdere user ids moeten gescheiden zijn door kommas! ',
+	// ACP Zeroposter settings
+	'ACP_USERREMINDER_ZEROPOSTER_CONFIG'		=> 'Zeroposter configuratie',
+	'ACP_USERREMINDER_ZEROPOSTER_CONFIG_TEXT'	=> 'Stel hier in of een zeroposter behandeld moet worden als een inactieve gebruiker. Als je voor ´Ja´ kiest, dan zullen de instellingen van de vorige sectie ook gelden voor zeroposters. In dat geval zullen de zeroposters weergegeven worden in een uitgebreide tabel waar de datums te zien zijn waarop de eerste en tweede herinnering te zien zijn en een selectievakje om de gebruiker te verwijderen.',
+	'ACP_USERREMINDER_REMIND_ZEROPOSTER'		=> 'Wil je zeroposters herinneren en kunnen verwijderen zoals inactieve gebruikers?',
+	// ACP Protection settings
+	'ACP_USERREMINDER_PROTECTION_CONFIG'		=> 'Beveiligde gebruikers configuratie',
+	'ACP_USERREMINDER_PROTECTION_CONFIG_TEXT'	=> 'Je kunt ook gebruikers opgeven die uitgesloten worden van herinnerings mailtjes en verwijdering. Je kunt individuele gebruikers opgeven en/of alle leden van een standaard groep door deze groep te selecteren. Beide selecties werken onafhankelijk van elkaar.',
+	'ACP_USERREMINDER_PROTECTED_MEMBERS'		=> 'Geef de gebruikersnamen op van de gebruikers die je wilt uitsluiten van herinneringsmailtjes en verwijdering.<br>Elke gebruikersnaam MOET op een aparte regel!',
+	'ACP_USERREMINDER_PROTECTED_GROUPS'			=> 'Selecteer de standaard groep(en) waarvan de leden uitgesloten worden tegen herinneringsmailtjes en verwijdering. Reeds geselecteerde groepen zijn highlighted.<br>Door het indrukken van de ´Ctrl´ toets en de betreffende groepen aanklikken kun je meer dan een groep selecteren',
 	// ACP Mail settings
 	'ACP_USERREMINDER_MAIL_SETTINGS_TITLE'		=> 'Email instellingen',
 	'ACP_USERREMINDER_EMAIL_BCC_TEXT'			=> 'Stel hier 1 emailadres waar een blind carbon copy en/of een carbon copy van de herinnerings email naartoe gestuurd word.',

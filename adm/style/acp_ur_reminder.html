@@ -34,7 +34,7 @@
 		<tbody>
 		{% for reminder in reminders %}
 			<tr>
-				<td><a href="{{ SERVER_CONFIG }}{{ MEMBERLIST }}{{ reminder.USER_ID }}" target="_blank"><span style="font-weight: bold; color: #{{ reminder.USER_COLOUR }};">{{ reminder.USERNAME }}</span></a></td>
+				<td><a href="{{ SERVER_CONFIG }}{{ MEMBERLIST }}{{ reminder.USER_ID }}" target="_blank" {% if reminder.USER_COLOUR %}style="color: #{{ reminder.USER_COLOUR }};" class="username-coloured"{% endif %}>{{ reminder.USERNAME }}</a></td>
 				<td style="text-align: center;">{{ reminder.USER_POSTS }}</td>
 				<td style="text-align: center;">{{ reminder.JOINED }}</td>
 				<td style="text-align: center;">{{ reminder.LAST_VISIT }}</td>

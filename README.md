@@ -1,8 +1,11 @@
 # Userreminder
 
-![phpBB 3.2.x Compatible](./phpBB-3.2.x_kl.jpg) ![phpBB 3.2.x Compatible](./phpBB-3.3.x_kl.jpg)
+![Version: 1.3.0](https://img.shields.io/badge/Version-1.3.0-green)  
+  
+![phpBB 3.2.x Compatible](https://img.shields.io/badge/phpBB-3.2.x%20Compatible-009BDF)
+![phpBB 3.3.x Compatible](https://img.shields.io/badge/phpBB-3.3.x%20Compatible-009BDF)  
 
-Userreminder is an extension to the phpBB bulletin board (**version 3.2.6 and later**) to manage inactive users
+Userreminder is an extension to the phpBB bulletin board (**version 3.2.0 and later**) to manage inactive users
 
 ## Description
 Userreminder enables administrators to check their board for three different types of users:
@@ -19,17 +22,20 @@ The username displayed in these tables contains a link to this user's profile wh
 
 ## Settings
 With an additional settings tab you can enter the different time frames as a
-number of days (e.g. 70 days until a user shows up as inactive). For your convenience you can select to remind and/or delete users automatically. If
-there are users you want to protect from getting reminded or deleted you can define those users by their user_id.  
+number of days (e.g. 70 days until a user shows up as inactive). For your convenience you can select to remind and/or delete users automatically.
 If selected, automatic reminding and/or deleting users is triggered as part of the login routine which also resets possible reminder dates for this user
-to zero in order to show no longer in the table displaying inactive users.
+to zero in order to show no longer in the table displaying inactive users.  
+**It is strongly recommended to check the number of users to be reminded in the respective tables before enabling automatic reminding in order to prevent mail errors due to a high number of emails to be sent which might exceed the limit set by your provider. In case of a high number of users to be reminded please consider doing it manually until you have only one or two pages of inactive users!**
 
 Sleepers and zeroposters are displayed with the number of inactive days. Administrators can select those users for manual deletion, they will not be
-reminded.
+reminded by default.  
+Zeroposters can be enabled to be handled as inactive users, that is to be reminded and deleted like them. If you enable this configuration value all of the above mentioned settings will apply to zeroposters. The table with the zeroposters will then look like the one for inactive users.
+
+If you want to protect users from getting reminded and deleted you can define those users either individually by their username or you can protect all members of one or more default groups by selecting those groups. Please note, that only those groups used as default groups for founders and normal users are displayed and only their members can be protected.  
 
 There is also a possibility to add one email address each for a bcc and/or cc copy of the reminding mails.
 
-In a second part of the settings tab you can edit the text of the emails including a preview.
+In the last part of the settings tab you can edit the text of the emails, a preview of how your text will look like is available.
 
 ## Important !!!
 -	Users are deleted by retaining their posts in order to prevent gaps in your forum threads!  

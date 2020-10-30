@@ -1,3 +1,11 @@
 .load_file {
 	padding: 4px !important;
 }
+
+#mot_ur_protected_groups {
+	width: 90%;
+	scrollbar-width: none;		/* Hide scrollbar for Firefox */
+	-ms-overflow-style: none;	/* Hide scrollbar for IE and Edge */
+}
+
+.no-scroll::-webkit-scrollbar {display:none;}	/* Hide scrollbar for Chrome, Safari and Opera */

@@ -31,10 +31,29 @@
 			<dd><label><input type="radio" class="radio" name="mot_ur_autodelete" value="1"{% if ACP_USERREMINDER_AUTODELETE %} id="mot_ur_autodelete" checked="checked"{% endif %} /> {{ lang('YES') }}</label>
 				<label><input type="radio" class="radio" name="mot_ur_autodelete" value="0"{% if not ACP_USERREMINDER_AUTODELETE %} id="mot_ur_autodelete" checked="checked"{% endif %} /> {{ lang('NO') }}</label></dd>
 		</dl>
-        <dl>
-            <dt><label for="mot_ur_protected_members">{{ lang('ACP_USERREMINDER_PROTECTED_MEMBERS') }}{{ lang('COLON') }}</label></dt>
-            <dd><input id="mot_ur_protected_members" type="text" size="70" maxlength="255" name="mot_ur_protected_members" onblur="cleanIds('mot_ur_protected_members')" value="{{ ACP_USERREMINDER_PROTECTED_MEMBERS }}" /></dd>
-        </dl>
+	</fieldset>
+
+	<fieldset>
+ 		<legend>{{ lang('ACP_USERREMINDER_ZEROPOSTER_CONFIG') }}</legend>
+		<p>{{ lang('ACP_USERREMINDER_ZEROPOSTER_CONFIG_TEXT') }}</p>
+		<dl>
+			<dt><label for="mot_ur_remind_zeroposter">{{ lang('ACP_USERREMINDER_REMIND_ZEROPOSTER') }}{{ lang('COLON') }}</label></dt>
+			<dd><label><input type="radio" class="radio" name="mot_ur_remind_zeroposter" value="1"{% if ACP_USERREMINDER_REMIND_ZEROPOSTER %} id="mot_ur_remind_zeroposter" checked="checked"{% endif %} /> {{ lang('YES') }}</label>
+				<label><input type="radio" class="radio" name="mot_ur_remind_zeroposter" value="0"{% if not ACP_USERREMINDER_REMIND_ZEROPOSTER %} id="mot_ur_remind_zeroposter" checked="checked"{% endif %} /> {{ lang('NO') }}</label></dd>
+		</dl>
+	</fieldset>
+
+	<fieldset>
+       <legend>{{ lang('ACP_USERREMINDER_PROTECTION_CONFIG') }}</legend>
+	   <p>{{ lang('ACP_USERREMINDER_PROTECTION_CONFIG_TEXT') }}</p>
+		<dl>
+			<dt><label for="mot_ur_protected_members">{{ lang('ACP_USERREMINDER_PROTECTED_MEMBERS') }}{{ lang('COLON') }}</label></dt>
+			<dd><textarea id="mot_ur_protected_members" name="mot_ur_protected_members" rows="10" cols="30">{{ ACP_USERREMINDER_PROTECTED_MEMBERS }}</textarea></dd>
+		</dl>
+		<dl>
+			<dt><label for="mot_ur_protected_groups">{{ lang('ACP_USERREMINDER_PROTECTED_GROUPS') }}{{ lang('COLON') }}</label></dt>
+            <dd><select class="no-scroll" id="mot_ur_protected_groups" name="mot_ur_protected_groups[]"  size="{{ ACP_USERREMINDER_GROUP_COUNT }}" multiple="multiple">{{ ACP_USERREMINDER_PROTECTED_GROUPS }}</select></dd>
+		</dl>
 	</fieldset>
 
 	<fieldset>

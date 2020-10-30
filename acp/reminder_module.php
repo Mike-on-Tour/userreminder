@@ -2,7 +2,7 @@
 
 /**
 *
-* @package UserReminder v1.2.x
+* @package UserReminder v1.3.x
 * @copyright (c) 2019, 2020 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
@@ -18,13 +18,14 @@ class reminder_module
 
 	public function main($id, $mode)
 	{
-		global $db, $language, $template, $request, $config, $phpbb_container, $user, $phpEx;
+		global $db, $template, $request, $config, $phpbb_container, $user, $phpEx;
 
 		$secs_per_day = 86400;
 		$now = time();
 		$day_limit = $now - ($secs_per_day * $config['mot_ur_inactive_days']);
 		$server_config = $config['server_protocol'].$config['server_name'].$config['script_path'];
 		$memberlist_config = '/memberlist.' . $phpEx . '?mode=viewprofile&u=';
+		$language = $phpbb_container->get('language');
 		$common = $phpbb_container->get('mot.userreminder.common');
 
 		// set parameter for pagination
@@ -105,17 +106,24 @@ class reminder_module
 			}
 		}
 
+		// Get the protected members and groups arrays
+		$protected_members = json_decode($config['mot_ur_protected_members']);
+		$protected_groups = json_decode($config['mot_ur_protected_groups']);
 		// ignore anonymous (=== guest), bots, inactive and deactivated users
 		// ignore users who have never posted anything (they are dealt with in the "zeroposter" tab)
-		$query = 'SELECT user_id, user_regdate, username, user_posts, mot_last_login, user_colour, mot_reminded_one, mot_reminded_two ' .
+		$query = 'SELECT user_id, group_id, user_regdate, username, user_posts, mot_last_login, user_colour, mot_reminded_one, mot_reminded_two ' .
 				'FROM  ' . USERS_TABLE . '
 				WHERE ' . $db->sql_in_set('user_type', array(USER_NORMAL, USER_FOUNDER)) . '
 				AND user_posts > 0
 				AND mot_last_login <= ' . (int) $day_limit;					// get all users who have been inactive for at least the number of days specified in settings
 
-		if ($config['mot_ur_protected_members'] != '')						// prevent sql errors due to empty string
+		if (!empty($protected_members))										// prevent sql errors due to empty array
 		{
-			$query .= ' AND ' . $db->sql_in_set('user_id', explode(',', $config['mot_ur_protected_members']), true);
+			$query .= ' AND ' . $db->sql_in_set('user_id', $protected_members, true);
+		}
+		if (!empty($protected_groups))
+		{
+			$query .= ' AND ' . $db->sql_in_set('group_id', $protected_groups, true);
 		}
 		$query .= ' ORDER BY ' . $db->sql_escape($sort_key) . ' ' . $db->sql_escape($sort_dir);
 
@@ -149,7 +157,7 @@ class reminder_module
 		$start = $pagination->validate_start($start, $limit, $count_reminders);
 		$pagination->generate_template_pagination($base_url, 'pagination', 'start', $count_reminders, $limit, $start);
 
-		// write data into zeroposter array (output by template)
+		// write data into reminder array (output by template)
 		$enable_remind = $delete_enabled = 0;
 		foreach ($reminders as $row)
 		{

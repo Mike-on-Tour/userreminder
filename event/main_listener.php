@@ -1,7 +1,7 @@
 <?php
 /**
 *
-* @package UserReminder v1.2.1
+* @package UserReminder v1.3.0
 * @copyright (c) 2019, 2020 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
@@ -23,6 +23,7 @@ class main_listener implements EventSubscriberInterface
 	public static function getSubscribedEvents()
 	{
 		return array(
+			'core.delete_user_before'		=> 'check_for_protected_member',
 			'core.session_create_after'		=> 'check_user_login',
 		);
 	}
@@ -48,6 +49,31 @@ class main_listener implements EventSubscriberInterface
 		$this->db = $db;
 		$this->common = $common;
 		define("SECS_PER_DAY", 86400);
+	}
+
+
+	/**
+	* Check whether a user to be deleted (no matter from where and by whomsoever) is part of the protected members array. If he is, delete this user from the array as well
+	*
+	* @param array	$event	containing:
+	*	@var string		mode				Mode of posts deletion (retain|delete)
+	*	@var array		user_ids			ID(s) of the user(s) bound to be deleted
+	*	@var bool		retain_username		True if username should be retained, false otherwise
+	*	@var array		user_rows			Array containing data of the user(s) bound to be deleted (since 3.2.4-RC1)
+	*
+	*/
+	public function check_for_protected_member($event)
+	{
+		foreach ($event['user_ids'] as $element)
+		{
+			$protected_users = json_decode($this->config['mot_ur_protected_members']);
+			$key = array_search($element, $protected_users);
+			if ($key !== false)
+			{
+				array_splice($protected_users, $key, 1);
+				$this->config->set('mot_ur_protected_members', json_encode($protected_users));
+			}
+		}
 	}
 
 
@@ -84,26 +110,37 @@ class main_listener implements EventSubscriberInterface
 						WHERE user_id = ' . (int) $session_data['session_user_id'];
 			$this->db->sql_query($query);
 
+			// Get the protected members and groups arrays
+			$protected_members = json_decode($this->config['mot_ur_protected_members']);
+			$protected_groups = json_decode($this->config['mot_ur_protected_groups']);
+			// and check whether zeroposters have to be reminded and deleted as well
+			$remind_zeroposters = $this->config['mot_ur_remind_zeroposter'] ? true : false;
+
 			/*
 			* Now we check whether reminder mails should be sent automatically and if yes we check what users are supposed to get a reminding email
 			*/
 			if ($this->config['mot_ur_autoremind'] == 1)
 			{
 				$day_limit = $now - (SECS_PER_DAY * $this->config['mot_ur_inactive_days']);
-
 				// ignore inactive users, anonymous (=== guest) and bots
-				// ignore users who have never posted anything
-				$query = 'SELECT user_id ' .
-						'FROM  ' . USERS_TABLE . '
-						WHERE ' . $this->db->sql_in_set('user_type', array(USER_NORMAL,USER_FOUNDER)) . '
-						AND user_posts > 0
-						AND (
+				$query = 'SELECT user_id
+						FROM ' . USERS_TABLE . '
+						WHERE ' . $this->db->sql_in_set('user_type', array(USER_NORMAL,USER_FOUNDER));
+				if (!$remind_zeroposters) // ignore zeroposters if these are not set to be reminded
+				{
+					$query .= ' AND user_posts > 0';
+				}
+				$query .= ' AND (
 						(mot_last_login <= ' . (int) $day_limit . ' AND mot_reminded_one = 0) ' .	// get all inactive users who have not been reminded yet
 						'OR (mot_reminded_one > 0 AND mot_reminded_two = 0)) ';						// get all inactive users due for the second reminder
 
-				if ($this->config['mot_ur_protected_members'] != '')			// prevent sql errors due to empty string
+				if (!empty($protected_members))		// prevent sql errors due to empty array
 				{
-					$query .= ' AND user_id NOT IN (' . $this->config['mot_ur_protected_members'] . ')';
+					$query .= ' AND ' . $this->db->sql_in_set('user_id', $protected_members, true);
+				}
+				if (!empty($protected_groups))
+				{
+					$query .= ' AND ' . $this->db->sql_in_set('group_id', $protected_groups, true);
 				}
 				$query .= ' ORDER BY user_id';
 
@@ -131,15 +168,22 @@ class main_listener implements EventSubscriberInterface
 				// ignore users who have never posted anything (they are dealt with in the "zeroposter" tab)
 				// get only users who have been reminded twice
 				$query = 'SELECT user_id
-						FROM  ' . USERS_TABLE . '
-						WHERE ' . $this->db->sql_in_set('user_type', array(USER_NORMAL,USER_FOUNDER)) . '
-						AND user_posts > 0
-						AND mot_reminded_two > 0
-						AND mot_reminded_two <= ' . (int) $day_limit;			// get all users who have been inactive since the 2nd reminder for at least the number of days specified in settings
-
-				if ($this->config['mot_ur_protected_members'] != '')	// prevent sql errors due to empty string
+						FROM ' . USERS_TABLE . '
+						WHERE ' . $this->db->sql_in_set('user_type', array(USER_NORMAL,USER_FOUNDER));
+				if (!$remind_zeroposters) // ignore zeroposters if these are not set to be reminded
 				{
-					$query .= ' AND user_id NOT IN (' . $this->config['mot_ur_protected_members'] . ')';
+					$query .= ' AND user_posts > 0';
+				}
+				$query .= ' AND mot_reminded_two > 0
+							AND mot_reminded_two <= ' . (int) $day_limit;			// get all users who have been inactive since the 2nd reminder for at least the number of days specified in settings
+
+				if (!empty($protected_members))		// prevent sql errors due to empty array
+				{
+					$query .= ' AND ' . $this->db->sql_in_set('user_id', $protected_members, true);
+				}
+				if (!empty($protected_groups))
+				{
+					$query .= ' AND ' . $this->db->sql_in_set('group_id', $protected_groups, true);
 				}
 				$query .= ' ORDER BY user_id';
 

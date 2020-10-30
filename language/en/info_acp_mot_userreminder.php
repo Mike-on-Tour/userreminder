@@ -1,7 +1,7 @@
 <?php
 /**
 *
-* @package UserReminder v1.2.0
+* @package UserReminder v1.3.0
 * @copyright (c) 2019, 2020 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
@@ -62,14 +62,22 @@ $lang = array_merge($lang, array(
 	'ACP_USERREMINDER_SETTINGS_EXPLAIN'			=> 'This is where you customize the user reminder.',
 	'ACP_USERREMINDER_SETTING_SAVED'			=> 'Settings for the user reminder successfully saved.',
 	'ACP_USERREMINDER_TIME_SETTINGS_TITLE'		=> 'Configure the reminder intervals',
-	'ACP_USERREMINDER_TIME_SETTING_TEXT'		=> 'Configure the time in days until a user is viewed as inactive, the time in days between the first and second e-mail to remind this member that a login is necessary and the following period until this user is deleted.<br>You can also name users who are protected against any reminder emails and deletion.',
+	'ACP_USERREMINDER_TIME_SETTING_TEXT'		=> 'Configure the time in days until a user is viewed as inactive, the time in days between the first and second e-mail to remind this member that a login is necessary and the following period until this user is deleted.',
 	'ACP_USERREMINDER_INACTIVE'					=> 'Number of days a user is offline until this user is viewed as inactive',
 	'ACP_USERREMINDER_DAYS_REMINDED'			=> 'Number of days until a user counting as inactive is getting the second reminder mail;<br>
 													sending a second mail is shut off if you input ´0´',
 	'ACP_USERREMINDER_AUTOREMIND'				=> 'Send reminder mails automatically?',
 	'ACP_USERREMINDER_DAYS_UNTIL_DELETED'		=> 'Number of days after last reminder until a user can be deleted',
 	'ACP_USERREMINDER_AUTODELETE'				=> 'Delete users automatically?',
-	'ACP_USERREMINDER_PROTECTED_MEMBERS'		=> 'Enter the <i>user_id</i> of those users whom you wish to protect from getting reminded or deleted. Entries must be seperated by commas!',
+	// ACP Zeroposter settings
+'ACP_USERREMINDER_ZEROPOSTER_CONFIG'		=> 'Zeroposter configuration',
+'ACP_USERREMINDER_ZEROPOSTER_CONFIG_TEXT'	=> 'Here you can choose whether zeroposters should be treatet like original inactive users. If you select ´Yes´ all settings in the previous section apply to zeroposters, too. In this case zeroposters will then be displayed in an extended table showing the dates of the first and second reminder and the select box for deletion like the table for users to be reminded.',
+'ACP_USERREMINDER_REMIND_ZEROPOSTER'		=> 'Do you want to remind and delete zeroposters like inactive users?',
+	// ACP Protection settings
+'ACP_USERREMINDER_PROTECTION_CONFIG'		=> 'Protected users configuration',
+'ACP_USERREMINDER_PROTECTION_CONFIG_TEXT'	=> 'You can also name users who are protected against any reminder emails and deletion. You can either select individual users with their username and/or all members of a default group by selecting this group. both selections work independently.',
+'ACP_USERREMINDER_PROTECTED_MEMBERS'		=> 'Input of the usernames of users you want to protect against getting reminded and deleted.<br>Each username MUST BE on its own line!',
+'ACP_USERREMINDER_PROTECTED_GROUPS'			=> 'Please select the default group(s) whose members are to be protected against getting reminded and deleted. Groups already selected are highlighted.<br>While pressing and holding the ´Ctrl´ key you can select more than one group by clicking the respective names',
 	// ACP Mail settings
 	'ACP_USERREMINDER_MAIL_SETTINGS_TITLE'		=> 'Email configuration',
 	'ACP_USERREMINDER_EMAIL_BCC_TEXT'			=> 'Here you can set one email address each for sending a blind carbon copy and/or a carbon copy of the reminding emails to.',

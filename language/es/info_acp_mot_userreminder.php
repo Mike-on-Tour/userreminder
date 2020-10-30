@@ -1,7 +1,7 @@
 <?php
 /**
 *
-* @package UserReminder v1.2.0
+* @package UserReminder v1.3.0
 * @copyright (c) 2019, 2020 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
@@ -62,14 +62,22 @@ $lang = array_merge($lang, array(
 	'ACP_USERREMINDER_SETTINGS_EXPLAIN'			=> 'Aquí es donde se configura el recordatorio de usuario.',
 	'ACP_USERREMINDER_SETTING_SAVED'			=> 'Opciones de recordatorio de usuario han sido guardadas satisfactoriamente.',
 	'ACP_USERREMINDER_TIME_SETTINGS_TITLE'		=> 'Configurar los intervalos de recordatorios',
-	'ACP_USERREMINDER_TIME_SETTING_TEXT'		=> 'Configure el tiempo en días para que un usuario sea visto como inactivo, el tiempo en días entre el primer y el segundo correo electrónico para recordarle a este miembro que es necesario iniciar sesión y el siguiente período hasta que se elimine a este usuario. También puede nombrar a los usuarios que no se les enviará ningún correo de recordatorio ni tampoco serán eliminados.',
+	'ACP_USERREMINDER_TIME_SETTING_TEXT'		=> 'Configure el tiempo en días para que un usuario sea visto como inactivo, el tiempo en días entre el primer y el segundo correo electrónico para recordarle a este miembro que es necesario iniciar sesión y el siguiente período hasta que se elimine a este usuario.',
 	'ACP_USERREMINDER_INACTIVE'					=> 'Número de días desconectado para que un usuario se considere inactivo',
 	'ACP_USERREMINDER_DAYS_REMINDED'			=> 'Número de días desconectado para que un usuario que es considerado inactivo reciba el segundo correo de recordatorio;<br>
 													esta opción está deshabilitada si usted ingresa ´0´',
 	'ACP_USERREMINDER_AUTOREMIND'				=> '¿Enviar correos de recordatorio automáticamente?',
 	'ACP_USERREMINDER_DAYS_UNTIL_DELETED'		=> 'Número de días después del último recordatorio para que se pueda eliminar a un usuario:',
 	'ACP_USERREMINDER_AUTODELETE'				=> '¿Eliminar usuarios automáticamente?',
-	'ACP_USERREMINDER_PROTECTED_MEMBERS'		=> 'Ingrese el <i>user_id</i> de aquellos usuarios a los que desea proteger para que no se les recuerde o elimine. ¡Las entradas deben de estar separadas por comas!',
+	// ACP Zeroposter settings
+	'ACP_USERREMINDER_ZEROPOSTER_CONFIG'		=> 'Configuración de Usuarios sin Publicaciones',
+	'ACP_USERREMINDER_ZEROPOSTER_CONFIG_TEXT'	=> 'Aquí puedes elegir si los usuarios sin publicaciones deben ser tratados como los usuarios inactivos originales. Si seleccionas ´Sí´, todos los ajustes de la sección anterior se aplicarán también a los usuarios sin publicaciones. En este caso, los los usuarios sin publicaciones se mostrarán en una tabla ampliada que muestra las fechas del primer y segundo recordatorio y el cuadro de selección para la eliminación como la tabla para los usuarios a los que se les debe recordar.',
+	'ACP_USERREMINDER_REMIND_ZEROPOSTER'		=> '¿Quieres recordar y eliminar a los usuarios sin publicaciones como a los usuarios inactivos?',
+	// ACP Protection settings
+	'ACP_USERREMINDER_PROTECTION_CONFIG'		=> 'Configuración de usuarios protegidos',
+	'ACP_USERREMINDER_PROTECTION_CONFIG_TEXT'	=> 'También puedes nombrar a los usuarios que están protegidos contra cualquier correo electrónico de recordatorio y eliminación. Puedes seleccionar usuarios individuales con su nombre de usuario y/o todos los miembros de un grupo predeterminado seleccionando este grupo. Ambas selecciones funcionan de forma independiente.',
+	'ACP_USERREMINDER_PROTECTED_MEMBERS'		=> 'Introduce los nombres de usuario de los usuarios que deseas proteger contra ser recordado y eliminado.<br>¡Cada nombre de usuario DEBE ESTAR en una nueva línea!',
+	'ACP_USERREMINDER_PROTECTED_GROUPS'			=> 'Por favor, selecciona el/los grupo(s) predeterminado(s) cuyos miembros deben ser protegidos contra ser recordatorios y eliminaciones. Los grupos ya seleccionados están resaltados.<br>Mientras se mantiene pulsada la tecla ´Ctrl´ se puede seleccionar más de un grupo haciendo clic en los nombres respectivos',
 	// ACP Mail settings
 	'ACP_USERREMINDER_MAIL_SETTINGS_TITLE'		=> 'Configuración del Correo',
 	'ACP_USERREMINDER_EMAIL_BCC_TEXT'			=> 'Aquí puede configurar una dirección de correo electrónico para enviar una copia oculta y/o una copia de los correos electrónicos de recordatorios.',
@@ -82,7 +90,7 @@ $lang = array_merge($lang, array(
 	'ACP_USERREMINDER_MAIL_FILE'				=> 'Seleccionar el archivo que desea editar',
 	'ACP_USERREMINDER_MAIL_ONE'					=> '1er. recordatorio',
 	'ACP_USERREMINDER_MAIL_TWO'					=> '2do. recordatorio',
-	'ACP_USERREMINDER_MAIL_PREVIEW'				=> 'En la ventana de la derecha, puede editar el texto del correo electrónico elegido. Al hacer click en ´Vista Previa´  el texto se visualiza
+	'ACP_USERREMINDER_MAIL_PREVIEW'				=> 'En la ventana de la derecha, puede editar el texto del correo electrónico elegido. Al hacer click en ´Vista Previa´ el texto se visualiza
 													tal como se mostrará en el correo enviado. Los tokens serán reemplazdos con sus respectivos datos. Junto a la vista previa se mostrará un botón
 													para guardar el mensaje como un archivo en su servidor.<br>
 													Puede usar los siguientes tokens como marcadores de posición para los datos respectivos del usuario dirigido:<br>

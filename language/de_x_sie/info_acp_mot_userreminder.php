@@ -1,7 +1,7 @@
 <?php
 /**
 *
-* @package UserReminder v1.2.0
+* @package UserReminder v1.3.0
 * @copyright (c) 2019, 2020 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
@@ -62,14 +62,22 @@ $lang = array_merge($lang, array(
 	'ACP_USERREMINDER_SETTINGS_EXPLAIN'			=> 'Hier können Sie die Einstellungen für den User Reminder ändern.',
 	'ACP_USERREMINDER_SETTING_SAVED'			=> 'Die Einstellungen für den User Reminder wurden erfolgreich gesichert.',
 	'ACP_USERREMINDER_TIME_SETTINGS_TITLE'		=> 'Konfiguration der Erinnerungsintervalle',
-	'ACP_USERREMINDER_TIME_SETTING_TEXT'		=> 'Einstellungen für die Zeitdauer, bis ein Mitglied als inaktiv gilt, Dauer zwischen der ersten und zweiten Erinnerung sowie die darauf folgende Dauer bis zur Löschung. Außerdem kann hier ausgewählt werden, ob Erinnerungs-Mails automatisch verschickt und Löschungen automatisch erfolgen sollen.<br>Zusätzlich können Mitglieder benannt werden, die vor Erinnerungen und Löschung geschützt werden sollen.',
+	'ACP_USERREMINDER_TIME_SETTING_TEXT'		=> 'Einstellungen für die Zeitdauer, bis ein Mitglied als inaktiv gilt, Dauer zwischen der ersten und zweiten Erinnerung sowie die darauf folgende Dauer bis zur Löschung. Außerdem kann hier ausgewählt werden, ob Erinnerungs-Mails automatisch verschickt und Löschungen automatisch erfolgen sollen.',
 	'ACP_USERREMINDER_INACTIVE'					=> 'Anzahl der Tage, die ein Mitglied offline sein muss, um als inaktiv zu gelten',
 	'ACP_USERREMINDER_DAYS_REMINDED'			=> 'Anzahl der Tage bis ein als inaktiv eingestuftes Mitglied die zweite Erinnerungsmail bekommen soll;<br>
 													die Eingabe von ´0´ schaltet die zweite Erinnerungsmail ab',
 	'ACP_USERREMINDER_AUTOREMIND'				=> 'Erinnerungs-Mails automatisch versenden?',
 	'ACP_USERREMINDER_DAYS_UNTIL_DELETED'		=> 'Anzahl der Tage zwischen letzter Erinnerung und Löschen des Mitgliedes',
 	'ACP_USERREMINDER_AUTODELETE'				=> 'Mitglieder nach Ablauf aller Wartezeiten automatisch löschen?',
-	'ACP_USERREMINDER_PROTECTED_MEMBERS'		=> 'Eingabe der <i>user_id</i> von Mitgliedern, die von Erinnerungen und Löschung ausgenommen werden sollen. Eingaben müssen durch Kommata getrennt sein!',
+	// ACP Zeroposter settings
+	'ACP_USERREMINDER_ZEROPOSTER_CONFIG'		=> 'Konfiguration für Null-Poster',
+	'ACP_USERREMINDER_ZEROPOSTER_CONFIG_TEXT'	=> 'Hier können Sie wählen, ob Null-Poster wie originäre inaktive Benutzer behandelt werden sollen. Wenn Sie ´Ja´ auswählen, gelten die Einstellungen im vorherigen Abschnitt auch für Null-Poster und sie werden statt in einer vereinfachten Tabelle in einer mit den Daten für die erste und zweite Erinnerung sowie für die Löschung dargestellt.',
+	'ACP_USERREMINDER_REMIND_ZEROPOSTER'		=> 'Sollen Null-Poster wie inaktive Benutzer erinnert und gelöscht werden?',
+	// ACP Protection settings
+	'ACP_USERREMINDER_PROTECTION_CONFIG'		=> 'Konfiguration für geschützte Mitglieder',
+	'ACP_USERREMINDER_PROTECTION_CONFIG_TEXT'	=> 'Hier können Sie Mitglieder auswählen, die vor Erinnerungen und Löschung geschützt werden sollen. Die Auswahl erfolgt für einzelne Mitglieder über den Benutzernamen und/oder für alle Mitglieder von auszuwählenden Hauptgruppen. Beide Möglichkeiten sind unabhängig voneinander.',
+	'ACP_USERREMINDER_PROTECTED_MEMBERS'		=> 'Eingabe der Benutzernamen von Mitgliedern, die von Erinnerungen und Löschung ausgenommen werden sollen.<br>Nur ein Name pro Zeile!',
+	'ACP_USERREMINDER_PROTECTED_GROUPS'			=> 'Auswahl von Hauptgruppe(n), deren Mitglieder von Erinnerungen und Löschung ausgenommen werden sollen. Unter Drücken und Halten der ´Strg´-Taste und Mausklick können mehrere Gruppen ausgewählt werden',
 	// ACP Mail settings
 	'ACP_USERREMINDER_MAIL_SETTINGS_TITLE'		=> 'Konfiguration der E-Mails',
 	'ACP_USERREMINDER_EMAIL_BCC_TEXT'			=> 'Hier können Sie jeweils eine E-Mail-Adresse angeben, die in Blindkopie und/oder in Kopie an den Erinnerungs-Mails beteiligt wird.',

@@ -2,7 +2,7 @@
 
 /**
 *
-* @package UserReminder v1.2.x
+* @package UserReminder v1.3.x
 * @copyright (c) 2019, 2020 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
@@ -18,8 +18,9 @@ class registrated_only_module
 
 	public function main($id, $mode)
 	{
-		global $db, $language, $template, $request, $config, $phpbb_container, $user, $phpEx;
+		global $db, $template, $request, $config, $phpbb_container, $user, $phpEx;
 
+		$language = $phpbb_container->get('language');
 		$this->tpl_name = 'acp_ur_registratedonly';
 		$this->page_title = $language->lang('ACP_USERREMINDER');
 
@@ -84,23 +85,36 @@ class registrated_only_module
 			$start = $request->variable('start', 0);
 		}
 
-		$query = 'SELECT user_id, username, user_colour, user_regdate
+		// Get the protected members and groups arrays
+		$protected_members = json_decode($config['mot_ur_protected_members']);
+		$protected_groups = json_decode($config['mot_ur_protected_groups']);
+
+		$query = 'SELECT user_id, group_id, username, user_colour, user_regdate
 				FROM  ' . USERS_TABLE . '
 				WHERE ' . $db->sql_in_set('user_type', array(USER_NORMAL,USER_FOUNDER)) . ' ' .		// ignore anonymous (=== guest), bots, inactive and deactivated users
 				'AND mot_last_login = 0';															// select users who have never been online
-		if ($config['mot_ur_protected_members'] != '')										// prevent sql errors due to empty string
+		if (!empty($protected_members))				// prevent sql errors due to empty array
 		{
-			$query .= ' AND ' . $db->sql_in_set('user_id', explode(',', $config['mot_ur_protected_members']), true);
+			$query .= ' AND ' . $db->sql_in_set('user_id', $protected_members, true);
+		}
+		if (!empty($protected_groups))
+		{
+			$query .= ' AND ' . $db->sql_in_set('group_id', $protected_groups, true);
 		}
 		$query .= ' ORDER BY user_regdate ' . $db->sql_escape($sort_dir);
 
 		$count_query = "SELECT COUNT(user_id) AS 'user_count' FROM " . USERS_TABLE . '
 						WHERE ' . $db->sql_in_set('user_type', array(USER_NORMAL,USER_FOUNDER)) . '
 						AND mot_last_login = 0 ';
-		if ($config['mot_ur_protected_members'] != '')	// prevent sql errors due to empty string
+		if (!empty($protected_members))				// prevent sql errors due to empty array
 		{
-			$count_query .= 'AND ' . $db->sql_in_set('user_id', explode(',', $config['mot_ur_protected_members']), true);
+			$count_query .= ' AND ' . $db->sql_in_set('user_id', $protected_members, true);
 		}
+		if (!empty($protected_groups))
+		{
+			$count_query .= ' AND ' . $db->sql_in_set('group_id', $protected_groups, true);
+		}
+
 		$result = $db->sql_query($count_query);
 		$row = $db->sql_fetchrow($result);
 		$count_registered_only = $row['user_count'];

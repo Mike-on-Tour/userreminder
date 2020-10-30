@@ -2,7 +2,7 @@
 
 /**
 *
-* @package UserReminder v1.2.x
+* @package UserReminder v1.3.x
 * @copyright (c) 2019, 2020 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
@@ -18,13 +18,23 @@ class settings_module
 
 	public function main()
 	{
-	global $user, $language, $template, $request, $config, $phpbb_container, $phpbb_root_path, $phpEx;
+	global $db, $user, $template, $request, $config, $phpbb_container, $phpbb_root_path, $phpEx;
 
+		$language = $phpbb_container->get('language');
 		$this->tpl_name = 'acp_ur_settings';
 		$this->page_title = $language->lang('ACP_USERREMINDER');
 		$this->config_text = $phpbb_container->get('config_text');
 
 		add_form_key('acp_userreminder_settings');
+
+		/** @var \phpbb\group\helper $group_helper */
+		$group_helper = $phpbb_container->get('group_helper');
+
+		// Check for this function and include it if not existent since it is needed to convert user_id into usernames and vice versa for the protected members section
+		if (!function_exists('user_get_id_name'))
+		{
+			include($phpbb_root_path . 'includes/functions_user.' . $phpEx);
+		}
 
 		$lang_dir = $phpbb_root_path . 'ext/mot/userreminder/language';
 		$ur_lang = $ur_file = $ur_email_text = $preview_text = '';
@@ -44,15 +54,22 @@ class settings_module
 				trigger_error($language->lang('FORM_INVALID') . adm_back_link($this->u_action), E_USER_WARNING);
 			}
 
+			// get the names of members to be protected and convert it to array of user_ids
+			$protected_users_ids = array();
+			$protected_users_names = $request->variable('mot_ur_protected_members', '');
+			$username_arr = explode("\n", $protected_users_names);
+			user_get_id_name($protected_users_ids, $username_arr);
+			sort($protected_users_ids);
+
 			// save the settings to the phpbb_config table
-			$config->set('mot_ur_inactive_days', $request->variable('mot_ur_inactive_days', 0, 3));
-			$config->set('mot_ur_days_reminded', $request->variable('mot_ur_days_reminded', 0, 3));
+			$config->set('mot_ur_inactive_days', $request->variable('mot_ur_inactive_days', 0));
+			$config->set('mot_ur_days_reminded', $request->variable('mot_ur_days_reminded', 0));
 			$config->set('mot_ur_autoremind', ($request->variable('mot_ur_autoremind', 0)) ? '1' : '0');
-			$config->set('mot_ur_days_until_deleted', $request->variable('mot_ur_days_until_deleted', 0, 3));
+			$config->set('mot_ur_days_until_deleted', $request->variable('mot_ur_days_until_deleted', 0));
 			$config->set('mot_ur_autodelete', ($request->variable('mot_ur_autodelete', 0)) ? '1' : '0');
-			$protected_members = substr($request->variable('mot_ur_protected_members', ''), 0, 255);
-			$protected_members = preg_replace('/[ ]/', '', $protected_members); // get rid of any spaces
-			$config->set('mot_ur_protected_members', $protected_members);
+			$config->set('mot_ur_remind_zeroposter', $request->variable('mot_ur_remind_zeroposter', 0) ? '1' : '0');
+			$config->set('mot_ur_protected_members', json_encode($protected_users_ids));
+			$config->set('mot_ur_protected_groups', json_encode($request->variable('mot_ur_protected_groups', array(0))));
 			$config->set('mot_ur_email_bcc', substr($request->variable('mot_ur_email_bcc', ''), 0, 255));
 			$config->set('mot_ur_email_cc', substr($request->variable('mot_ur_email_cc', ''), 0, 255));
 
@@ -132,13 +149,65 @@ class settings_module
 				'VALUE'		=> $value,
 			));
 		}
+
+		// Get the user_ids of protected members and convert it to string for use in template
+		$username_arr = array();
+		$protected_users_ids = json_decode($config['mot_ur_protected_members']);
+		user_get_id_name($protected_users_ids, $username_arr);
+		sort($username_arr);
+		$i = false;
+		$protected_users_names = '';
+		foreach ($username_arr as $line)
+		{
+			if ($i)
+			{
+				$protected_users_names .= "\n";
+			}
+			$protected_users_names .= $line;
+			$i = true;
+		}
+
+		// Get the group_ids of those groups used as default group for normal users and founders
+		$used_groups = array();
+		$sql = 'SELECT group_id FROM ' . USERS_TABLE . '
+				WHERE ' . $db->sql_in_set('user_type', array(USER_NORMAL,USER_FOUNDER)) . '
+				GROUP BY group_id';
+		$result = $db->sql_query($sql);
+		$group_ids = $db->sql_fetchrowset($result);
+		$db->sql_freeresult($result);
+		foreach ($group_ids as $row)
+		{
+			$used_groups[] = $row['group_id'];
+		}
+		// Get the groups, check if they are used as default group and set those already chosen for protection as selected
+		$protected_groups_arr = json_decode($config['mot_ur_protected_groups']);
+		$query = 'SELECT group_id, group_type, group_name FROM ' . GROUPS_TABLE . '
+				ORDER BY group_type DESC, group_name ASC';
+		$result = $db->sql_query($query);
+		$groups = $db->sql_fetchrowset($result);
+		$db->sql_freeresult($result);
+		$group_count = 0;
+		$protected_groups = '';
+		foreach ($groups as $option)
+		{
+			if (in_array($option['group_id'], $used_groups))
+			{
+				$selected = in_array($option['group_id'], $protected_groups_arr) ? ' selected="selected"' : '';
+				$protected_groups .= '<option ' . (($option['group_type'] == GROUP_SPECIAL) ? ' class="sep"' : '') . ' value="' . $option['group_id'] . '"' . $selected . '>' . $group_helper->get_name($option['group_name']) . '</option>';
+				$group_count++;
+			}
+		}
+
 		$template->assign_vars(array(
 			'ACP_USERREMINDER_INACTIVE_DAYS'		=> $config['mot_ur_inactive_days'],
 			'ACP_USERREMINDER_DAYS_REMINDED'		=> $config['mot_ur_days_reminded'],
 			'ACP_USERREMINDER_AUTOREMIND'			=> $config['mot_ur_autoremind'] ? true : false,
 			'ACP_USERREMINDER_DAYS_UNTIL_DELETED'	=> $config['mot_ur_days_until_deleted'],
 			'ACP_USERREMINDER_AUTODELETE'			=> $config['mot_ur_autodelete'] ? true : false,
-			'ACP_USERREMINDER_PROTECTED_MEMBERS'	=> $config['mot_ur_protected_members'],
+			'ACP_USERREMINDER_REMIND_ZEROPOSTER'	=> $config['mot_ur_remind_zeroposter'] ? true : false,
+			'ACP_USERREMINDER_PROTECTED_MEMBERS'	=> $protected_users_names,
+			'ACP_USERREMINDER_GROUP_COUNT'			=> $group_count,
+			'ACP_USERREMINDER_PROTECTED_GROUPS'		=> $protected_groups,
 			'ACP_USERREMINDER_EMAIL_BCC'			=> $config['mot_ur_email_bcc'],
 			'ACP_USERREMINDER_EMAIL_CC'				=> $config['mot_ur_email_cc'],
 			'ACP_USERREMINDER_EMAIL_TEXT'			=> $ur_email_text,
