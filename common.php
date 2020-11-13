@@ -181,7 +181,7 @@ class common
 					$query .= ', mot_reminded_two = ' . $now;		// ... we have to set this column too to enable deletion
 				}
 
-				$query .= ' WHERE ' . $this->db->sql_in_set('user_id', $users_marked);
+				$query .= ' WHERE ' . $this->db->sql_in_set('user_id', $first_reminders_ary);
 				$this->db->sql_query($query);
 
 				// emails are sent, time is set in the DB, so we can log this action in the admin log
@@ -215,6 +215,15 @@ class common
 			$messenger->cc($this->config['mot_ur_email_cc']);
 		}
 		$messenger->anti_abuse_headers($this->config, $this->user);
+
+		// check whether the user's language exists in the extension
+		$lang_dir = $this->root_path . 'ext/mot/userreminder/language';
+		$dirs = $this->load_dirs($lang_dir);
+		if (!in_array($row['user_lang'], $dirs))
+		{
+			// language doesn't exist -> fall back to en
+			$row['user_lang'] = 'en';
+		}
 
 		// First check whether email text has been edited and saved in the config_text table since in this case we have to take care of setting all the variables and do the correct sending ourselves
 		if (array_key_exists($row['user_lang'], $this->email_arr) && array_key_exists($reminder_type, $this->email_arr[$row['user_lang']]))
@@ -306,4 +315,25 @@ class common
 		return $time;
 	}
 
+
+	/*
+	* Loads all language directories of ext/mot/userreminder/language
+	* Returns an array with all found directories
+	*/
+	protected function load_dirs($dir)
+	{
+		$result = array();
+		$dir_ary = scandir($dir);
+		foreach ($dir_ary as $value)
+		{
+			if (!in_array($value,array(".","..")))
+			{
+				if (is_dir($dir . DIRECTORY_SEPARATOR . $value))
+				{
+					$result[] = $value;
+				}
+			}
+		}
+		return $result;
+	}
 }

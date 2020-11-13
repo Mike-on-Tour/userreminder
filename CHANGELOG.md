@@ -3,6 +3,18 @@ All changes to `Userreminder for phpBB` will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
+
+## [1.3.1] - 2020-11-13
+
+### Added
+
+### Changed
+
+### Fixed
+-	A bug (using a wrong array for setting the time for `mot_reminded_one`) in `common.php` resulting in overwriting the correct value for former reminders
+
+### Removed
+  
   
 ## [1.3.0] - 2020-10-30
 
