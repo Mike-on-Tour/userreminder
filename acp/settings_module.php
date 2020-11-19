@@ -2,7 +2,7 @@
 
 /**
 *
-* @package UserReminder v1.3.x
+* @package UserReminder v1.3.2
 * @copyright (c) 2019, 2020 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
@@ -13,8 +13,6 @@ namespace mot\userreminder\acp;
 class settings_module
 {
 	public $u_action;
-	public $tpl_name;
-	public $page_title;
 
 	public function main()
 	{
@@ -217,6 +215,8 @@ class settings_module
 			'SHOW_FILECONTENT'						=> $show_filecontent,
 			'PREVIEW_TEXT'							=> $preview_text,
 			'SHOW_PREVIEW'							=> $show_preview,
+			'ACP_USERREMINDER_VERSION'				=> $config['mot_ur_version'],
+			'ACP_USERREMINDER_YEAR'					=> date('Y'),
 		));
 	}
 

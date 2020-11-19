@@ -1,7 +1,7 @@
 <?php
 /**
 *
-* @package UserReminder v1.3.0
+* @package UserReminder v1.3.2
 * @copyright (c) 2019, 2020 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
@@ -125,7 +125,8 @@ class main_listener implements EventSubscriberInterface
 				// ignore inactive users, anonymous (=== guest) and bots
 				$query = 'SELECT user_id
 						FROM ' . USERS_TABLE . '
-						WHERE ' . $this->db->sql_in_set('user_type', array(USER_NORMAL,USER_FOUNDER));
+						WHERE ' . $this->db->sql_in_set('user_type', array(USER_NORMAL,USER_FOUNDER)) . '
+						AND mot_last_login > 0';
 				if (!$remind_zeroposters) // ignore zeroposters if these are not set to be reminded
 				{
 					$query .= ' AND user_posts > 0';
@@ -169,7 +170,7 @@ class main_listener implements EventSubscriberInterface
 				// get only users who have been reminded twice
 				$query = 'SELECT user_id
 						FROM ' . USERS_TABLE . '
-						WHERE ' . $this->db->sql_in_set('user_type', array(USER_NORMAL,USER_FOUNDER));
+						WHERE ' . $this->db->sql_in_set('user_type', array(USER_NORMAL, USER_FOUNDER));
 				if (!$remind_zeroposters) // ignore zeroposters if these are not set to be reminded
 				{
 					$query .= ' AND user_posts > 0';

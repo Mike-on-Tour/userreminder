@@ -1,4 +1,5 @@
 {% include 'overall_header.html' %}
+{% INCLUDECSS '@mot_userreminder/admin_mot_userreminder.css' %}
 
 <h1>{{ lang('ACP_USERREMINDER_ZEROPOSTER') }}</h1>
 <p>{{ lang('ACP_USERREMINDER_ZEROPOSTER_EXPLAIN') }}</p>
@@ -98,6 +99,7 @@
 		{% endif %}
 		{{ S_FORM_TOKEN }}
 
+	{% include '@mot_userreminder/userreminder_version.html' %}
 	</form>
 {% else %}
 	<form id="acp_userreminder_zeroposter" method="post" action="{{ U_ACTION }}">
@@ -163,6 +165,7 @@
 		{{ S_FORM_TOKEN }}
 		</fieldset>
 		
+	{% include '@mot_userreminder/userreminder_version.html' %}
 	</form>
 {% endif %}
 

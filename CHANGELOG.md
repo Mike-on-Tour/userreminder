@@ -4,6 +4,27 @@ All changes to `Userreminder for phpBB` will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.3.2] - 2020-11-19
+
+### Added
+-	A config variable with Userreminder's version number with a new migration file `migrations/ur_v_1_3_2.php`
+-	A footer line with version and copyright information on each of the ACP tabs (via including a new file `adm/style/userreminder_version.html`),  
+	affected files are `acp/registrated_only_module.php`, `acp/reminder_module.php`, `acp/settings_module.php`, `acp/zeroposter_module.php`,
+	`adm/style/acp_ur_registratedonly.html`, `adm/style/acp_ur_reminder.html`, `adm/style/acp_ur_settings.html` and `adm/style/acp_ur_zeroposter.html`
+
+### Changed
+-	The usage of global variables in `acp/zeroposter_module.php` in order to make module useable in the extensions and the global tab simultaneously
+	(so far without success)
+
+### Fixed
+-	A bug which selected sleepers, too, when reminding zeroposters automatically by adding another clause in the SQL query in `event/main_listener.php`, line 129
+-	An error message when using a language Userreminder does not have a language pack for. Solved by checking for this language within Userreminder's language
+	directory and falling back to the `en` language pack in `common.php`, new lines 219 - 226 and 319 - 338
+
+### Removed
+-	Two unused public variables from `acp/registrated_only_module.php`, `acp/reminder_module.php`, `acp/settings_module.php` and `acp/zeroposter_module.php`
+  
+  
 ## [1.3.1] - 2020-11-13
 
 ### Added
@@ -11,7 +32,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 
 ### Fixed
--	A bug (using a wrong array for setting the time for `mot_reminded_one`) in `common.php` resulting in overwriting the correct value for former reminders
+-	A bug (using a wrong array for setting the time for `mot_reminded_one`) in `common.php`, line 184 resulting in overwriting the correct value for former
+	reminders
 
 ### Removed
   

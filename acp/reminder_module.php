@@ -2,7 +2,7 @@
 
 /**
 *
-* @package UserReminder v1.3.x
+* @package UserReminder v1.3.2
 * @copyright (c) 2019, 2020 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
@@ -13,8 +13,6 @@ namespace mot\userreminder\acp;
 class reminder_module
 {
 	public $u_action;
-	public $tpl_name;
-	public $page_title;
 
 	public function main($id, $mode)
 	{
@@ -195,14 +193,16 @@ class reminder_module
 		}
 
 		$template->assign_vars(array(
-			'SERVER_CONFIG'	=> $server_config,
-			'MEMBERLIST'	=> $memberlist_config,
-			'SORT_KEY'		=> $sort_key,
-			'SORT_DIR'		=> $sort_dir,
-			'SORT_ONE_ABLE'	=> $enable_sort_one,
-			'SORT_TWO_ABLE'	=> $enable_sort_two,
-			'ENABLE_REMIND'	=> $enable_remind,
-			'ENABLE_DELETE'	=> $delete_enabled,
+			'SERVER_CONFIG'					=> $server_config,
+			'MEMBERLIST'					=> $memberlist_config,
+			'SORT_KEY'						=> $sort_key,
+			'SORT_DIR'						=> $sort_dir,
+			'SORT_ONE_ABLE'					=> $enable_sort_one,
+			'SORT_TWO_ABLE'					=> $enable_sort_two,
+			'ENABLE_REMIND'					=> $enable_remind,
+			'ENABLE_DELETE'					=> $delete_enabled,
+			'ACP_USERREMINDER_VERSION'		=> $config['mot_ur_version'],
+			'ACP_USERREMINDER_YEAR'			=> date('Y'),
 			)
 		);
 
