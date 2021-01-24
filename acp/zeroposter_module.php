@@ -12,12 +12,15 @@ namespace mot\userreminder\acp;
 
 class zeroposter_module
 {
+	const SECS_PER_DAY = 86400;
+
 	protected $db;
 	protected $template;
 	protected $request;
 	protected $config;
 	protected $phpbb_container;
 	protected $user;
+	protected $phpEx;
 	public $u_action;
 
 	public function main($id, $mode)
@@ -30,11 +33,11 @@ class zeroposter_module
 		$this->config = $config;
 		$this->phpbb_container = $phpbb_container;
 		$this->user = $user;
+		$this->phpEx = $phpEx;
 
-		$secs_per_day = 86400;
 		$now = time();
 		$server_config = $this->config['server_protocol'].$this->config['server_name'].$this->config['script_path'];
-		$memberlist_config = '/memberlist.' . $phpEx . '?mode=viewprofile&u=';
+		$memberlist_config = '/memberlist.' . $this->phpEx . '?mode=viewprofile&u=';
 		$language = $this->phpbb_container->get('language');
 		$common = $this->phpbb_container->get('mot.userreminder.common');
 		$remind_zeroposters = $this->config['mot_ur_remind_zeroposter'] ? true : false;
@@ -120,6 +123,16 @@ class zeroposter_module
 		// Get the protected members and groups arrays
 		$protected_members = json_decode($this->config['mot_ur_protected_members']);
 		$protected_groups = json_decode($this->config['mot_ur_protected_groups']);
+
+		// Get user_ids of banned members since we don't want to remind them (they wouldn't be able to log in anyway), they will be handled as protected members to prevent reminding (and deletion)
+		$sql = 'SELECT ban_userid FROM ' . BANLIST_TABLE . '
+				WHERE ban_userid <> 0';
+		$result = $db->sql_query($sql);
+		while ($row = $db->sql_fetchrow($result))
+		{
+			$protected_members[] = $row['ban_userid'];
+		}
+
 		// this query is identical for both cases, therefore we have to define it only once
 		$query = 'SELECT user_id, group_id, username, user_colour, user_regdate, mot_last_login, mot_reminded_one, mot_reminded_two
 				FROM  ' . USERS_TABLE . '
@@ -195,13 +208,13 @@ class zeroposter_module
 		$enable_remind = $delete_enabled = false;
 		foreach ($zero_posters as $row)
 		{
-			$no_of_days = (int) (($now - $row['mot_last_login']) / $secs_per_day);
+			$no_of_days = (int) (($now - $row['mot_last_login']) / self::SECS_PER_DAY);
 			$date_reminder_one = ($row['mot_reminded_one'] > 0) ? $this->user->format_date($row['mot_reminded_one']) : '-';
-			$reminder_one_ago = ($row['mot_reminded_one'] > 0) ? (int) (($now - $row['mot_reminded_one']) / $secs_per_day) : '-';
+			$reminder_one_ago = ($row['mot_reminded_one'] > 0) ? (int) (($now - $row['mot_reminded_one']) / self::SECS_PER_DAY) : '-';
 			// since still all zeroposters are displayed we have to make certain that only those with more than the selected number of inactive days are selectable for reminding
 			$reminder_enabled = ((($row['mot_reminded_one'] == 0) && ($no_of_days >= $this->config['mot_ur_inactive_days'])) || (($row['mot_reminded_two'] == 0) && ($reminder_one_ago >= $this->config['mot_ur_days_reminded']))) ? true : false;
 			$date_reminder_two = ($row['mot_reminded_two'] > 0) ? $this->user->format_date($row['mot_reminded_two']) : '-';
-			$reminder_two_ago = ($row['mot_reminded_two'] > 0) ? (int) (($now - $row['mot_reminded_two']) / $secs_per_day) : '-';
+			$reminder_two_ago = ($row['mot_reminded_two'] > 0) ? (int) (($now - $row['mot_reminded_two']) / self::SECS_PER_DAY) : '-';
 			$enable_delete = ($reminder_two_ago >= $this->config['mot_ur_days_until_deleted']) ? true : false;
 			if ($reminder_enabled)
 			{
@@ -240,6 +253,7 @@ class zeroposter_module
 			'ENABLE_DELETE'					=> $delete_enabled,
 			'ACP_USERREMINDER_VERSION'		=> $this->config['mot_ur_version'],
 			'ACP_USERREMINDER_YEAR'			=> date('Y'),
+			'U_ACTION'						=> $this->u_action,
 			)
 		);
 	}

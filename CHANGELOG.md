@@ -4,6 +4,29 @@ All changes to `Userreminder for phpBB` will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.3.3] - 2021-01-24
+
+### Added
+-	To the "productive" ACP tabs (Remind users, Sleepers and Zeroposters) the capability of being inserted into one other ACP tab by deleting the original
+	modules and inserting new ones which differ in the `module_mode` from the respective `_info.php` file. In addition the new modules are inserted manually
+	instead using the "automatic" method. This was necessary due to phpBB checking the `module_mode` during a call to the module against those already in
+	the modules array (by ascending `parent_id` which means it will start with the "General" tab) and when encountering a `module_mode` a second time will
+	not start the second module with an identical mode. Since a simple change in the `_info.php` files wasn't successful it was necessary to change the modules.
+	Two new migration files (`ur_v_1_3_3_0.php` and `ur_v_1_3_3_1.php`) added for this purpose.
+-	`README.md` file supplemented accordingly.
+-	Userreminder now checks whether there are banned users and handles them as protected members to avoid reminding or deleting them. Affected files are
+	`acp/registrated_only_module.php`, `acp/reminder_module.php`, `acp/zeroposter_module.php` and `event/main_listener.php`
+
+### Changed
+-	Replaced own construction to seperate user names of protected members by "\n" with `implode()` function in `acp/settings_module.php`
+-	Using class constants for the number of seconds per day in `common.php`, `acp/registrated_only_module.php`, `acp/reminder_modulephp`,
+	`acp/zeroposter_module.php` and `event/main_listener.php`
+
+### Fixed
+
+### Removed
+
+
 ## [1.3.2] - 2020-11-19
 
 ### Added

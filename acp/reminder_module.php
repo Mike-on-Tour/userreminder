@@ -12,15 +12,16 @@ namespace mot\userreminder\acp;
 
 class reminder_module
 {
+	const SECS_PER_DAY = 86400;
+
 	public $u_action;
 
 	public function main($id, $mode)
 	{
 		global $db, $template, $request, $config, $phpbb_container, $user, $phpEx;
 
-		$secs_per_day = 86400;
 		$now = time();
-		$day_limit = $now - ($secs_per_day * $config['mot_ur_inactive_days']);
+		$day_limit = $now - (self::SECS_PER_DAY * $config['mot_ur_inactive_days']);
 		$server_config = $config['server_protocol'].$config['server_name'].$config['script_path'];
 		$memberlist_config = '/memberlist.' . $phpEx . '?mode=viewprofile&u=';
 		$language = $phpbb_container->get('language');
@@ -107,6 +108,16 @@ class reminder_module
 		// Get the protected members and groups arrays
 		$protected_members = json_decode($config['mot_ur_protected_members']);
 		$protected_groups = json_decode($config['mot_ur_protected_groups']);
+
+		// Get user_ids of banned members since we don't want to remind them (they wouldn't be able to log in anyway), they will be handled as protected members to prevent reminding (and deletion)
+		$sql = 'SELECT ban_userid FROM ' . BANLIST_TABLE . '
+				WHERE ban_userid <> 0';
+		$result = $db->sql_query($sql);
+		while ($row = $db->sql_fetchrow($result))
+		{
+			$protected_members[] = $row['ban_userid'];
+		}
+
 		// ignore anonymous (=== guest), bots, inactive and deactivated users
 		// ignore users who have never posted anything (they are dealt with in the "zeroposter" tab)
 		$query = 'SELECT user_id, group_id, user_regdate, username, user_posts, mot_last_login, user_colour, mot_reminded_one, mot_reminded_two ' .
@@ -159,12 +170,12 @@ class reminder_module
 		$enable_remind = $delete_enabled = 0;
 		foreach ($reminders as $row)
 		{
-			$no_offline_days = (int) (($now - $row['mot_last_login']) / $secs_per_day);
+			$no_offline_days = (int) (($now - $row['mot_last_login']) / self::SECS_PER_DAY);
 			$date_reminder_one = ($row['mot_reminded_one'] > 0) ? $user->format_date($row['mot_reminded_one']) : '-';
-			$reminder_one_ago = ($row['mot_reminded_one'] > 0) ? (int) (($now - $row['mot_reminded_one']) / $secs_per_day) : '-';
+			$reminder_one_ago = ($row['mot_reminded_one'] > 0) ? (int) (($now - $row['mot_reminded_one']) / self::SECS_PER_DAY) : '-';
 			$reminder_enabled = (($row['mot_reminded_one'] == 0) || (($row['mot_reminded_two'] == 0) && ($reminder_one_ago >= $config['mot_ur_days_reminded']))) ? '1' : '0';
 			$date_reminder_two = ($row['mot_reminded_two'] > 0) ? $user->format_date($row['mot_reminded_two']) : '-';
-			$reminder_two_ago = ($row['mot_reminded_two'] > 0) ? (int) (($now - $row['mot_reminded_two']) / $secs_per_day) : '-';
+			$reminder_two_ago = ($row['mot_reminded_two'] > 0) ? (int) (($now - $row['mot_reminded_two']) / self::SECS_PER_DAY) : '-';
 			$enable_delete = ($reminder_two_ago >= $config['mot_ur_days_until_deleted']) ? '1' : '0';
 			if ($reminder_enabled > 0)
 			{

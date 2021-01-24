@@ -15,6 +15,7 @@ use phpbb\language\language_file_loader;
 
 class common
 {
+	const SECS_PER_DAY = 86400;
 
 	/** @var \phpbb\config\config */
 	protected $config;
@@ -105,9 +106,8 @@ class common
 			*	This sequence is necessary due to the fact that we set this date in the DB while sending the first mail and thus we would be sending both mails if we did it the other way round.
 			*/
 			$this->email_arr = json_decode($this->config_text->get('mot_ur_email_texts'), true);
-			$secs_per_day = 86400;
 			$now = time();
-			$reminder1 = $now - ($secs_per_day * $this->config['mot_ur_days_reminded']);
+			$reminder1 = $now - (self::SECS_PER_DAY * $this->config['mot_ur_days_reminded']);
 			// since we only have an array of user ids we need to get all the other user data from the DB and we start to select the users supposed to get the second reminder mail
 			// get only users we have selected before
 			// and who have been reminded once before
@@ -150,7 +150,7 @@ class common
 
 			//--------------------------------------------------------------------------------------
 			// and now we start to select the users supposed to get the first reminder mail
-			$day_limit = $now - ($secs_per_day * $this->config['mot_ur_inactive_days']);
+			$day_limit = $now - (self::SECS_PER_DAY * $this->config['mot_ur_inactive_days']);
 			$query = 'SELECT user_id, username, user_email, mot_last_login, user_lang, user_timezone, user_dateformat, user_jabber, user_notify_type, mot_reminded_one
 					FROM  ' . USERS_TABLE . '
 					WHERE ' . $this->db->sql_in_set('user_id', $users_marked) . '

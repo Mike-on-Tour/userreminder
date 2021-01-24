@@ -153,17 +153,7 @@ class settings_module
 		$protected_users_ids = json_decode($config['mot_ur_protected_members']);
 		user_get_id_name($protected_users_ids, $username_arr);
 		sort($username_arr);
-		$i = false;
-		$protected_users_names = '';
-		foreach ($username_arr as $line)
-		{
-			if ($i)
-			{
-				$protected_users_names .= "\n";
-			}
-			$protected_users_names .= $line;
-			$i = true;
-		}
+		$protected_users_names = implode("\n", $username_arr);
 
 		// Get the group_ids of those groups used as default group for normal users and founders
 		$used_groups = array();

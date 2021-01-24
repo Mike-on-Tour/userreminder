@@ -1,6 +1,6 @@
 # Userreminder
 
-![Version: 1.3.2](https://img.shields.io/badge/Version-1.3.2-green)  
+![Version: 1.3.3](https://img.shields.io/badge/Version-1.3.3-green)  
   
 ![phpBB 3.2.x Compatible](https://img.shields.io/badge/phpBB-3.2.x%20Compatible-009BDF)
 ![phpBB 3.3.x Compatible](https://img.shields.io/badge/phpBB-3.3.x%20Compatible-009BDF)  
@@ -37,8 +37,11 @@ There is also a possibility to add one email address each for a bcc and/or cc co
 
 In the last part of the settings tab you can edit the text of the emails, a preview of how your text will look like is available.
 
+**Starting with ver 1.3.3** the "productive" ACP pages (Remind users, Sleepers and Zeroposters) can be added to one other tab of the ACP, e.g. to the "Quick access" tab. These additional links MUST be manually deleted prior to deactivating and deleting data of Userreminder.
+
 ## Important !!!
 -	Users are deleted by retaining their posts in order to prevent gaps in your forum threads!  
 -	Automatic sending of reminder mails or deletion of users is part of the login routine whenever a user logs into the board; at this moment the variables for
 	the last reminding mails - if there were any - are reset to zero to flag this user as active. Another part of this routine is checking whether automatic
 	mail sending and/or automatic deletion is activated, in this case the extension checks for users due to be reminded or deleted.
+-	Starting with ver 1.3.3 Userreminder checks for banned users and adds them during execution to the protected users to prevent banned users from being reminded or deleted.

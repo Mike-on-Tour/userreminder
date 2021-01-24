@@ -28,6 +28,8 @@ class main_listener implements EventSubscriberInterface
 		);
 	}
 
+	const SECS_PER_DAY = 86400;
+
 	/** @var \phpbb\config\config */
 	protected $config;
 
@@ -48,7 +50,6 @@ class main_listener implements EventSubscriberInterface
 		$this->config = $config;
 		$this->db = $db;
 		$this->common = $common;
-		define("SECS_PER_DAY", 86400);
 	}
 
 
@@ -113,6 +114,16 @@ class main_listener implements EventSubscriberInterface
 			// Get the protected members and groups arrays
 			$protected_members = json_decode($this->config['mot_ur_protected_members']);
 			$protected_groups = json_decode($this->config['mot_ur_protected_groups']);
+
+			// Get user_ids of banned members since we don't want to remind them (they wouldn't be able to log in anyway), they will be handled as protected members to prevent reminding (and deletion)
+			$sql = 'SELECT ban_userid FROM ' . BANLIST_TABLE . '
+					WHERE ban_userid <> 0';
+			$result = $this->db->sql_query($sql);
+			while ($row = $this->db->sql_fetchrow($result))
+			{
+				$protected_members[] = $row['ban_userid'];
+			}
+
 			// and check whether zeroposters have to be reminded and deleted as well
 			$remind_zeroposters = $this->config['mot_ur_remind_zeroposter'] ? true : false;
 
@@ -121,7 +132,7 @@ class main_listener implements EventSubscriberInterface
 			*/
 			if ($this->config['mot_ur_autoremind'] == 1)
 			{
-				$day_limit = $now - (SECS_PER_DAY * $this->config['mot_ur_inactive_days']);
+				$day_limit = $now - (self::SECS_PER_DAY * $this->config['mot_ur_inactive_days']);
 				// ignore inactive users, anonymous (=== guest) and bots
 				$query = 'SELECT user_id
 						FROM ' . USERS_TABLE . '
@@ -162,7 +173,7 @@ class main_listener implements EventSubscriberInterface
 			*/
 			if ($this->config['mot_ur_autodelete'] == 1)
 			{
-				$day_limit = $now - (SECS_PER_DAY * $this->config['mot_ur_days_until_deleted']);
+				$day_limit = $now - (self::SECS_PER_DAY * $this->config['mot_ur_days_until_deleted']);
 
 				$marked_users = array();
 

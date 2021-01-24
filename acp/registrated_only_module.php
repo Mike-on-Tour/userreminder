@@ -12,6 +12,8 @@ namespace mot\userreminder\acp;
 
 class registrated_only_module
 {
+	const SECS_PER_DAY = 86400;
+
 	public $u_action;
 
 	public function main($id, $mode)
@@ -24,7 +26,6 @@ class registrated_only_module
 
 		add_form_key('acp_userreminder_registered_only');
 
-		$secs_per_day = 86400;
 		$now = time();
 		$server_config = $config['server_protocol'].$config['server_name'].$config['script_path'];
 		$memberlist_config = '/memberlist.' . $phpEx . '?mode=viewprofile&u=';
@@ -87,6 +88,15 @@ class registrated_only_module
 		$protected_members = json_decode($config['mot_ur_protected_members']);
 		$protected_groups = json_decode($config['mot_ur_protected_groups']);
 
+		// Get user_ids of banned members since we don't want to remind them (they wouldn't be able to log in anyway), they will be handled as protected members to prevent reminding (and deletion)
+		$sql = 'SELECT ban_userid FROM ' . BANLIST_TABLE . '
+				WHERE ban_userid <> 0';
+		$result = $db->sql_query($sql);
+		while ($row = $db->sql_fetchrow($result))
+		{
+			$protected_members[] = $row['ban_userid'];
+		}
+
 		$query = 'SELECT user_id, group_id, username, user_colour, user_regdate
 				FROM  ' . USERS_TABLE . '
 				WHERE ' . $db->sql_in_set('user_type', array(USER_NORMAL,USER_FOUNDER)) . ' ' .		// ignore anonymous (=== guest), bots, inactive and deactivated users
@@ -134,7 +144,7 @@ class registrated_only_module
 		// write data into zeroposter array (output by template)
 		foreach ($registered_only as $row)
 		{
-			$no_of_days = (int) (( $now - $row['user_regdate']) / $secs_per_day);
+			$no_of_days = (int) (( $now - $row['user_regdate']) / self::SECS_PER_DAY);
 			$template->assign_block_vars('registered_only', array(
 				'USERNAME'		=> $row['username'],
 				'USER_COLOUR'	=> $row['user_colour'],
