@@ -2,7 +2,7 @@
 
 /**
 *
-* @package UserReminder v1.3.2
+* @package UserReminder v1.3.4
 * @copyright (c) 2019, 2020 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
@@ -80,7 +80,7 @@ class zeroposter_module
 		$deletemark = ($this->request->is_set_post('delmarked')) ? true : false;
 		if ($deletemark)
 		{
-			$marked = $this->request->variable('mark', array(0));
+			$marked = $this->request->variable('mark_delete', array(0));
 			if (count($marked) > 0)
 			{
 				if (confirm_box(true))
@@ -91,13 +91,13 @@ class zeroposter_module
 				else
 				{
 					confirm_box(false, '<p>'.$language->lang('CONFIRM_USER_DELETE', count($marked)).'</p>', build_hidden_fields(array(
-						'delmarked'	=> $deletemark,
-						'mark'		=> $marked,
-						'sk'		=> $sort_key,
-						'sd'		=> $sort_dir,
-						'i'			=> $id,
-						'mode'		=> $mode,
-						'action'	=> $this->u_action,
+						'delmarked'		=> $deletemark,
+						'mark_delete'	=> $marked,
+						'sk'			=> $sort_key,
+						'sd'			=> $sort_dir,
+						'i'				=> $id,
+						'mode'			=> $mode,
+						'action'		=> $this->u_action,
 					)));
 				}
 			}

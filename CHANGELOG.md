@@ -4,6 +4,21 @@ All changes to `Userreminder for phpBB` will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.3.4] - 2021-03-01
+
+### Added
+-	A migration file to update version variable in `CONFIG_TABLE`
+
+### Changed
+
+### Fixed
+-	A bug in `acp/zeroposter_module.php` and in `adm/style/acp_ur_zeroposter.html` which prevented users from being deleted in the `remind like inactive users`
+	mode due to a mis-named select box
+
+### Removed
+
+
+
 ## [1.3.3] - 2021-01-24
 
 ### Added
@@ -19,7 +34,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 -	Replaced own construction to seperate user names of protected members by "\n" with `implode()` function in `acp/settings_module.php`
--	Using class constants for the number of seconds per day in `common.php`, `acp/registrated_only_module.php`, `acp/reminder_modulephp`,
+-	Using class constants for the number of seconds per day in `common.php`, `acp/registrated_only_module.php`, `acp/reminder_module.php`,
 	`acp/zeroposter_module.php` and `event/main_listener.php`
 
 ### Fixed
