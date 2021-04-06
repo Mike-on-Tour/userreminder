@@ -4,6 +4,23 @@ All changes to `Userreminder for phpBB` will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.3.5] - 2021-04-06
+
+### Added
+-	A migration file to update version variable in `CONFIG_TABLE`
+
+### Changed
+-	The link to the users profile in the tables of the three "productive" ACP tabs is now computed by using phpBB's `append_sid` function using a relative path
+	instead of using the config variables of the server to build an absolute path
+	
+### Fixed
+-	Inserted a missing call to `sql_freeresult` in `acp/registrated_only_module.php` (new line 97), `acp/reminder_module.php` (new line 118), 
+	`acp/zeroposter_module.php` (new line 133) and `event/main_listener.php` (new line 126)
+-	Two typos in en language pack
+
+### Removed
+  
+  
 ## [1.3.4] - 2021-03-01
 
 ### Added
@@ -16,7 +33,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 	mode due to a mis-named select box
 
 ### Removed
-
 
 
 ## [1.3.3] - 2021-01-24

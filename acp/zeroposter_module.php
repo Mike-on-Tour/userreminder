@@ -2,8 +2,8 @@
 
 /**
 *
-* @package UserReminder v1.3.4
-* @copyright (c) 2019, 2020 Mike-on-Tour
+* @package UserReminder v1.3.5
+* @copyright (c) 2019, 2021 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
@@ -25,7 +25,7 @@ class zeroposter_module
 
 	public function main($id, $mode)
 	{
-		global $db, $template, $request, $config, $phpbb_container, $user, $phpEx;
+		global $db, $template, $request, $config, $phpbb_container, $user, $phpbb_root_path, $phpEx;
 
 		$this->db = $db;
 		$this->template = $template;
@@ -36,8 +36,6 @@ class zeroposter_module
 		$this->phpEx = $phpEx;
 
 		$now = time();
-		$server_config = $this->config['server_protocol'].$this->config['server_name'].$this->config['script_path'];
-		$memberlist_config = '/memberlist.' . $this->phpEx . '?mode=viewprofile&u=';
 		$language = $this->phpbb_container->get('language');
 		$common = $this->phpbb_container->get('mot.userreminder.common');
 		$remind_zeroposters = $this->config['mot_ur_remind_zeroposter'] ? true : false;
@@ -132,6 +130,7 @@ class zeroposter_module
 		{
 			$protected_members[] = $row['ban_userid'];
 		}
+		$db->sql_freeresult($result);
 
 		// this query is identical for both cases, therefore we have to define it only once
 		$query = 'SELECT user_id, group_id, username, user_colour, user_regdate, mot_last_login, mot_reminded_one, mot_reminded_two
@@ -224,8 +223,9 @@ class zeroposter_module
 			{
 				$delete_enabled = true;
 			}
-
+//echo append_sid("{$phpbb_root_path}memberlist.$this->phpEx", ['mode' => 'viewprofile', 'u' => $row['user_id']]);
 			$this->template->assign_block_vars('zeroposter', array(
+				'SERVER_CONFIG'		=> append_sid("{$phpbb_root_path}memberlist.$this->phpEx", ['mode' => 'viewprofile', 'u' => $row['user_id'],]),
 				'USERNAME'			=> $row['username'],
 				'USER_COLOUR'		=> $row['user_colour'],
 				'JOINED'			=> $this->user->format_date($row['user_regdate']),
@@ -242,8 +242,6 @@ class zeroposter_module
 		}
 
 		$this->template->assign_vars(array(
-			'SERVER_CONFIG'					=> $server_config,
-			'MEMBERLIST'					=> $memberlist_config,
 			'SORT_KEY'						=> $sort_key,
 			'SORT_DIR'						=> $sort_dir,
 			'REMIND_ZEROPOSTERS'			=> $remind_zeroposters,

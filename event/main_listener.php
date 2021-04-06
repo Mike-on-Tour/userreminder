@@ -1,8 +1,8 @@
 <?php
 /**
 *
-* @package UserReminder v1.3.2
-* @copyright (c) 2019, 2020 Mike-on-Tour
+* @package UserReminder v1.3.5
+* @copyright (c) 2019, 2021 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
@@ -123,6 +123,7 @@ class main_listener implements EventSubscriberInterface
 			{
 				$protected_members[] = $row['ban_userid'];
 			}
+			$this->db->sql_freeresult($result);
 
 			// and check whether zeroposters have to be reminded and deleted as well
 			$remind_zeroposters = $this->config['mot_ur_remind_zeroposter'] ? true : false;

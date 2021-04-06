@@ -2,8 +2,8 @@
 
 /**
 *
-* @package UserReminder v1.3.2
-* @copyright (c) 2019, 2020 Mike-on-Tour
+* @package UserReminder v1.3.5
+* @copyright (c) 2019, 2021 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
@@ -18,7 +18,7 @@ class registrated_only_module
 
 	public function main($id, $mode)
 	{
-		global $db, $template, $request, $config, $phpbb_container, $user, $phpEx;
+		global $db, $template, $request, $config, $phpbb_container, $user, $phpbb_root_path, $phpEx;
 
 		$language = $phpbb_container->get('language');
 		$this->tpl_name = 'acp_ur_registratedonly';
@@ -27,8 +27,6 @@ class registrated_only_module
 		add_form_key('acp_userreminder_registered_only');
 
 		$now = time();
-		$server_config = $config['server_protocol'].$config['server_name'].$config['script_path'];
-		$memberlist_config = '/memberlist.' . $phpEx . '?mode=viewprofile&u=';
 		$common = $phpbb_container->get('mot.userreminder.common');
 
 		// set parameter for pagination
@@ -96,6 +94,7 @@ class registrated_only_module
 		{
 			$protected_members[] = $row['ban_userid'];
 		}
+		$db->sql_freeresult($result);
 
 		$query = 'SELECT user_id, group_id, username, user_colour, user_regdate
 				FROM  ' . USERS_TABLE . '
@@ -146,6 +145,7 @@ class registrated_only_module
 		{
 			$no_of_days = (int) (( $now - $row['user_regdate']) / self::SECS_PER_DAY);
 			$template->assign_block_vars('registered_only', array(
+				'SERVER_CONFIG'	=> append_sid("{$phpbb_root_path}memberlist.$phpEx", ['mode' => 'viewprofile', 'u' => $row['user_id']]),
 				'USERNAME'		=> $row['username'],
 				'USER_COLOUR'	=> $row['user_colour'],
 				'JOINED'		=> $user->format_date($row['user_regdate']),
@@ -155,8 +155,6 @@ class registrated_only_module
 		}
 
 		$template->assign_vars(array(
-			'SERVER_CONFIG'					=> $server_config,
-			'MEMBERLIST'					=> $memberlist_config,
 			'SORT_DIR'						=> $sort_dir,
 			'ACP_USERREMINDER_VERSION'		=> $config['mot_ur_version'],
 			'ACP_USERREMINDER_YEAR'			=> date('Y'),

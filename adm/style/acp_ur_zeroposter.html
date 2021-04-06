@@ -35,7 +35,7 @@
 			<tbody>
 			{% for zeroposter in zeroposter %}
 				<tr>
-					<td><a href="{{ SERVER_CONFIG }}{{ MEMBERLIST }}{{ zeroposter.USER_ID }}" target="_blank" {% if zeroposter.USER_COLOUR %}style="color: #{{ zeroposter.USER_COLOUR }};" class="username-coloured"{% endif %}>{{ zeroposter.USERNAME }}</a></td>
+					<td><a href="{{ zeroposter.SERVER_CONFIG }}" target="_blank" {% if zeroposter.USER_COLOUR %}style="color: #{{ zeroposter.USER_COLOUR }};" class="username-coloured"{% endif %}>{{ zeroposter.USERNAME }}</a></td>
 					<td style="text-align: center;">{{ zeroposter.JOINED }}</td>
 					<td style="text-align: center;">{{ zeroposter.LAST_VISIT }}</td>
 					<td style="text-align: center;">{{ zeroposter.OFFLINE_DAYS }}</td>
@@ -125,7 +125,7 @@
 			<tbody>
 			{% for zeroposter  in zeroposter %}
 				<tr>
-					<td><a href="{{ SERVER_CONFIG }}{{ MEMBERLIST }}{{ zeroposter.USER_ID }}" target="_blank" {% if zeroposter.USER_COLOUR %}style="color: #{{ zeroposter.USER_COLOUR }};" class="username-coloured"{% endif %}>{{ zeroposter.USERNAME }}</a></td>
+					<td><a href="{{ zeroposter.SERVER_CONFIG }}" target="_blank" {% if zeroposter.USER_COLOUR %}style="color: #{{ zeroposter.USER_COLOUR }};" class="username-coloured"{% endif %}>{{ zeroposter.USERNAME }}</a></td>
 					<td style="text-align: center;">{{ zeroposter.JOINED }}</td>
 					<td style="text-align: center;">{{ zeroposter.LAST_VISIT }}</td>
 					<td style="text-align: center;">{{ zeroposter.OFFLINE_DAYS }}</td>

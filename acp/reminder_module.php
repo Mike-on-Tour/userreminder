@@ -2,8 +2,8 @@
 
 /**
 *
-* @package UserReminder v1.3.2
-* @copyright (c) 2019, 2020 Mike-on-Tour
+* @package UserReminder v1.3.5
+* @copyright (c) 2019, 2021 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
@@ -18,12 +18,10 @@ class reminder_module
 
 	public function main($id, $mode)
 	{
-		global $db, $template, $request, $config, $phpbb_container, $user, $phpEx;
+		global $db, $template, $request, $config, $phpbb_container, $user, $phpbb_root_path, $phpEx;
 
 		$now = time();
 		$day_limit = $now - (self::SECS_PER_DAY * $config['mot_ur_inactive_days']);
-		$server_config = $config['server_protocol'].$config['server_name'].$config['script_path'];
-		$memberlist_config = '/memberlist.' . $phpEx . '?mode=viewprofile&u=';
 		$language = $phpbb_container->get('language');
 		$common = $phpbb_container->get('mot.userreminder.common');
 
@@ -117,6 +115,7 @@ class reminder_module
 		{
 			$protected_members[] = $row['ban_userid'];
 		}
+		$db->sql_freeresult($result);
 
 		// ignore anonymous (=== guest), bots, inactive and deactivated users
 		// ignore users who have never posted anything (they are dealt with in the "zeroposter" tab)
@@ -187,6 +186,7 @@ class reminder_module
 			}
 
 			$template->assign_block_vars('reminders', array(
+				'SERVER_CONFIG'		=> append_sid("{$phpbb_root_path}memberlist.$phpEx", ['mode' => 'viewprofile', 'u' => $row['user_id']]),
 				'USERNAME'			=> $row['username'],
 				'USER_COLOUR'		=> $row['user_colour'],
 				'JOINED'			=> $user->format_date($row['user_regdate']),
@@ -204,8 +204,6 @@ class reminder_module
 		}
 
 		$template->assign_vars(array(
-			'SERVER_CONFIG'					=> $server_config,
-			'MEMBERLIST'					=> $memberlist_config,
 			'SORT_KEY'						=> $sort_key,
 			'SORT_DIR'						=> $sort_dir,
 			'SORT_ONE_ABLE'					=> $enable_sort_one,
