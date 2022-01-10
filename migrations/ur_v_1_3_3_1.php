@@ -2,8 +2,8 @@
 
 /**
 *
-* @package UserReminder v1.3.3
-* @copyright (c) 2019, 2020 Mike-on-Tour
+* @package User Reminder v1.4.0
+* @copyright (c) 2019 - 2021 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
@@ -16,7 +16,7 @@ class ur_v_1_3_3_1 extends \phpbb\db\migration\migration
 	/**
 	* Check for migration v_1_3_3_0 to be installed
 	*/
-	static public function depends_on()
+	public static function depends_on()
 	{
 		return array('\mot\userreminder\migrations\ur_v_1_3_3_0');
 	}
@@ -37,13 +37,13 @@ class ur_v_1_3_3_1 extends \phpbb\db\migration\migration
 				))),
 			)),
 			array('if', array(
-				$this->check_module('acp', 'ACP_USERREMINDER', 'ACP_USERREMINDER_REGISTERED_ONLY'),
+				$this->check_module('acp', 'ACP_USERREMINDER', 'ACP_USERREMINDER_SLEEPER'),
 				array('module.add', array(
 					'acp',
 					'ACP_USERREMINDER',
 					array(
 						'module_basename'	=> '\mot\userreminder\acp\registrated_only_module',
-						'module_langname'	=> 'ACP_USERREMINDER_REGISTERED_ONLY',
+						'module_langname'	=> 'ACP_USERREMINDER_SLEEPER',
 						'module_mode'		=> 'sleepers',
 						'module_auth'		=> 'ext_mot/userreminder && acl_a_board',
 				))),

@@ -7,15 +7,28 @@
 
 <form id="acp_userreminder_settings" method="post" enctype="application/x-www-form-urlencoded" action="{{ U_ACTION }}">
 	<fieldset>
+		<legend>{{ lang('ACP_USERREMINDER_GENERAL_SETTINGS') }}</legend>
+		<dl>
+			<dt><label for="mot_ur_rows_per_page">{{ lang('ACP_USERREMINDER_ROWS_PER_PAGE') }}{{ lang('COLON') }}</label><p>{{ lang('ACP_USERREMINDER_ROWS_PER_PAGE_TEXT') }}</p></dt>
+			<dd><input id="mot_ur_rows_per_page" type="number" min="2" name="mot_ur_rows_per_page" value="{{ ACP_USERREMINDER_ROWS_PER_PAGE }}" /></dd>
+		</dl>
+ 		<dl>
+			<dt><label for="mot_ur_expert_mode">{{ lang('ACP_USERREMINDER_EXPERT_MODE') }}{{ lang('COLON') }}</label><p>{{ lang('ACP_USERREMINDER_EXPERT_MODE_TEXT') }}</p></dt>
+			<dd><label><input type="radio" class="radio" name="mot_ur_expert_mode" value="1"{% if ACP_USERREMINDER_EXPERT_MODE %} id="mot_ur_expert_mode" checked="checked"{% endif %} /> {{ lang('YES') }}</label>
+				<label><input type="radio" class="radio" name="mot_ur_expert_mode" value="0"{% if not ACP_USERREMINDER_EXPERT_MODE %} id="mot_ur_expert_mode" checked="checked"{% endif %} /> {{ lang('NO') }}</label></dd>
+		</dl>
+	</fieldset>
+
+	<fieldset>
 		<legend>{{ lang('ACP_USERREMINDER_TIME_SETTINGS_TITLE') }}</legend>
 		<p>{{ lang('ACP_USERREMINDER_TIME_SETTING_TEXT') }}</p>
         <dl>
             <dt><label for="mot_ur_inactive_days">{{ lang('ACP_USERREMINDER_INACTIVE') }}{{ lang('COLON') }}</label></dt>
-            <dd><input id="mot_ur_inactive_days" type="text" size="3" maxlength="3" name="mot_ur_inactive_days" onblur="checkInput('mot_ur_inactive_days', numeralMatch, 70, true)" value="{{ ACP_USERREMINDER_INACTIVE_DAYS }}" /></dd>
+            <dd><input id="mot_ur_inactive_days" type="number" min="1" name="mot_ur_inactive_days" value="{{ ACP_USERREMINDER_INACTIVE_DAYS }}" /></dd>
         </dl>
         <dl>
             <dt><label for="mot_ur_days_reminded">{{ lang('ACP_USERREMINDER_DAYS_REMINDED') }}{{ lang('COLON') }}</label></dt>
-            <dd><input id="mot_ur_days_reminded" type="text" size="3" maxlength="3" name="mot_ur_days_reminded" onblur="checkInput('mot_ur_days_reminded', numeralMatch, 10, true)" value="{{ ACP_USERREMINDER_DAYS_REMINDED }}" /></dd>
+            <dd><input id="mot_ur_days_reminded" type="number" min="0" name="mot_ur_days_reminded" value="{{ ACP_USERREMINDER_DAYS_REMINDED }}" /></dd>
         </dl>
  		<dl>
 			<dt><label for="mot_ur_autoremind">{{ lang('ACP_USERREMINDER_AUTOREMIND') }}{{ lang('COLON') }}</label></dt>
@@ -24,13 +37,46 @@
 		</dl>
        <dl>
             <dt><label for="mot_ur_days_until_deleted">{{ lang('ACP_USERREMINDER_DAYS_UNTIL_DELETED') }}{{ lang('COLON') }}</label></dt>
-            <dd><input id="mot_ur_days_until_deleted" type="text" size="3" maxlength="3" name="mot_ur_days_until_deleted" onblur="checkInput('mot_ur_days_until_deleted', numeralMatch, 10, true)" value="{{ ACP_USERREMINDER_DAYS_UNTIL_DELETED }}" /></dd>
+            <dd><input id="mot_ur_days_until_deleted" type="number" min="1" name="mot_ur_days_until_deleted" value="{{ ACP_USERREMINDER_DAYS_UNTIL_DELETED }}" /></dd>
         </dl>
 		<dl>
 			<dt><label for="mot_ur_autodelete">{{ lang('ACP_USERREMINDER_AUTODELETE') }}{{ lang('COLON') }}</label></dt>
 			<dd><label><input type="radio" class="radio" name="mot_ur_autodelete" value="1"{% if ACP_USERREMINDER_AUTODELETE %} id="mot_ur_autodelete" checked="checked"{% endif %} /> {{ lang('YES') }}</label>
 				<label><input type="radio" class="radio" name="mot_ur_autodelete" value="0"{% if not ACP_USERREMINDER_AUTODELETE %} id="mot_ur_autodelete" checked="checked"{% endif %} /> {{ lang('NO') }}</label></dd>
 		</dl>
+	</fieldset>
+
+	<fieldset>
+ 		<legend>{{ lang('ACP_USERREMINDER_SLEEPER_CONFIG') }}</legend>
+		<p>{{ lang('ACP_USERREMINDER_SLEEPER_CONFIG_TEXT') }}</p>
+		<dl>
+			<dt><label for="mot_ur_remind_sleeper">{{ lang('ACP_USERREMINDER_REMIND_SLEEPER') }}{{ lang('COLON') }}</label><p>{{ lang('ACP_USERREMINDER_REMIND_SLEEPER_TEXT') }}</p></dt>
+			<dd><label><input type="radio" class="radio" name="mot_ur_remind_sleeper" value="1"{% if ACP_USERREMINDER_REMIND_SLEEPER %} id="mot_ur_remind_sleeper" checked="checked"{% endif %} /> {{ lang('YES') }}</label>
+				<label><input type="radio" class="radio" name="mot_ur_remind_sleeper" value="0"{% if not ACP_USERREMINDER_REMIND_SLEEPER %} id="mot_ur_remind_sleeper" checked="checked"{% endif %} /> {{ lang('NO') }}</label></dd>
+		</dl>
+		<div id="mot_ur_sleeper_remind_settings" hidden="true">
+			<dl>
+				<dt><label for="mot_ur_sleeper_inactive_days">{{ lang('ACP_USERREMINDER_SLEEPER_INACTIVE') }}{{ lang('COLON') }}</label></dt>
+				<dd><input id="mot_ur_sleeper_inactive_days" type="number" min="1" name="mot_ur_sleeper_inactive_days" value="{{ ACP_USERREMINDER_SLEEPER_INACTIVE_DAYS }}" /></dd>
+			</dl>
+			<dl>
+				<dt><label for="mot_ur_sleeper_autoremind">{{ lang('ACP_USERREMINDER_AUTOREMIND') }}{{ lang('COLON') }}</label></dt>
+				<dd><label><input type="radio" class="radio" name="mot_ur_sleeper_autoremind" value="1"{% if ACP_USERREMINDER_SLEEPER_AUTOREMIND %} id="mot_ur_sleeper_autoremind" checked="checked"{% endif %} /> {{ lang('YES') }}</label>
+					<label><input type="radio" class="radio" name="mot_ur_sleeper_autoremind" value="0"{% if not ACP_USERREMINDER_SLEEPER_AUTOREMIND %} id="mot_ur_sleeper_autoremind" checked="checked"{% endif %} /> {{ lang('NO') }}</label></dd>
+			</dl>
+		</div>
+
+		<dl>
+			<dt><label for="mot_ur_sleeper_autodelete">{{ lang('ACP_USERREMINDER_AUTODELETE_SLEEPER') }}{{ lang('COLON') }}</label><p>{{ lang('ACP_USERREMINDER_AUTODELETE_SLEEPER_TEXT') }}</p></dt>
+			<dd><label><input type="radio" class="radio" name="mot_ur_sleeper_autodelete" value="1"{% if ACP_USERREMINDER_AUTODELETE_SLEEPER %} id="mot_ur_sleeper_autodelete" checked="checked"{% endif %} /> {{ lang('YES') }}</label>
+				<label><input type="radio" class="radio" name="mot_ur_sleeper_autodelete" value="0"{% if not ACP_USERREMINDER_AUTODELETE_SLEEPER %} id="mot_ur_sleeper_autodelete" checked="checked"{% endif %} /> {{ lang('NO') }}</label></dd>
+		</dl>
+		<div id="mot_ur_sleeper_delete_settings" hidden="true">
+			<dl>
+				<dt><label for="mot_ur_sleeper_deletetime">{{ lang('ACP_USERREMINDER_SLEEPER_DELETETIME') }}{{ lang('COLON') }}</label></dt>
+				<dd><input id="mot_ur_sleeper_deletetime" type="number" min="1" name="mot_ur_sleeper_deletetime" value="{{ ACP_USERREMINDER_SLEEPER_DELETETIME }}" /></dd>
+			</dl>
+		</div>
 	</fieldset>
 
 	<fieldset>
@@ -58,15 +104,38 @@
 
 	<fieldset>
 		<legend>{{ lang('ACP_USERREMINDER_MAIL_SETTINGS_TITLE') }}</legend>
+		<p>{{ lang('ACP_USERREMINDER_MAIL_LIMITS_TEXT') }}</p>
+
+		<dl>
+			<dt><label for="mot_ur_mail_limit_number">{{ lang('ACP_USERREMINDER_MAIL_LIMIT_NUMBER') }}{{ lang('COLON') }}</label></dt>
+			<dd><input id="mot_ur_mail_limit_number" type="number" name="mot_ur_mail_limit_number" value="{{ ACP_USERREMINDER_MAIL_LIMIT_NUMBER }}"/></dd>
+		</dl>
+		<dl>
+			<dt><label for="mot_ur_mail_limit_time">{{ lang('ACP_USERREMINDER_MAIL_LIMIT_TIME') }}{{ lang('COLON') }}</label></dt>
+			<dd><input id="mot_ur_mail_limit_time" type="number" name="mot_ur_mail_limit_time" value="{{ ACP_USERREMINDER_MAIL_LIMIT_TIME }}"/> {{ lang('ACP_USERREMINDER_MAIL_LIMIT_SECONDS') }}</dd>
+		</dl>
+		<hr>
+		<p>{{ lang('ACP_USERREMINDER_CRON_EXP') }}</p>
+
+		<dl>
+			<dt><label>{{ lang('ACP_USERREMINDER_LAST_CRON_RUN') }}{{ lang('COLON') }}</label></dt>
+			<dd>{{ ACP_USERREMINDER_LAST_CRON_RUN }}</dd>
+		</dl>
+		<dl>
+			<dt><label>{{ lang('ACP_USERREMINDER_AVAILABLE_MAIL_CHUNK') }}{{ lang('COLON') }}</label></dt>
+			<dd>{{ ACP_USERREMINDER_AVAILABLE_MAIL_CHUNK }}</dd>
+		</dl>
+
+		<hr>
 		<p>{{ lang('ACP_USERREMINDER_EMAIL_BCC_TEXT') }}</p>
-		
+
         <dl>
             <dt><label for="mot_ur_email_bcc">{{ lang('ACP_USERREMINDER_EMAIL_BCC') }}{{ lang('COLON') }}</label></dt>
-            <dd><input id="mot_ur_email_bcc" type="text" size="70" maxlength="255" name="mot_ur_email_bcc" onblur="checkInput('mot_ur_email_bcc', emailMatch, '')" value="{{ ACP_USERREMINDER_EMAIL_BCC }}" /></dd>
+            <dd><input id="mot_ur_email_bcc" type="text" size="70" maxlength="255" name="mot_ur_email_bcc" value="{{ ACP_USERREMINDER_EMAIL_BCC }}" /></dd>
         </dl>
         <dl>
             <dt><label for="mot_ur_email_cc">{{ lang('ACP_USERREMINDER_EMAIL_CC') }}{{ lang('COLON') }}</label></dt>
-            <dd><input id="mot_ur_email_cc" type="text" size="70" maxlength="255" name="mot_ur_email_cc" onblur="checkInput('mot_ur_email_cc', emailMatch, '')" value="{{ ACP_USERREMINDER_EMAIL_CC }}" /></dd>
+            <dd><input id="mot_ur_email_cc" type="text" size="70" maxlength="255" name="mot_ur_email_cc" value="{{ ACP_USERREMINDER_EMAIL_CC }}" /></dd>
         </dl>
 	</fieldset>
 	
@@ -104,6 +173,7 @@
 				<select id="mot_ur_mail_file" name="mot_ur_mail_file">
 					<option value="reminder_one" {% if CHOOSE_FILE == 'reminder_one' %} selected {% endif %}>{{ lang('ACP_USERREMINDER_MAIL_ONE') }}</option>
 					<option value="reminder_two" {% if CHOOSE_FILE == 'reminder_two' %} selected {% endif %}>{{ lang('ACP_USERREMINDER_MAIL_TWO') }}</option>
+					<option value="reminder_sleeper" {% if CHOOSE_FILE == 'reminder_sleeper' %} selected {% endif %}>{{ lang('ACP_USERREMINDER_MAIL_SLEEPER') }}</option>
 				</select>
 			</dd>
 		</dl>
@@ -152,7 +222,21 @@
 		{% endif %}
 		
 	</fieldset>
-{% include '@mot_userreminder/userreminder_version.html' %}
 </form>
+
+	<fieldset>
+		<dl>
+			<dt><label>{{ lang('ACP_USERREMINDER_SUPPORT') }}{{ lang('COLON') }}</label></dt>
+			<dd>
+				<form action="https://www.paypal.com/donate" method="post" target="_top">
+					<input type="hidden" name="hosted_button_id" value="JQQ5R6VM2XHW4" />
+					<input type="image" src="https://www.paypalobjects.com/en_US/DK/i/btn/btn_donateCC_LG.gif" border="0" name="submit" title="PayPal - The safer, easier way to pay online!" alt="Donate with PayPal button" />
+					<img alt="" border="0" src="https://www.paypal.com/en_DE/i/scr/pixel.gif" width="1" height="1" />
+				</form>
+			</dd>
+		</dl>
+	</fieldset>
+
+	<p id="centered_text">{{ USERREMINDER_VERSION }}</p>
 
 {% include 'overall_footer.html' %}

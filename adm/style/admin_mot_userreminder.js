@@ -1,45 +1,59 @@
-/*
-* Define the search patterns
+/**
+*
+* package User Reminder v1.4.0
+* copyright (c) 2019 - 2021 Mike-on-Tour
+* license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
+*
 */
-var numeralMatch = /[0-9]/;
-var emailMatch = /^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/;
 
-/*
-*
-*
-* @params:	inputName:	string, name of the DOM element we want to check
-*		matchString: string with the regular expression we want to use
-*		defaultValue: value to use in case the provided value isn't valid
-*		deleteChars: boolean,
-*
-*/
-function checkInput(inputName, matchString, defaultValue, deleteChars = false)
-{
-	var domElement = document.getElementById(inputName);
-	var elementValue = domElement.value;
-	if (elementValue != '') {
-		if (deleteChars) {
-			elementValue = elementValue.replace(/[^\d]/g, "");
-		}
-		var result = elementValue.match(matchString);
-		if (result == null) {
-			domElement.value = defaultValue;
+(function($) {  // Avoid conflicts with other libraries
+
+'use strict';
+
+	/*
+	* Check the 'Remind sleeper' setting and hide or show the according settings
+	*/
+	$("input[name='mot_ur_remind_sleeper']").click(function() {
+		if ($(this).val() == 1) {
+			$("#mot_ur_sleeper_remind_settings").show();
 		} else {
-			domElement.value = elementValue;
+			$("#mot_ur_sleeper_remind_settings").hide();
 		}
-	}
-}
+	});
 
-function cleanIds(inputName)
-{
-	var domElement = document.getElementById(inputName);
-	var elementValue = domElement.value;
-	if (elementValue != '') {
-		elementValue = elementValue.replace(/[;:\._-]/g, ",");		// replace some characters with a comma (in case someone fooled while typing)
-		elementValue = elementValue.replace(/[^,\d]/g, "");			// erase all characters which are not a digit or a comma
-		elementValue = elementValue.replace(/,{2,10}/g, ",");		// erase multiple commas
-		elementValue = elementValue.replace(/^,*/, "");				// erase all leading commas
-		elementValue = elementValue.replace(/,*$/, "");				// erase all trailing commas
-		domElement.value = elementValue;
+	if ($("input[name='mot_ur_remind_sleeper']:checked").val() == 1) {
+		$("#mot_ur_sleeper_remind_settings").show();
 	}
-}
+
+	/*
+	* Check the 'Autodelete sleeper' setting and hide or show the according setting
+	*/
+	$("input[name='mot_ur_sleeper_autodelete']").click(function() {
+		if ($(this).val() == 1) {
+			$("#mot_ur_sleeper_delete_settings").show();
+		} else {
+			$("#mot_ur_sleeper_delete_settings").hide();
+		}
+	});
+
+	if ($("input[name='mot_ur_sleeper_autodelete']:checked").val() == 1) {
+		$("#mot_ur_sleeper_delete_settings").show();
+	}
+
+	/*
+	* Check whether input into the BCC or CC field is formally a valid e-mail address and empty the field if it is not
+	*/
+	$("#mot_ur_email_bcc, #mot_ur_email_cc").blur(function() {
+		// Define the search patterns
+		var emailMatch = /^([A-Za-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/;
+		// Get the element value
+		var elementValue = $(this).val();
+		if (elementValue != '') {
+			var result = elementValue.match(emailMatch);
+			if (result == null) {
+				$(this).val('');
+			}
+		}
+	});
+
+})(jQuery); // Avoid conflicts with other libraries

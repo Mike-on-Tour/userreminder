@@ -4,169 +4,169 @@
 <h1>{{ lang('ACP_USERREMINDER_ZEROPOSTER') }}</h1>
 <p>{{ lang('ACP_USERREMINDER_ZEROPOSTER_EXPLAIN') }}</p>
 
+<form id="acp_userreminder_zeroposter" method="post" action="{{ U_ACTION }}">
+	{% if pagination %}
+	<div class="pagination top-pagination">
+		{% include 'pagination.html' %}
+	</div>
+	{% endif %}
+
 {% if REMIND_ZEROPOSTERS %}
-	<form id="acp_userreminder_zeroposter" method="post" action="{{ U_ACTION }}">
-		{% if pagination %}
-		<div class="pagination top-pagination">
-			{% include 'pagination.html' %}
-		</div>
-		{% endif %}
-
-		<table class="table1 zebra-table fixed-width-table">
-			<thead>
-				<tr>
-					<th rowspan="2" style="width: 180px;">{{ lang('USERNAME') }}</th>
-					<th rowspan="2" style="text-align: center;">{{ lang('JOINED') }}</th>
-					<th colspan="2" style="text-align: center;">{{ lang('LAST_VISIT') }}</th>
-					<th colspan="2" style="text-align: center;">{{ lang('ACP_USERREMINDER_REMINDER_ONE') }}</th>
-					<th colspan="2" style="text-align: center;">{{ lang('ACP_USERREMINDER_REMINDER_TWO') }}</th>
-					<th rowspan="2" style="width: 70px; text-align: center;">{{ lang('MARK_REMIND') }}</th>
-					<th rowspan="2" style="width: 70px; text-align: center;">{{ lang('MARK_DELETE') }}</th>
-				</tr>
-				<tr>
-					<th style="text-align: center;">{{ lang('AT_DATE') }}</th>
-					<th style="text-align: center;">{{ lang('DAYS_AGO') }}</th>
-					<th style="text-align: center;">{{ lang('AT_DATE') }}</th>
-					<th style="text-align: center;">{{ lang('DAYS_AGO') }}</th>
-					<th style="text-align: center;">{{ lang('AT_DATE') }}</th>
-					<th style="text-align: center;">{{ lang('DAYS_AGO') }}</th>
-				</tr>
-			</thead>
-			<tbody>
-			{% for zeroposter in zeroposter %}
-				<tr>
-					<td><a href="{{ zeroposter.SERVER_CONFIG }}" target="_blank" {% if zeroposter.USER_COLOUR %}style="color: #{{ zeroposter.USER_COLOUR }};" class="username-coloured"{% endif %}>{{ zeroposter.USERNAME }}</a></td>
-					<td style="text-align: center;">{{ zeroposter.JOINED }}</td>
-					<td style="text-align: center;">{{ zeroposter.LAST_VISIT }}</td>
-					<td style="text-align: center;">{{ zeroposter.OFFLINE_DAYS }}</td>
-					<td style="text-align: center;">{{ zeroposter.REMINDER_ONE }}</td>
-					<td style="text-align: center;">{{ zeroposter.ONE_AGO }}</td>
-					<td style="text-align: center;">{{ zeroposter.REMINDER_TWO }}</td>
-					<td style="text-align: center;">{{ zeroposter.TWO_AGO }}</td>
-					<td style="text-align: center;">{% if zeroposter.REMINDER_ENABLED %}<input type="checkbox" class="radio" name="mark_remind[]" value="{{ zeroposter.USER_ID }}" />{% endif %}</td>
-					<td style="text-align: center;">{% if zeroposter.DEL_ENABLED == 1 %}<input type="checkbox" class="radio" name="mark_delete[]" value="{{ zeroposter.USER_ID }}" />{% endif %}</td>
-				</tr>
-			{% else %}
+	<table class="table1 zebra-table fixed-width-table">
+		<thead>
 			<tr>
-				<td colspan="10" style="text-align: center;">{{ lang('ACP_USERREMINDER_NO_ENTRIES') }}</td>
+				<th rowspan="2" style="width: 180px;">{{ lang('USERNAME') }}</th>
+				<th rowspan="2" style="text-align: center;">{{ lang('JOINED') }}</th>
+				<th colspan="2" style="text-align: center;">{{ lang('LAST_VISIT') }}</th>
+				<th colspan="2" style="text-align: center;">{{ lang('ACP_USERREMINDER_REMINDER_ONE') }}</th>
+				<th colspan="2" style="text-align: center;">{{ lang('ACP_USERREMINDER_REMINDER_TWO') }}</th>
+				<th rowspan="2" style="width: 70px; text-align: center;">{{ lang('MARK_REMIND') }}</th>
+				<th rowspan="2" style="width: 70px; text-align: center;">{{ lang('MARK_DELETE') }}</th>
 			</tr>
-			{% endfor %}
-			</tbody>
-		</table>
+			<tr>
+				<th style="text-align: center;">{{ lang('AT_DATE') }}</th>
+				<th style="text-align: center;">{{ lang('DAYS_AGO') }}</th>
+				<th style="text-align: center;">{{ lang('AT_DATE') }}</th>
+				<th style="text-align: center;">{{ lang('DAYS_AGO') }}</th>
+				<th style="text-align: center;">{{ lang('AT_DATE') }}</th>
+				<th style="text-align: center;">{{ lang('DAYS_AGO') }}</th>
+			</tr>
+		</thead>
+		<tbody>
+		{% for zeroposter in zeroposter %}
+			<tr>
+				<td><a href="{{ zeroposter.SERVER_CONFIG }}" target="_blank" {% if zeroposter.USER_COLOUR %}style="color: #{{ zeroposter.USER_COLOUR }};" class="username-coloured"{% endif %}>{{ zeroposter.USERNAME }}</a></td>
+				<td style="text-align: center;">{{ zeroposter.JOINED }}</td>
+				<td style="text-align: center;">{{ zeroposter.LAST_VISIT }}</td>
+				<td style="text-align: center;">{{ zeroposter.OFFLINE_DAYS }}</td>
+				<td style="text-align: center;">{{ zeroposter.REMINDER_ONE }}</td>
+				<td style="text-align: center;">{{ zeroposter.ONE_AGO }}</td>
+				<td style="text-align: center;">{{ zeroposter.REMINDER_TWO }}</td>
+				<td style="text-align: center;">{{ zeroposter.TWO_AGO }}</td>
+				<td style="text-align: center;">{% if zeroposter.REMINDER_ENABLED %}<input type="checkbox" class="radio" name="mark_remind[]" value="{{ zeroposter.USER_ID }}" />{% endif %}</td>
+				<td style="text-align: center;">{% if zeroposter.DEL_ENABLED == 1 %}<input type="checkbox" class="radio" name="mark_delete[]" value="{{ zeroposter.USER_ID }}" />{% endif %}</td>
+			</tr>
+		{% else %}
+		<tr>
+			<td colspan="10" style="text-align: center;">{{ lang('ACP_USERREMINDER_NO_ENTRIES') }}</td>
+		</tr>
+		{% endfor %}
+		</tbody>
+	</table>
 
-		{% if pagination %}
-			<div class="pagination">
-				{% include 'pagination.html' %}
-			</div>
-		{% endif %}
+	{% if pagination %}
+	<div class="pagination">
+		{% include 'pagination.html' %}
+	</div>
+	{% endif %}
+	<fieldset class="display-options">
+		{{ lang('SORT_BY') }}{{ lang('COLON') }}
+		<select name="sort_key">
+			<option value="user_lastvisit" {% if SORT_KEY == 'user_lastvisit' %} selected {% endif %}>{{ lang('ACP_USERREMINDER_KEY_LV') }}</option>
+			<option value="user_regdate" {% if SORT_KEY == 'user_regdate' %} selected {% endif %}>{{ lang('ACP_USERREMINDER_KEY_RD') }}</option>
+			{% if SORT_ONE_ABLE %}
+				<option value="mot_reminded_one"{% if SORT_KEY == 'mot_reminded_one' %} selected {% endif %}>{{ lang('ACP_USERREMINDER_KEY_RO') }}</option>
+			{% endif %}
+			{% if SORT_TWO_ABLE %}
+				<option value="mot_reminded_two"{% if SORT_KEY == 'mot_reminded_two' %} selected {% endif %}>{{ lang('ACP_USERREMINDER_KEY_RT') }}</option>
+			{% endif %}
+		</select>&nbsp;
+		<select name="sort_dir">
+			<option value="DESC" {% if SORT_DIR == 'DESC' %} selected {% endif %}>{{ lang('ACP_USERREMINDER_SORT_DESC') }}</option>
+			<option value="ASC" {% if SORT_DIR == 'ASC' %} selected {% endif %}>{{ lang('ACP_USERREMINDER_SORT_ASC') }}</option>
+		</select>
+		<input class="button2" type="submit" value="{{ lang('GO') }}" name="sort" />
+	</fieldset>
+	<hr />
 
-		<fieldset class="display-options">
-			{{ lang('SORT_BY') }}{{ lang('COLON') }}
-			<select name="sort_key">
-				<option value="user_lastvisit" {% if SORT_KEY == 'user_lastvisit' %} selected {% endif %}>{{ lang('ACP_USERREMINDER_KEY_LV') }}</option>
-				<option value="user_regdate" {% if SORT_KEY == 'user_regdate' %} selected {% endif %}>{{ lang('ACP_USERREMINDER_KEY_RD') }}</option>
-				{% if SORT_ONE_ABLE %}
-					<option value="mot_reminded_one"{% if SORT_KEY == 'mot_reminded_one' %} selected {% endif %}>{{ lang('ACP_USERREMINDER_KEY_RO') }}</option>
-				{% endif %}
-				{% if SORT_TWO_ABLE %}
-					<option value="mot_reminded_two"{% if SORT_KEY == 'mot_reminded_two' %} selected {% endif %}>{{ lang('ACP_USERREMINDER_KEY_RT') }}</option>
-				{% endif %}
-			</select>&nbsp;
-			<select name="sort_dir">
-				<option value="DESC" {% if SORT_DIR == 'DESC' %} selected {% endif %}>{{ lang('ACP_USERREMINDER_SORT_DESC') }}</option>
-				<option value="ASC" {% if SORT_DIR == 'ASC' %} selected {% endif %}>{{ lang('ACP_USERREMINDER_SORT_ASC') }}</option>
-			</select>
-			<input class="button2" type="submit" value="{{ lang('GO') }}" name="sort" />
-		</fieldset>
+	{% if ENABLE_REMIND %}
+	<fieldset class="quick">
+		<input class="button2" type="submit" name="rem_marked" value="{{ lang('REMIND_MARKED') }}" /><br />
+		<p class="small"><a href="#" onclick="marklist('acp_userreminder_zeroposter', 'mark_remind', true); return false;">{{ lang('MARK_ALL') }}</a> &bull; <a href="#" onclick="marklist('acp_userreminder_zeroposter', 'mark_remind', false); return false;">{{ lang('UNMARK_ALL') }}</a></p>
+	</fieldset>
+	{% endif %}
+
+	{% if ENABLE_REMIND and ENABLE_DELETE %}		{# Let's show the horizontal ruler only if both sets of buttons are shown #}
 		<hr />
-		
-		{% if ENABLE_REMIND %}
-		<fieldset class="quick">
-			<input class="button2" type="submit" name="rem_marked" value="{{ lang('REMIND_MARKED') }}" /><br />
-			<p class="small"><a href="#" onclick="marklist('acp_userreminder_zeroposter', 'mark_remind', true); return false;">{{ lang('MARK_ALL') }}</a> &bull; <a href="#" onclick="marklist('acp_userreminder_zeroposter', 'mark_remind', false); return false;">{{ lang('UNMARK_ALL') }}</a></p>
-		</fieldset>
-		{% endif %}
-		
-		{% if ENABLE_REMIND and ENABLE_DELETE %}		{# Let's show the horizontal ruler only if both sets of buttons are shown #}
-		<hr />
-		{% endif %}
-		
-		{% if ENABLE_DELETE %}
-		<fieldset class="quick">
-			<input class="button2" type="submit" name="delmarked" value="{{ lang('DELETE_MARKED') }}" /><br />
-			<p class="small"><a href="#" onclick="marklist('acp_userreminder_zeroposter', 'mark_delete', true); return false;">{{ lang('MARK_ALL') }}</a> &bull; <a href="#" onclick="marklist('acp_userreminder_zeroposter', 'mark_delete', false); return false;">{{ lang('UNMARK_ALL') }}</a></p>
-		</fieldset>
-		{% endif %}
-		{{ S_FORM_TOKEN }}
+	{% endif %}
 
-	{% include '@mot_userreminder/userreminder_version.html' %}
-	</form>
+	{% if ENABLE_DELETE %}
+	<fieldset class="quick">
+		<input class="button2" type="submit" name="delmarked" value="{{ lang('DELETE_MARKED') }}" /><br />
+		<p class="small"><a href="#" onclick="marklist('acp_userreminder_zeroposter', 'mark_delete', true); return false;">{{ lang('MARK_ALL') }}</a> &bull; <a href="#" onclick="marklist('acp_userreminder_zeroposter', 'mark_delete', false); return false;">{{ lang('UNMARK_ALL') }}</a></p>
+	</fieldset>
+	{% endif %}
 {% else %}
-	<form id="acp_userreminder_zeroposter" method="post" action="{{ U_ACTION }}">
-		{% if pagination %}
-		<div class="pagination top-pagination">
-			{% include 'pagination.html' %}
-		</div>
-		{% endif %}
-
-		<table class="table1 zebra-table fixed-width-table">
-			<thead>
-				<tr>
-					<th rowspan="2" style="width: 25%;">{{ lang('USERNAME') }}</th>
-					<th rowspan="2" style="text-align: center;">{{ lang('JOINED') }}</th>
-					<th colspan="2" style="text-align: center;">{{ lang('LAST_VISIT') }}</th>
-					<th rowspan="2" style="width: 80px; text-align: center;">{{ lang('MARK') }}</th>
-				</tr>
-				<tr>
-					<th style="text-align: center;">{{ lang('AT_DATE') }}</th>
-					<th style="text-align: center;">{{ lang('DAYS_AGO') }}</th>
-				</tr>
-			</thead>
-			<tbody>
-			{% for zeroposter  in zeroposter %}
-				<tr>
-					<td><a href="{{ zeroposter.SERVER_CONFIG }}" target="_blank" {% if zeroposter.USER_COLOUR %}style="color: #{{ zeroposter.USER_COLOUR }};" class="username-coloured"{% endif %}>{{ zeroposter.USERNAME }}</a></td>
-					<td style="text-align: center;">{{ zeroposter.JOINED }}</td>
-					<td style="text-align: center;">{{ zeroposter.LAST_VISIT }}</td>
-					<td style="text-align: center;">{{ zeroposter.OFFLINE_DAYS }}</td>
-					<td style="text-align: center;"><input type="checkbox" class="radio" name="mark_delete[]" value="{{ zeroposter.USER_ID }}" /></td>
-				</tr>
-			{% else %}
+	<table class="table1 zebra-table fixed-width-table">
+		<thead>
+			<tr>
+				<th rowspan="2" style="width: 25%;">{{ lang('USERNAME') }}</th>
+				<th rowspan="2" style="text-align: center;">{{ lang('JOINED') }}</th>
+				<th colspan="2" style="text-align: center;">{{ lang('LAST_VISIT') }}</th>
+				<th rowspan="2" style="width: 80px; text-align: center;">{{ lang('MARK') }}</th>
+			</tr>
+			<tr>
+				<th style="text-align: center;">{{ lang('AT_DATE') }}</th>
+				<th style="text-align: center;">{{ lang('DAYS_AGO') }}</th>
+			</tr>
+		</thead>
+		<tbody>
+		{% for zeroposter  in zeroposter %}
+			<tr>
+				<td><a href="{{ zeroposter.SERVER_CONFIG }}" target="_blank" {% if zeroposter.USER_COLOUR %}style="color: #{{ zeroposter.USER_COLOUR }};" class="username-coloured"{% endif %}>{{ zeroposter.USERNAME }}</a></td>
+				<td style="text-align: center;">{{ zeroposter.JOINED }}</td>
+				<td style="text-align: center;">{{ zeroposter.LAST_VISIT }}</td>
+				<td style="text-align: center;">{{ zeroposter.OFFLINE_DAYS }}</td>
+				<td style="text-align: center;"><input type="checkbox" class="radio" name="mark_delete[]" value="{{ zeroposter.USER_ID }}" /></td>
+			</tr>
+		{% else %}
 			<tr>
 				<td colspan="5" style="text-align: center;">{{ lang('ACP_USERREMINDER_NO_ENTRIES') }}</td>
 			</tr>
-			{% endfor %}
-			</tbody>
-		</table>
+		{% endfor %}
+		</tbody>
+	</table>
 
-		{% if pagination %}
-			<div class="pagination">
-				{% include 'pagination.html' %}
-			</div>
-		{% endif %}
+	{% if pagination %}
+		<div class="pagination">
+			{% include 'pagination.html' %}
+		</div>
+	{% endif %}
 
-		<fieldset class="display-options">
-			{{ lang('SORT_BY') }}{{ lang('COLON') }}
-			<select name="sort_key">
-				<option value="user_lastvisit" {% if SORT_KEY == 'user_lastvisit' %} selected {% endif %}>{{ lang('ACP_USERREMINDER_KEY_LV') }}</option>
-				<option value="user_regdate" {% if SORT_KEY == 'user_regdate' %} selected {% endif %}>{{ lang('ACP_USERREMINDER_KEY_RD') }}</option>
-			</select>&nbsp;
-			<select name="sort_dir">
-				<option value="DESC" {% if SORT_DIR == 'DESC' %} selected {% endif %}>{{ lang('ACP_USERREMINDER_SORT_DESC') }}</option>
-				<option value="ASC" {% if SORT_DIR == 'ASC' %} selected {% endif %}>{{ lang('ACP_USERREMINDER_SORT_ASC') }}</option>
-			</select>
-			<input class="button2" type="submit" value="{{ lang('GO') }}" name="sort" />
-		</fieldset>
-		<hr />
+	<fieldset class="display-options">
+		{{ lang('SORT_BY') }}{{ lang('COLON') }}
+		<select name="sort_key">
+			<option value="user_lastvisit" {% if SORT_KEY == 'user_lastvisit' %} selected {% endif %}>{{ lang('ACP_USERREMINDER_KEY_LV') }}</option>
+			<option value="user_regdate" {% if SORT_KEY == 'user_regdate' %} selected {% endif %}>{{ lang('ACP_USERREMINDER_KEY_RD') }}</option>
+		</select>&nbsp;
+		<select name="sort_dir">
+			<option value="DESC" {% if SORT_DIR == 'DESC' %} selected {% endif %}>{{ lang('ACP_USERREMINDER_SORT_DESC') }}</option>
+			<option value="ASC" {% if SORT_DIR == 'ASC' %} selected {% endif %}>{{ lang('ACP_USERREMINDER_SORT_ASC') }}</option>
+		</select>
+		<input class="button2" type="submit" value="{{ lang('GO') }}" name="sort" />
+	</fieldset>
+	<hr />
 
-		<fieldset class="quick">
-			<input class="button2" type="submit" name="delmarked" value="{{ lang('DELETE_MARKED') }}" /><br />
-			<p class="small"><a href="#" onclick="marklist('acp_userreminder_zeroposter', 'mark_delete', true); return false;">{{ lang('MARK_ALL') }}</a> &bull; <a href="#" onclick="marklist('acp_userreminder_zeroposter', 'mark_delete', false); return false;">{{ lang('UNMARK_ALL') }}</a></p>
-		{{ S_FORM_TOKEN }}
-		</fieldset>
-		
-	{% include '@mot_userreminder/userreminder_version.html' %}
-	</form>
+	<fieldset class="quick">
+		<input class="button2" type="submit" name="delmarked" value="{{ lang('DELETE_MARKED') }}" /><br />
+		<p class="small"><a href="#" onclick="marklist('acp_userreminder_zeroposter', 'mark_delete', true); return false;">{{ lang('MARK_ALL') }}</a> &bull; <a href="#" onclick="marklist('acp_userreminder_zeroposter', 'mark_delete', false); return false;">{{ lang('UNMARK_ALL') }}</a></p>
+	</fieldset>
 {% endif %}
+
+	{% if SHOW_EXPERT_MODE %}
+		<hr>
+		<fieldset class="quick">
+			<div class="mot_ur_expert_div">
+				{{ lang('ACP_USERREMINDER_REMIND_ALL_TEXT') }} <input class="button2" type="submit" name="remind_all" value="{{ lang('REMIND_ALL') }}" /><br>
+			</div>
+			<div class="mot_ur_expert_div">
+				{{ lang('ACP_USERREMINDER_DELETE_ALL_TEXT') }} <input class="button2" type="submit" name="delete_all" value="{{ lang('DELETE_ALL') }}" />
+			</div>
+		</fieldset>
+	{% endif %}
+	{{ S_FORM_TOKEN }}
+	<p id="centered_text">{{ USERREMINDER_VERSION }}</p>
+
+</form>
 
 {% include 'overall_footer.html' %}

@@ -1,0 +1,18 @@
+Subject: {SITENAME}: ¿Has perdido el interés?
+
+Hola {USERNAME},
+
+Te registraste en nuestro foro {SITENAME} en {REG_DATE}.
+Desde entonces ha habido varios días sin que te conectes, ¿has perdido tu interés en nuestro foro?
+
+En caso de que hayas olvidado tus credenciales, siempre puedes recuperarlas utilizando el siguiente enlace.
+
+{FORGOT_PASS}
+
+En cualquier caso, siempre puedes contactar con el administrador del foro a través de este correo electrónico: {ADMIN_MAIL}.
+
+Si no te conectas a nuestro foro en los próximos {DAYS_DEL_SLEEPERS} días tu cuenta puede ser eliminada sin previo aviso.
+
+Eseperamos verte pronto.
+
+{EMAIL_SIG}

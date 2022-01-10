@@ -3,7 +3,7 @@ Subject: {SITENAME}: Wir vermissen Sie noch immer!
 Hallo {USERNAME},
 
 wir haben Ihnen am {LAST_REMIND} eine Erinnerungs-Mail geschickt, weil Sie mehr als {DAYS_INACTIVE} Tage nicht im Forum {SITENAME} eingeloggt waren.
-Seit dieser Erinnerungs_Mail waren Sie noch nicht wieder in unserem Forum {SITENAME} aktiv.
+Seit dieser Erinnerungs-Mail waren Sie noch nicht wieder in unserem Forum {SITENAME} aktiv.
 Wir hoffen, dass Sie nicht das Interesse an unserem Forum verloren haben und sich bald wieder einloggen.
 
 Im Fall, dass Sie Ihre Zugangsdaten vergessen haben, können Sie diese immer unter dem nachfolgenden Link zurückerlangen:

@@ -1,8 +1,8 @@
 <?php
 /**
 *
-* @package UserReminder v1.3.4
-* @copyright (c) 2019, 2021 Mike-on-Tour
+* @package UserReminder v1.4.0
+* @copyright (c) 2019 - 2021 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
@@ -17,7 +17,7 @@ if (!defined('IN_PHPBB'))
 
 if (empty($lang) || !is_array($lang))
 {
-	$lang = array();
+	$lang = [];
 }
 
 // DEVELOPERS PLEASE NOTE
@@ -32,35 +32,47 @@ if (empty($lang) || !is_array($lang))
 // equally where a string contains only two placeholders which are used to wrap text
 // in a url you again do not need to specify an order e.g., 'Click %sHERE%s' is fine
 
-$lang = array_merge($lang, array(
-	'PLURAL_RULE'		=> 1,
+$lang = array_merge($lang, [
 	// Module
-	'CONFIRM_USER_DELETE'						=> array(
+	'CONFIRM_USER_DELETE'						=> [
 		1	=> 'Are you really certain that you want to delete 1 user?<br><br><strong>This removes users permenantly from the data base and cannot be undone!</strong>',
 		2	=> 'Are you really certain that you want to delete %d users?<br><br><strong>This removes users permenantly from the data base and cannot be undone!</strong>',
-	),
+	],
 	'NO_USER_SELECTED'							=> 'You have not selected any user for this action, please mark at least one user.',
-	'USER_DELETED'								=> array(
+	'USER_DELETED'								=> [
 		1	=> '1 users successfully deleted',
 		2	=> '%d users successfully deleted',
-	),
-	'USER_REMINDED'								=> array(
+	],
+	'USER_REMINDED'								=> [
 		1	=> 'Reminding email sent to 1 user',
 		2	=> 'Reminding email sent to %d users',
-	),
+	],
 	'USER_POSTS'								=> 'Posts',
 	'DAYS_AGO'									=> 'No. of days ago',
 	'AT_DATE'									=> 'On',
 	'MARK_REMIND'								=> 'Remind',
 	'MARK_DELETE'								=> 'Delete',
 	'REMIND_MARKED'								=> 'Remind marked',
+	'REMIND_ALL'								=> 'Remind all',
+	'ACP_USERREMINDER_REMIND_ALL_TEXT'			=> 'Reminds all members listet in this table due for a reminder.',
+	'ACP_USERREMINDER_DELETE_ALL_TEXT'			=> '<span style="color:red">Deletes <b>ALL</b> members listet in this table!</span>',
 	'LOG_INACTIVE_REMIND_ONE'					=> '<strong>Sent first reminder email to inactive users</strong><br>» %s',
 	'LOG_INACTIVE_REMIND_TWO'					=> '<strong>Sent second reminder email to inactive users</strong><br>» %s',
+	'LOG_SLEEPER_REMIND'						=> '<strong>Sent reminder email to sleepers</strong><br>» %s',
 	//ACP
 	'ACP_USERREMINDER'							=> 'User reminder',
 	'ACP_USERREMINDER_SETTINGS'					=> 'Settings for the user reminder',
 	'ACP_USERREMINDER_SETTINGS_EXPLAIN'			=> 'This is where you customize the user reminder.',
 	'ACP_USERREMINDER_SETTING_SAVED'			=> 'Settings for the user reminder successfully saved.',
+	'ACP_USERREMINDER_GENERAL_SETTINGS'			=> 'General settings',
+	'ACP_USERREMINDER_ROWS_PER_PAGE'			=> 'Rows per table page',
+	'ACP_USERREMINDER_ROWS_PER_PAGE_TEXT'		=> 'Choose the number of rows to be displayed per table page on the other tabs.',
+	'ACP_USERREMINDER_EXPERT_MODE'				=> 'Expert mode for the Reminder, Sleepers and Zeroposter tabs',
+	'ACP_USERREMINDER_EXPERT_MODE_TEXT'			=> 'If you choose ´Yes´ two additional buttons will be displayed beneath the tables on the Reminder, Sleepers
+													and Zeroposter tabs allowing you to remind or delete ALL members displayed in those tables.<br>
+													<span style="color:red">Since especially the ´Delete all´ button can cause severe harm usage of this
+													option is only recommended for administrators who are aware of the hazards involved!<br>
+													Please read the respective section in the ´README.md´ file prior to using this setting.</span>',
 	'ACP_USERREMINDER_TIME_SETTINGS_TITLE'		=> 'Configure the reminder intervals',
 	'ACP_USERREMINDER_TIME_SETTING_TEXT'		=> 'Configure the time in days until a user is viewed as inactive, the time in days between the first and second e-mail to remind this member that a login is necessary and the following period until this user is deleted.',
 	'ACP_USERREMINDER_INACTIVE'					=> 'Number of days a user is offline until this user is viewed as inactive',
@@ -69,6 +81,20 @@ $lang = array_merge($lang, array(
 	'ACP_USERREMINDER_AUTOREMIND'				=> 'Send reminder mails automatically?',
 	'ACP_USERREMINDER_DAYS_UNTIL_DELETED'		=> 'Number of days after last reminder until a user can be deleted',
 	'ACP_USERREMINDER_AUTODELETE'				=> 'Delete users automatically?',
+	// ACP Sleeper settings
+	'ACP_USERREMINDER_SLEEPER_CONFIG'			=> 'Sleeper configuration',
+	'ACP_USERREMINDER_SLEEPER_CONFIG_TEXT'		=> 'You can choose here whether sleepers should be reminded and after what number of days this should happen as
+													well as whether sleepers should be deleted automatically after a certain number of days.',
+	'ACP_USERREMINDER_REMIND_SLEEPER'			=> 'Do you want to remind sleepers?',
+	'ACP_USERREMINDER_REMIND_SLEEPER_TEXT'		=> 'If sleepers should be reminded to visit your forum after registration please select ´Yes´, in this case
+													you will see some more options.',
+	'ACP_USERREMINDER_SLEEPER_INACTIVE'			=> 'Number of days between registration and reminding',
+	'ACP_USERREMINDER_AUTODELETE_SLEEPER'		=> 'Do you want to delete sleepers automatically?',
+	'ACP_USERREMINDER_AUTODELETE_SLEEPER_TEXT'	=> 'If you select ´Yes´ sleepers will be deleted automatically.<br>
+													After selecting ´Yes´ another setting will be dislayed to select the number of days after which a sleeper
+													will be deleted. Depending on whether you selected to remind sleepers this number of days counts either
+													starting with this reminder or with the registration.',
+	'ACP_USERREMINDER_SLEEPER_DELETETIME'		=> 'Number of days until deletion',
 	// ACP Zeroposter settings
 	'ACP_USERREMINDER_ZEROPOSTER_CONFIG'		=> 'Zeroposter configuration',
 	'ACP_USERREMINDER_ZEROPOSTER_CONFIG_TEXT'	=> 'Here you can choose whether zeroposters should be treated like original inactive users. If you select ´Yes´ all settings in the previous section apply to zeroposters, too. In this case zeroposters will then be displayed in an extended table showing the dates of the first and second reminder and the select box for deletion like the table for users to be reminded.',
@@ -80,6 +106,17 @@ $lang = array_merge($lang, array(
 	'ACP_USERREMINDER_PROTECTED_GROUPS'			=> 'Please select the default group(s) whose members are to be protected against getting reminded and deleted. Groups already selected are highlighted.<br>While pressing and holding the ´Ctrl´ key you can select more than one group by clicking the respective names',
 	// ACP Mail settings
 	'ACP_USERREMINDER_MAIL_SETTINGS_TITLE'		=> 'Email configuration',
+	'ACP_USERREMINDER_MAIL_LIMITS_TEXT'			=> 'Here you can enter the limits defined by your provider for sending e-mails; these settings are important to
+													prevent losing e-mails during sending a large number of e-mails which which exceeds those limits.<br>
+													The pre-defined values stand for a maximum number of 150 e-mails which can be sent within one hour
+													(3600 seconds). <strong>Please enter the values which apply to your provider!</strong>',
+	'ACP_USERREMINDER_MAIL_LIMIT_NUMBER'		=> 'Maximum number of e-mails',
+	'ACP_USERREMINDER_MAIL_LIMIT_TIME'			=> 'Time frame in which this number of e-mails can be sent',
+	'ACP_USERREMINDER_MAIL_LIMIT_SECONDS'		=> 'seconds',
+	'ACP_USERREMINDER_CRON_EXP'					=> 'For your information you can see here at what time the cron task for sending e-mails run the last time and
+													how many e-mails can be sent currently without going into the queue.',
+	'ACP_USERREMINDER_LAST_CRON_RUN'			=> 'Last Cron run',
+	'ACP_USERREMINDER_AVAILABLE_MAIL_CHUNK'		=> 'Currently available number of e-mails',
 	'ACP_USERREMINDER_EMAIL_BCC_TEXT'			=> 'Here you can set one email address each for sending a blind carbon copy and/or a carbon copy of the reminding emails to.',
 	'ACP_USERREMINDER_EMAIL_BCC'				=> 'Send a blind carbon copy to',
 	'ACP_USERREMINDER_EMAIL_CC'					=> 'Send a carbon copy to',
@@ -90,6 +127,7 @@ $lang = array_merge($lang, array(
 	'ACP_USERREMINDER_MAIL_FILE'				=> 'Select the file you want to edit',
 	'ACP_USERREMINDER_MAIL_ONE'					=> '1st. reminder',
 	'ACP_USERREMINDER_MAIL_TWO'					=> '2nd. reminder',
+	'ACP_USERREMINDER_MAIL_SLEEPER'				=> 'Sleeper reminder',
 	'ACP_USERREMINDER_MAIL_PREVIEW'				=> 'In the window to the right you can edit the text of the choosen email. By clicking on the ´Preview´ button the text is shown below like
 													it will be shown in the sent email. The tokens will be replaced with your respective dta. Together with the preview there will be shown a button
 													to save the text as a file on your server.<br>
@@ -97,13 +135,15 @@ $lang = array_merge($lang, array(
 													- {USERNAME}: The members nickname<br>
 													- {LAST_VISIT}: Date of the last login<br>
 													- {LAST_REMIND}: Date of the first reminding mail<br>
+													- {REG_DATE}: Date of registration<br>
 													The following tokens can be used as placeholders for system data:<br>
 													- {SITENAME}: Name of your forum<br>
 													- {FORGOT_PASS}: Link to ´I have forgotten my password´<br>
 													- {ADMIN_MAIL}: The admins email address<br>
 													- {EMAIL_SIG}: Salutation<br>
 													- {DAYS_INACTIVE}: The above defined number of days of inactivity<br>
-													- {DAYS_TIL_DELETE}: The above defined number of days until deletion<br>',
+													- {DAYS_TIL_DELETE}: The above defined number of days until deletion<br>
+													- {DAYS_DEL_SLEEPERS}: The above defined number of days until a sleeper is deleted<br>',
 	'ACP_USERREMINDER_MAIL_LOAD_FILE'			=> 'Load file',
 	'ACP_USERREMINDER_PREVIEW_TEXT'				=> 'Please note:<br>In the preview text the tokens for the data of the addressed user are replaced with your respective data, this means that the resulting text logically might not make any sense.',
 	'ACP_USERREMINDER_MAIL_SAVE_FILE'			=> 'Save file',
@@ -124,10 +164,15 @@ $lang = array_merge($lang, array(
 	'ACP_USERREMINDER_KEY_LV'					=> 'Last visit',
 	'ACP_USERREMINDER_KEY_RO'					=> '1st reminder',
 	'ACP_USERREMINDER_KEY_RT'					=> '2nd reminder',
-	// ACP Registered Only
-	'ACP_USERREMINDER_REGISTERED_ONLY'			=> 'Sleepers',
-	'ACP_USERREMINDER_REGISTERED_ONLY_EXPLAIN'	=> 'A list of those users who have never been online after registration and activation.',
+	// ACP Sleeper
+	'ACP_USERREMINDER_SLEEPER'					=> 'Sleepers',
+	'ACP_USERREMINDER_SLEEPER_EXPLAIN'			=> 'A list of those users who have never been online after registration and activation.',
+	'ACP_USERREMINDER_REMINDER'					=> 'Reminder',
+	'ACP_USERREMINDER_KEY_RE'					=> 'Date',
 	// ACP Zeroposters
 	'ACP_USERREMINDER_ZEROPOSTER'				=> 'Zeroposters',
 	'ACP_USERREMINDER_ZEROPOSTER_EXPLAIN'		=> 'A list of those users who are online on a regular basis but have never posted anything.',
-));
+	// Support and Copyright
+	'ACP_USERREMINDER_SUPPORT'					=> 'If you want to donate to User Reminder´s development please use this link',
+	'ACP_USERREMINDER_VERSION'					=> '<img src="https://img.shields.io/badge/Version-%1$s-green.svg?style=plastic" /><br>&copy; 2019 - %2$d by Mike-on-Tour',
+]);

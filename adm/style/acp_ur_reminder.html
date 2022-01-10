@@ -100,7 +100,19 @@
 	{% endif %}
 	{{ S_FORM_TOKEN }}
 
-{% include '@mot_userreminder/userreminder_version.html' %}
+	{% if SHOW_EXPERT_MODE %}
+		<hr>
+		<fieldset class="quick">
+			<div class="mot_ur_expert_div">
+				{{ lang('ACP_USERREMINDER_REMIND_ALL_TEXT') }} <input class="button2" type="submit" name="remind_all" value="{{ lang('REMIND_ALL') }}" /><br>
+			</div>
+			<div class="mot_ur_expert_div">
+				{{ lang('ACP_USERREMINDER_DELETE_ALL_TEXT') }} <input class="button2" type="submit" name="delete_all" value="{{ lang('DELETE_ALL') }}" />
+			</div>
+		</fieldset>
+	{% endif %}
+
+	<p id="centered_text">{{ USERREMINDER_VERSION }}</p>
 </form>
 
 {% include 'overall_footer.html' %}

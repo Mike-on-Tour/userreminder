@@ -1,0 +1,18 @@
+Subject: {SITENAME} : Avez-vous perdu votre intérêt ?
+
+Bonjour {USERNAME},
+
+Vous vous êtes inscrit sur notre forum {SITENAME} le {REG_DATE}.
+Depuis lors, il y a eu un certain nombre de jours sans que vous vous connectiez, avez-vous perdu votre intérêt pour notre forum ?
+
+Si vous avez oublié vos informations d'identification, vous pouvez toujours les récupérer en utilisant le lien suivant :
+
+{FORGOT_PASS}
+
+Dans tous les cas, vous pouvez toujours contacter l'administrateur du forum à l'adresse suivante : {ADMIN_MAIL}.
+
+Si vous n'êtes pas connecté à notre forum dans les prochains {DAYS_DEL_SLEEPERS} jours, votre compte peut être supprimé sans autre avis.
+
+Au plaisir de vous voir bientôt.
+
+{EMAIL_SIG}

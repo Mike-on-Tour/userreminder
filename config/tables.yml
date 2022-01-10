@@ -1,0 +1,2 @@
+parameters:
+    mot.userreminder.tables.mot_userreminder_remind_queue: '%core.table_prefix%mot_userreminder_remind_queue'

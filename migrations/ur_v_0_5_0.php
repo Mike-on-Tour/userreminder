@@ -16,7 +16,7 @@ class ur_v_0_5_0 extends \phpbb\db\migration\migration
 	/**
 	* Check for migration v_0_2_0 to be installed
 	*/
-	static public function depends_on()
+	public static function depends_on()
 	{
 		return array('\mot\userreminder\migrations\ur_v_0_2_0');
 	}

@@ -3,7 +3,7 @@ Subject: {SITENAME}: We're still missing you!
 Hello {USERNAME},
 
 You received a reminding email on {LAST_REMIND} because you have not been logged in to our forum {SITENAME} for more than {DAYS_INACTIVE} days.
-You have again not been logged into our forum {SITENAME} sincen then.
+You have again not been logged into our forum {SITENAME} since then.
 We hope that you have not lost interest in our forum we will see you again soon!
 
 In case you have forgotten your credentials you can always retrieve them using the following link.

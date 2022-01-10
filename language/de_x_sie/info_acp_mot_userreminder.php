@@ -1,8 +1,8 @@
 <?php
 /**
 *
-* @package UserReminder v1.3.0
-* @copyright (c) 2019, 2020 Mike-on-Tour
+* @package UserReminder v1.4.0
+* @copyright (c) 2019 - 2021 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
@@ -17,7 +17,7 @@ if (!defined('IN_PHPBB'))
 
 if (empty($lang) || !is_array($lang))
 {
-	$lang = array();
+	$lang = [];
 }
 
 // DEVELOPERS PLEASE NOTE
@@ -32,43 +32,78 @@ if (empty($lang) || !is_array($lang))
 // equally where a string contains only two placeholders which are used to wrap text
 // in a url you again do not need to specify an order e.g., 'Click %sHERE%s' is fine
 
-$lang = array_merge($lang, array(
-	'PLURAL_RULE'		=> 1,
+$lang = array_merge($lang, [
 	// Module
-	'CONFIRM_USER_DELETE'						=> array(
+	'CONFIRM_USER_DELETE'						=> [
 		1	=> 'Sind Sie sicher, dass Sie 1 Mitglied löschen möchten?<br><br>Damit werden Mitglieder endgültig aus der Datenbank entfernt, <strong>dieser Vorgang kann nicht rückgängig gemacht werden!</strong>',
 		2	=> 'Sind Sie sicher, dass Sie %d Mitglieder löschen möchten?<br><br>Damit werden Mitglieder endgültig aus der Datenbank entfernt, <strong>dieser Vorgang kann nicht rückgängig gemacht werden!</strong>',
-	),
+	],
 	'NO_USER_SELECTED'							=> 'Es wurde kein Mitglied für diese Aktion markiert. Bitte mindestens ein Mitglied markieren.',
-	'USER_DELETED'								=> array(
+	'USER_DELETED'								=> [
 		1	=> '1 Mitglied erfolgreich gelöscht',
 		2	=> '%d Mitglieder erfolgreich gelöscht',
-	),
-	'USER_REMINDED'								=> array(
+	],
+	'USER_REMINDED'								=> [
 		1	=> '1 Mitglied per eMail erinnert',
 		2	=> '%d Mitglieder per eMail erinnert',
-	),
+	],
 	'USER_POSTS'								=> 'Beiträge',
 	'DAYS_AGO'									=> 'vor Anzahl Tagen',
 	'AT_DATE'									=> 'Am',
 	'MARK_REMIND'								=> 'Erinnern',
 	'MARK_DELETE'								=> 'Löschen',
 	'REMIND_MARKED'								=> 'Markierte erinnern',
+	'REMIND_ALL'								=> 'Alle erinnern',
+	'ACP_USERREMINDER_REMIND_ALL_TEXT'			=> 'Erinnert alle zur Erinnerung heranstehenden Mitglieder in dieser Tabelle.',
+	'ACP_USERREMINDER_DELETE_ALL_TEXT'			=> '<span style="color:red">Löscht <b>ALLE</b> in dieser Tabelle gelisteten Mitglieder!</span>',
 	'LOG_INACTIVE_REMIND_ONE'					=> '<strong>Erste Erinnerungs-E-Mail an inaktive Benutzer verschickt</strong><br>» %s',
 	'LOG_INACTIVE_REMIND_TWO'					=> '<strong>Zweite Erinnerungs-E-Mail an inaktive Benutzer verschickt</strong><br>» %s',
+	'LOG_SLEEPER_REMIND'						=> '<strong>Erinnerungs-E-Mail an Schläfer verschickt</strong><br>» %s',
 	//ACP Settings
 	'ACP_USERREMINDER'							=> 'User Reminder',
 	'ACP_USERREMINDER_SETTINGS'					=> 'Einstellungen',
 	'ACP_USERREMINDER_SETTINGS_EXPLAIN'			=> 'Hier können Sie die Einstellungen für den User Reminder ändern.',
 	'ACP_USERREMINDER_SETTING_SAVED'			=> 'Die Einstellungen für den User Reminder wurden erfolgreich gesichert.',
+	'ACP_USERREMINDER_GENERAL_SETTINGS'			=> 'Allgemeine Einstellungen',
+	'ACP_USERREMINDER_ROWS_PER_PAGE'			=> 'Zeilen pro Tabellenseite',
+	'ACP_USERREMINDER_ROWS_PER_PAGE_TEXT'		=> 'Wählen Sie hier die Anzahl der Zeilen, die pro Tabellenseite in den anderen Reitern angezeigt
+													werden soll.',
+	'ACP_USERREMINDER_EXPERT_MODE'				=> 'Experten-Modus für die Seiten mit zu erinnernden Mitgliedern, Null-Postern und Schläfern',
+	'ACP_USERREMINDER_EXPERT_MODE_TEXT'			=> 'Wenn Sie hier ´Ja´ wählen, werden unterhalb der Tabellen mit den zu erinnernden Mitgliedern,
+													Null-Postern und Schläfern zwei zusätzliche Buttons angezeigt, mit denen ALLE in der
+													jeweiligen Tabelle aufgelisteten Mitglieder erinnert bzw. gelöscht werden können.<br>
+													<span style="color:red">Weil insbesondere mit dem ´Alle löschen´-Button großer Schaden
+													angerichtet werden kann, wird die Nutzung dieser Option nur für Administratoren empfohlen,
+													die sich des damit einhergehenden Risikos bewusst sind!<br>
+													Lesen Sie bitte den entsprechenden Abschnitt in der Datei ´README.md´ bevor Sie diese
+													Einstellung verwenden.</span>',
 	'ACP_USERREMINDER_TIME_SETTINGS_TITLE'		=> 'Konfiguration der Erinnerungsintervalle',
-	'ACP_USERREMINDER_TIME_SETTING_TEXT'		=> 'Einstellungen für die Zeitdauer, bis ein Mitglied als inaktiv gilt, Dauer zwischen der ersten und zweiten Erinnerung sowie die darauf folgende Dauer bis zur Löschung. Außerdem kann hier ausgewählt werden, ob Erinnerungs-Mails automatisch verschickt und Löschungen automatisch erfolgen sollen.',
+	'ACP_USERREMINDER_TIME_SETTING_TEXT'		=> 'Einstellungen für die Zeitdauer, bis ein Mitglied als inaktiv gilt, Dauer zwischen der
+													ersten und zweiten Erinnerung sowie die darauf folgende Dauer bis zur Löschung. Außerdem
+													kann hier ausgewählt werden, ob Erinnerungs-Mails automatisch verschickt und Löschungen
+													automatisch erfolgen sollen.',
 	'ACP_USERREMINDER_INACTIVE'					=> 'Anzahl der Tage, die ein Mitglied offline sein muss, um als inaktiv zu gelten',
-	'ACP_USERREMINDER_DAYS_REMINDED'			=> 'Anzahl der Tage bis ein als inaktiv eingestuftes Mitglied die zweite Erinnerungsmail bekommen soll;<br>
-													die Eingabe von ´0´ schaltet die zweite Erinnerungsmail ab',
+	'ACP_USERREMINDER_DAYS_REMINDED'			=> 'Anzahl der Tage bis ein als inaktiv eingestuftes Mitglied die zweite Erinnerungs-Mail
+													bekommen soll;<br>
+													die Eingabe von ´0´ schaltet die zweite Erinnerungs-Mail ab',
 	'ACP_USERREMINDER_AUTOREMIND'				=> 'Erinnerungs-Mails automatisch versenden?',
 	'ACP_USERREMINDER_DAYS_UNTIL_DELETED'		=> 'Anzahl der Tage zwischen letzter Erinnerung und Löschen des Mitgliedes',
 	'ACP_USERREMINDER_AUTODELETE'				=> 'Mitglieder nach Ablauf aller Wartezeiten automatisch löschen?',
+	// ACP Sleeper settings
+	'ACP_USERREMINDER_SLEEPER_CONFIG'			=> 'Konfiguration für Schläfer',
+	'ACP_USERREMINDER_SLEEPER_CONFIG_TEXT'		=> 'Hier können Sie einstellen, ob Schläfer erinnert werden sollen und nach Ablauf von wieviel
+													Tagen dies geschehen soll und ob sie automatisch nach einer bestimmten Anzahl von Tagen
+													gelöscht werden sollen.',
+	'ACP_USERREMINDER_REMIND_SLEEPER'			=> 'Sollen Schläfer erinnert werden?',
+	'ACP_USERREMINDER_REMIND_SLEEPER_TEXT'		=> 'Wenn Schläfer daran erinnert werden sollen, das Forum nach Registrierung zu besuchen, wählen
+													Sie hier ´Ja´, dann werden Ihnen weitere Optionen angezeigt.',
+	'ACP_USERREMINDER_SLEEPER_INACTIVE'			=> 'Anzahl der Tage seit Registrierung bis zur Erinnerung',
+	'ACP_USERREMINDER_AUTODELETE_SLEEPER'		=> 'Sollen Schläfer automatisch gelöscht werden?',
+	'ACP_USERREMINDER_AUTODELETE_SLEEPER_TEXT'	=> 'Wenn Sie hier ´Ja´ auswählen, werden Schläfer automatisch gelöscht.<br>
+													Bei Auswahl von ´Ja´ erscheint eine weitere Einstellung, in der Sie die Anzahl der Tage
+													angeben können, nach deren Ablauf gelöscht wird. Abhängig davon ob Sie Schläfer erinnern
+													möchten, zählen diese Tage entweder ab der Erinnerung bzw. ab der Registrierung.',
+	'ACP_USERREMINDER_SLEEPER_DELETETIME'		=> 'Anzahl Tage bis zum Löschen',
 	// ACP Zeroposter settings
 	'ACP_USERREMINDER_ZEROPOSTER_CONFIG'		=> 'Konfiguration für Null-Poster',
 	'ACP_USERREMINDER_ZEROPOSTER_CONFIG_TEXT'	=> 'Hier können Sie wählen, ob Null-Poster wie originäre inaktive Benutzer behandelt werden sollen. Wenn Sie ´Ja´ auswählen, gelten die Einstellungen im vorherigen Abschnitt auch für Null-Poster und sie werden statt in einer vereinfachten Tabelle in einer mit den Daten für die erste und zweite Erinnerung sowie für die Löschung dargestellt.',
@@ -80,16 +115,29 @@ $lang = array_merge($lang, array(
 	'ACP_USERREMINDER_PROTECTED_GROUPS'			=> 'Auswahl von Hauptgruppe(n), deren Mitglieder von Erinnerungen und Löschung ausgenommen werden sollen. Unter Drücken und Halten der ´Strg´-Taste und Mausklick können mehrere Gruppen ausgewählt werden',
 	// ACP Mail settings
 	'ACP_USERREMINDER_MAIL_SETTINGS_TITLE'		=> 'Konfiguration der E-Mails',
+	'ACP_USERREMINDER_MAIL_LIMITS_TEXT'			=> 'Hier können Sie die von Ihrem Provider festgelegten Grenzen für den Versand von E-Mails eingeben; diese Werte
+													sind wichtig, damit beim Versand von mehreren Erinnerungs-Mails keine verloren gehen.<br>
+													Die voreingestellten Werte bedeuten, dass innerhalb einer Stunde (3600 Sekunden) maximal 150 E-Mails
+													versendet werden dürfen. <strong>Tragen Sie hier bitte die für Ihren Provider gültigen Daten ein!</strong>',
+	'ACP_USERREMINDER_MAIL_LIMIT_NUMBER'		=> 'Maximale Anzahl von E-Mails',
+	'ACP_USERREMINDER_MAIL_LIMIT_TIME'			=> 'Zeitrahmen, in dem diese Anzahl versandt werden kann',
+	'ACP_USERREMINDER_MAIL_LIMIT_SECONDS'		=> 'Sekunden',
+	'ACP_USERREMINDER_CRON_EXP'					=> 'Hier finden Sie zu Ihrer Information Angaben darüber, wann die Cron-Aufgabe zum Versenden von E-Mails
+													zuletzt gestartet wurde und wieviele E-Mails atuell noch versendet werden können, ohne in die Warteschleife
+													aufgenommen zu werden.',
+	'ACP_USERREMINDER_LAST_CRON_RUN'			=> 'Letzter Cron-Lauf',
+	'ACP_USERREMINDER_AVAILABLE_MAIL_CHUNK'		=> 'Aktuell verfügbare Anzahl an E-Mails',
 	'ACP_USERREMINDER_EMAIL_BCC_TEXT'			=> 'Hier können Sie jeweils eine E-Mail-Adresse angeben, die in Blindkopie und/oder in Kopie an den Erinnerungs-Mails beteiligt wird.',
 	'ACP_USERREMINDER_EMAIL_BCC'				=> 'Blindkopie der Erinnerungs-Mail an',
 	'ACP_USERREMINDER_EMAIL_CC'					=> 'Kopie der Erinnerungs-Mail an',
 	// ACP Mail text edit
 	'ACP_USERREMINDER_MAIL_EDIT_TITLE'			=> 'Bearbeiten der E-Mail Texte',
-	'ACP_USERREMINDER_MAIL_EDIT_TEXT'			=> 'Bearbeitung des voreingestellten Textes für die erste und zweite Erinnerungsmail.',
+	'ACP_USERREMINDER_MAIL_EDIT_TEXT'			=> 'Bearbeitung des voreingestellten Textes für die erste und zweite Erinnerungs-Mail.',
 	'ACP_USERREMINDER_MAIL_LANG'				=> 'Sprache auswählen',
 	'ACP_USERREMINDER_MAIL_FILE'				=> 'Zu bearbeitende Datei wählen',
 	'ACP_USERREMINDER_MAIL_ONE'					=> '1. Erinnerung',
 	'ACP_USERREMINDER_MAIL_TWO'					=> '2. Erinnerung',
+	'ACP_USERREMINDER_MAIL_SLEEPER'				=> 'Erinnerung Schläfer',
 	'ACP_USERREMINDER_MAIL_PREVIEW'				=> 'Im Fenster rechts kann der Text der ausgewählten E-Mail bearbeitet werden. Durch Anklicken des ´Vorschau´-Buttons wird der Text dargestellt,
 													wie er später in der E-Mail versandt wird, die Tokens werden dabei durch Ihre Daten ersetzt. Zusätzlich wird mit der Vorschau auch ein Button
 													zum Speichern des Textes auf dem Server dargestellt.<br>
@@ -97,13 +145,15 @@ $lang = array_merge($lang, array(
 													- {USERNAME}: Nickname des Mitgliedes<br>
 													- {LAST_VISIT}: Datum des letzten Einloggens<br>
 													- {LAST_REMIND}: Datum der ersten Erinnerungs-Mail<br>
+													- {REG_DATE}: Datum der Registrierung<br>
 													Die folgenden Tokens können als Platzhalter für systembezogene Daten verwendet werden:<br>
 													- {SITENAME}: Name des Forums<br>
 													- {FORGOT_PASS}: Link zu ´Ich habe mein Passwort vergessen´<br>
 													- {ADMIN_MAIL}: Email-Adresse des Foren-Admins<br>
 													- {EMAIL_SIG}: Absender-Grußformel<br>
 													- {DAYS_INACTIVE}: Oben angegebene Anzahl Tage der Inaktivität<br>
-													- {DAYS_TIL_DELETE}: Oben angegebene Anzahl an Tagen bis zur Löschung<br>',
+													- {DAYS_TIL_DELETE}: Oben angegebene Anzahl an Tagen bis zur Löschung<br>
+													- {DAYS_DEL_SLEEPERS}: Oben angegebene Anzahl an Tagen bis zur Löschung von Schläfern<br>',
 	'ACP_USERREMINDER_MAIL_LOAD_FILE'			=> 'Datei laden',
 	'ACP_USERREMINDER_PREVIEW_TEXT'				=> 'Bitte beachten:<br>Im Vorschautext werden die Tokens für die Daten des angeschriebenen Mitgliedes mit Ihren Daten ersetzt, dies muss nicht unbedingt einen logisch sinnvollen Text ergeben.',
 	'ACP_USERREMINDER_MAIL_SAVE_FILE'			=> 'Datei speichern',
@@ -124,10 +174,15 @@ $lang = array_merge($lang, array(
 	'ACP_USERREMINDER_KEY_LV'					=> 'Letzter Besuch',
 	'ACP_USERREMINDER_KEY_RO'					=> '1. Erinnerung',
 	'ACP_USERREMINDER_KEY_RT'					=> '2. Erinnerung',
-	// ACP Registered Only
-	'ACP_USERREMINDER_REGISTERED_ONLY'			=> 'Schläfer',
-	'ACP_USERREMINDER_REGISTERED_ONLY_EXPLAIN'	=> 'Hier werden die Mitglieder aufgelistet, die nach Registrierung und Aktivierung noch nie online waren.',
+	// ACP Sleeper
+	'ACP_USERREMINDER_SLEEPER'					=> 'Schläfer',
+	'ACP_USERREMINDER_SLEEPER_EXPLAIN'			=> 'Hier werden die Mitglieder aufgelistet, die nach Registrierung und Aktivierung noch nie online waren.',
+	'ACP_USERREMINDER_REMINDER'					=> 'Erinnerung',
+	'ACP_USERREMINDER_KEY_RE'					=> 'Erinnerungsdatum',
 	// ACP Zeroposters
 	'ACP_USERREMINDER_ZEROPOSTER'				=> 'Null-Poster',
 	'ACP_USERREMINDER_ZEROPOSTER_EXPLAIN'		=> 'Hier werden die Mitglieder aufgelistet, die zwar regelmäßig online sind, aber bisher noch keine Beiträge gepostet haben.',
-));
+	// Support and Copyright
+	'ACP_USERREMINDER_SUPPORT'					=> 'Wenn Sie die Entwicklung der Erweiterung ´User Reminder´ unterstützen möchten, können Sie das hier tun',
+	'ACP_USERREMINDER_VERSION'					=> '<img src="https://img.shields.io/badge/Version-%1$s-green.svg?style=plastic" /><br>&copy; 2019 - %2$d by Mike-on-Tour',
+]);

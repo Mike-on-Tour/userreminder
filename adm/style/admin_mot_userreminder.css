@@ -15,3 +15,8 @@
 	text-align: center;
 	vertical-align: middle;
 }
+
+/* style settings for expert mode */
+.mot_ur_expert_div {
+	margin-bottom: 0.5em;
+}

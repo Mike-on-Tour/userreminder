@@ -1,0 +1,17 @@
+Subject: {SITENAME}: Geen interesse meer?
+
+Hallo {USERNAME},
+
+Je hebt je geregistreerd op ons forum {SITENAME} op {REG_DATE}.
+Sindsdien is het aan aantal dagen geleden dat je niet bent ingelogd, heb geen interesse in ons forum?
+In het geval dat je je inloggegevens bent vergeten, kun je deze altijd ophalen via de volgende link.
+
+{FORGOT_PASS}
+
+Je kunt ook altijd contact opnemen met de beheerder van het forum via email op dit adres: {ADMIN_MAIL}.
+
+Wanneer je niet inlogt binnen de komende {DAYS_DEL_SLEEPERS} dagen, dan zal je account zonder tegenbericht verwijderd worden.
+
+We hopen je snel te zien
+
+{EMAIL_SIG}

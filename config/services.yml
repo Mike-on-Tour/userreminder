@@ -1,3 +1,6 @@
+imports:
+    - { resource: tables.yml }
+
 services:
     mot.userreminder.listener:
         class: mot\userreminder\event\main_listener
@@ -18,4 +21,37 @@ services:
             - '@log'
             - '%core.root_path%'
             - '%core.php_ext%'
+            - '%mot.userreminder.tables.mot_userreminder_remind_queue%'
 
+    mot.userreminder.controller.ur_acp:
+        class: mot\userreminder\controller\ur_acp
+        arguments:
+            - '@mot.userreminder.common'
+            - '@config'
+            - '@config_text'
+            - '@dbal.conn'
+            - '@group_helper'
+            - '@language'
+            - '@pagination'
+            - '@ext.manager'
+            - '@request'
+            - '@template'
+            - '@user'
+            - '%core.php_ext%'
+            - '%core.root_path%'
+
+    mot.userreminder.cron.task.mot_ur_reminder_cron:
+        class: mot\userreminder\cron\task\mot_ur_reminder_cron
+        arguments:
+            - '@mot.userreminder.common'
+            - '@config'
+            - '@dbal.conn'
+            - '@log'
+            - '@user'
+            - '%core.root_path%'
+            - '%core.php_ext%'
+            - '%mot.userreminder.tables.mot_userreminder_remind_queue%'
+        calls:
+            - [set_name, [cron.task.mot_ur_reminder_cron]]
+        tags:
+            - { name: cron.task }

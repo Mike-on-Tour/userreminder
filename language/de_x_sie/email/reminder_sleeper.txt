@@ -1,0 +1,18 @@
+Subject: {SITENAME}: Haben Sie doch kein Interesse?
+
+Hallo {USERNAME},
+
+Sie haben sich am {REG_DATE} im Forum {SITENAME} registriert.
+Das ist schon einige Tage her und Sie haben sich noch nicht im Forum eingeloggt; haben Sie doch kein Interesse an unserem Forum?
+
+Für den Fall, dass Sie Ihre Zugangsdaten vergessen haben, können Sie sie immer unter dem nachfolgenden Link zurückerlangen:
+
+{FORGOT_PASS}
+
+In jedem Fall können Sie den Administrator des Forums immer unter der E-Mail {ADMIN_MAIL} kontaktieren.
+
+Sollten Sie sich nicht innerhalb der nächsten {DAYS_DEL_SLEEPERS} Tage einloggen, kann Ihr Account ohne weitere Benachrichtigung gelöscht werden.
+
+Wir hoffen, Sie bald zu sehen.
+
+{EMAIL_SIG}
