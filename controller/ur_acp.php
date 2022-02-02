@@ -1,8 +1,8 @@
 <?php
 /**
 *
-* @package User Reminder v1.4.0
-* @copyright (c) 2019 - 2021 Mike-on-Tour
+* @package User Reminder v1.4.1
+* @copyright (c) 2019 - 2022 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
@@ -92,11 +92,11 @@ class ur_acp
 		$lang_dir = $this->root_path . 'ext/mot/userreminder/language';
 		$ur_lang = $ur_file = $ur_email_text = $preview_text = '';
 		$show_preview = $show_filecontent = false;
-		$lang_arr = array (
+		$lang_arr = [
 			'reminder_one'		=> $this->language->lang('ACP_USERREMINDER_MAIL_ONE'),
 			'reminder_two'		=> $this->language->lang('ACP_USERREMINDER_MAIL_TWO'),
 			'reminder_sleeper'	=> $this->language->lang('ACP_USERREMINDER_MAIL_SLEEPER'),
-		);
+		];
 
 		/*
 		* this IF clause gets activated when the 'submit' button is pressed, writes all settings to $config
@@ -117,18 +117,18 @@ class ur_acp
 
 			// save the settings to the phpbb_config table
 			$this->config->set('mot_ur_rows_per_page', $this->request->variable('mot_ur_rows_per_page', 0));
-			$this->config->set('mot_ur_expert_mode', ($this->request->variable('mot_ur_expert_mode', 0)) ? '1' : '0');
+			$this->config->set('mot_ur_expert_mode', $this->request->variable('mot_ur_expert_mode', 0));
 			$this->config->set('mot_ur_inactive_days', $this->request->variable('mot_ur_inactive_days', 0));
 			$this->config->set('mot_ur_days_reminded', $this->request->variable('mot_ur_days_reminded', 0));
-			$this->config->set('mot_ur_autoremind', ($this->request->variable('mot_ur_autoremind', 0)) ? '1' : '0');
+			$this->config->set('mot_ur_autoremind', $this->request->variable('mot_ur_autoremind', 0));
 			$this->config->set('mot_ur_days_until_deleted', $this->request->variable('mot_ur_days_until_deleted', 0));
-			$this->config->set('mot_ur_autodelete', ($this->request->variable('mot_ur_autodelete', 0)) ? '1' : '0');
-			$this->config->set('mot_ur_remind_sleeper', $this->request->variable('mot_ur_remind_sleeper', 0) ? '1' : '0');
+			$this->config->set('mot_ur_autodelete', $this->request->variable('mot_ur_autodelete', 0));
+			$this->config->set('mot_ur_remind_sleeper', $this->request->variable('mot_ur_remind_sleeper', 0));
 			$this->config->set('mot_ur_sleeper_inactive_days', $this->request->variable('mot_ur_sleeper_inactive_days', 0));
-			$this->config->set('mot_ur_sleeper_autoremind', $this->request->variable('mot_ur_sleeper_autoremind', 0) ? '1' : '0');
-			$this->config->set('mot_ur_sleeper_autodelete', $this->request->variable('mot_ur_sleeper_autodelete', 0) ? '1' : '0');
+			$this->config->set('mot_ur_sleeper_autoremind', $this->request->variable('mot_ur_sleeper_autoremind', 0));
+			$this->config->set('mot_ur_sleeper_autodelete', $this->request->variable('mot_ur_sleeper_autodelete', 0));
 			$this->config->set('mot_ur_sleeper_deletetime', $this->request->variable('mot_ur_sleeper_deletetime', 0));
-			$this->config->set('mot_ur_remind_zeroposter', $this->request->variable('mot_ur_remind_zeroposter', 0) ? '1' : '0');
+			$this->config->set('mot_ur_remind_zeroposter', $this->request->variable('mot_ur_remind_zeroposter', 0));
 			$this->config->set('mot_ur_protected_members', json_encode($protected_users_ids));
 			$this->config->set('mot_ur_protected_groups', json_encode($this->request->variable('mot_ur_protected_groups', [0])));
 			$this->config->set('mot_ur_mail_limit_number', $this->request->variable('mot_ur_mail_limit_number', 0));
@@ -338,7 +338,7 @@ class ur_acp
 			}
 		}
 
-		$deletemark = ($this->request->is_set_post('delmarked')) ? true : false;
+		$deletemark = $this->request->is_set_post('delmarked');
 		if ($deletemark)
 		{
 			$marked = $this->request->variable('mark_delete', [0]);
@@ -417,8 +417,8 @@ class ur_acp
 		}
 
 		// If remind_all or delete_all have been used we have to collect those users' id eligible for reminding or deleting (must have been offline for more than the selected number of inactive days)
-		$remind_all = ($this->request->is_set_post('remind_all')) ? true : false;
-		$delete_all = ($this->request->is_set_post('delete_all')) ? true : false;
+		$remind_all = $this->request->is_set_post('remind_all');
+		$delete_all = $this->request->is_set_post('delete_all');
 		if ($remind_all || $delete_all)
 		{
 			if ($remind_all && (count($reminder_ids) > 0))
@@ -466,15 +466,15 @@ class ur_acp
 			$no_offline_days = (int) (($now - $row['mot_last_login']) / self::SECS_PER_DAY);
 			$date_reminder_one = ($row['mot_reminded_one'] > 0) ? $this->user->format_date($row['mot_reminded_one']) : '-';
 			$reminder_one_ago = ($row['mot_reminded_one'] > 0) ? (int) (($now - $row['mot_reminded_one']) / self::SECS_PER_DAY) : '-';
-			$reminder_enabled = (($row['mot_reminded_one'] == 0) || (($row['mot_reminded_two'] == 0) && ($reminder_one_ago >= $this->config['mot_ur_days_reminded']))) ? '1' : '0';
+			$reminder_enabled = (($row['mot_reminded_one'] == 0) || (($row['mot_reminded_two'] == 0) && ($reminder_one_ago >= $this->config['mot_ur_days_reminded'])));
 			$date_reminder_two = ($row['mot_reminded_two'] > 0) ? $this->user->format_date($row['mot_reminded_two']) : '-';
 			$reminder_two_ago = ($row['mot_reminded_two'] > 0) ? (int) (($now - $row['mot_reminded_two']) / self::SECS_PER_DAY) : '-';
-			$enable_delete = ($reminder_two_ago >= $this->config['mot_ur_days_until_deleted']) ? '1' : '0';
-			if ($reminder_enabled > 0)
+			$enable_delete = ($reminder_two_ago >= $this->config['mot_ur_days_until_deleted']);
+			if ($reminder_enabled)
 			{
 				$enable_remind = 1;
 			}
-			if ($enable_delete > 0)
+			if ($enable_delete)
 			{
 				$delete_enabled = 1;
 			}
@@ -544,7 +544,7 @@ class ur_acp
 			}
 		}
 
-		$deletemark = ($this->request->is_set_post('delmarked')) ? true : false;
+		$deletemark = $this->request->is_set_post('delmarked');
 		if ($deletemark)
 		{
 			$marked = $this->request->variable('mark_delete', [0]);
@@ -635,8 +635,8 @@ class ur_acp
 			}
 		}
 
-		$remind_all = ($this->request->is_set_post('remind_all')) ? true : false;
-		$delete_all = ($this->request->is_set_post('delete_all')) ? true : false;
+		$remind_all = $this->request->is_set_post('remind_all');
+		$delete_all = $this->request->is_set_post('delete_all');
 		if ($remind_all || $delete_all)
 		{
 			if ($remind_all && (count($rem_sleeper_ids) > 0))
@@ -758,7 +758,7 @@ class ur_acp
 			}
 		}
 
-		$deletemark = ($this->request->is_set_post('delmarked')) ? true : false;
+		$deletemark = $this->request->is_set_post('delmarked');
 		if ($deletemark)
 		{
 			$marked = $this->request->variable('mark_delete', [0]);
@@ -852,8 +852,8 @@ class ur_acp
 			}
 		}
 
-		$remind_all = ($this->request->is_set_post('remind_all')) ? true : false;
-		$delete_all = ($this->request->is_set_post('delete_all')) ? true : false;
+		$remind_all = $this->request->is_set_post('remind_all');
+		$delete_all = $this->request->is_set_post('delete_all');
 		if ($remind_all || $delete_all)
 		{
 			if ($remind_all && (count($rem_zero_poster_ids) > 0))

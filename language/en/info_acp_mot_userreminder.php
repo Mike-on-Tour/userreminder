@@ -35,12 +35,12 @@ if (empty($lang) || !is_array($lang))
 $lang = array_merge($lang, [
 	// Module
 	'CONFIRM_USER_DELETE'						=> [
-		1	=> 'Are you really certain that you want to delete 1 user?<br><br><strong>This removes users permenantly from the data base and cannot be undone!</strong>',
-		2	=> 'Are you really certain that you want to delete %d users?<br><br><strong>This removes users permenantly from the data base and cannot be undone!</strong>',
+		1	=> 'Are you really certain that you want to delete 1 user?<br><br><strong>This removes the user permanently from the database and cannot be undone!</strong>',
+		2	=> 'Are you really certain that you want to delete %d users?<br><br><strong>This removes users permanently from the database and cannot be undone!</strong>',
 	],
 	'NO_USER_SELECTED'							=> 'You have not selected any user for this action, please mark at least one user.',
 	'USER_DELETED'								=> [
-		1	=> '1 users successfully deleted',
+		1	=> '1 user successfully deleted',
 		2	=> '%d users successfully deleted',
 	],
 	'USER_REMINDED'								=> [
@@ -54,15 +54,15 @@ $lang = array_merge($lang, [
 	'MARK_DELETE'								=> 'Delete',
 	'REMIND_MARKED'								=> 'Remind marked',
 	'REMIND_ALL'								=> 'Remind all',
-	'ACP_USERREMINDER_REMIND_ALL_TEXT'			=> 'Reminds all members listet in this table due for a reminder.',
-	'ACP_USERREMINDER_DELETE_ALL_TEXT'			=> '<span style="color:red">Deletes <b>ALL</b> members listet in this table!</span>',
+	'ACP_USERREMINDER_REMIND_ALL_TEXT'			=> 'Reminds all members listed in this table due for a reminder.',
+	'ACP_USERREMINDER_DELETE_ALL_TEXT'			=> '<span style="color:red">Deletes <b>ALL</b> members listed in this table!</span>',
 	'LOG_INACTIVE_REMIND_ONE'					=> '<strong>Sent first reminder email to inactive users</strong><br>» %s',
 	'LOG_INACTIVE_REMIND_TWO'					=> '<strong>Sent second reminder email to inactive users</strong><br>» %s',
 	'LOG_SLEEPER_REMIND'						=> '<strong>Sent reminder email to sleepers</strong><br>» %s',
 	//ACP
 	'ACP_USERREMINDER'							=> 'User reminder',
 	'ACP_USERREMINDER_SETTINGS'					=> 'Settings for the user reminder',
-	'ACP_USERREMINDER_SETTINGS_EXPLAIN'			=> 'This is where you customize the user reminder.',
+	'ACP_USERREMINDER_SETTINGS_EXPLAIN'			=> 'This is where you customise the user reminder.',
 	'ACP_USERREMINDER_SETTING_SAVED'			=> 'Settings for the user reminder successfully saved.',
 	'ACP_USERREMINDER_GENERAL_SETTINGS'			=> 'General settings',
 	'ACP_USERREMINDER_ROWS_PER_PAGE'			=> 'Rows per table page',
@@ -75,11 +75,11 @@ $lang = array_merge($lang, [
 													Please read the respective section in the ´README.md´ file prior to using this setting.</span>',
 	'ACP_USERREMINDER_TIME_SETTINGS_TITLE'		=> 'Configure the reminder intervals',
 	'ACP_USERREMINDER_TIME_SETTING_TEXT'		=> 'Configure the time in days until a user is viewed as inactive, the time in days between the first and second e-mail to remind this member that a login is necessary and the following period until this user is deleted.',
-	'ACP_USERREMINDER_INACTIVE'					=> 'Number of days a user is offline until this user is viewed as inactive',
-	'ACP_USERREMINDER_DAYS_REMINDED'			=> 'Number of days until a user counting as inactive is getting the second reminder mail;<br>
-													sending a second mail is shut off if you input ´0´',
+	'ACP_USERREMINDER_INACTIVE'					=> 'Number of days a user is offline before this user is viewed as inactive',
+	'ACP_USERREMINDER_DAYS_REMINDED'			=> 'Number of days before a user regarded as inactive will get the second reminder mail;<br>
+													sending a second mail is inactivated if you input ´0´',
 	'ACP_USERREMINDER_AUTOREMIND'				=> 'Send reminder mails automatically?',
-	'ACP_USERREMINDER_DAYS_UNTIL_DELETED'		=> 'Number of days after last reminder until a user can be deleted',
+	'ACP_USERREMINDER_DAYS_UNTIL_DELETED'		=> 'Number of days after last reminder before a user can be deleted',
 	'ACP_USERREMINDER_AUTODELETE'				=> 'Delete users automatically?',
 	// ACP Sleeper settings
 	'ACP_USERREMINDER_SLEEPER_CONFIG'			=> 'Sleeper configuration',
@@ -97,13 +97,13 @@ $lang = array_merge($lang, [
 	'ACP_USERREMINDER_SLEEPER_DELETETIME'		=> 'Number of days until deletion',
 	// ACP Zeroposter settings
 	'ACP_USERREMINDER_ZEROPOSTER_CONFIG'		=> 'Zeroposter configuration',
-	'ACP_USERREMINDER_ZEROPOSTER_CONFIG_TEXT'	=> 'Here you can choose whether zeroposters should be treated like original inactive users. If you select ´Yes´ all settings in the previous section apply to zeroposters, too. In this case zeroposters will then be displayed in an extended table showing the dates of the first and second reminder and the select box for deletion like the table for users to be reminded.',
+	'ACP_USERREMINDER_ZEROPOSTER_CONFIG_TEXT'	=> 'Here you can choose whether zeroposters should be treated like original inactive users. If you select ´Yes´ all settings in the previous section will also apply to zeroposters. In this case zeroposters will then be displayed in an extended table showing the dates of the first and second reminder and a select box for deletion like the table for users to be reminded.',
 	'ACP_USERREMINDER_REMIND_ZEROPOSTER'		=> 'Do you want to remind and delete zeroposters like inactive users?',
 	// ACP Protection settings
 	'ACP_USERREMINDER_PROTECTION_CONFIG'		=> 'Protected users configuration',
 	'ACP_USERREMINDER_PROTECTION_CONFIG_TEXT'	=> 'You can also name users who are protected against any reminder emails and deletion. You can either select individual users with their username and/or all members of a default group by selecting this group. Both selections work independently.',
-	'ACP_USERREMINDER_PROTECTED_MEMBERS'		=> 'Input of the usernames of users you want to protect against getting reminded and deleted.<br>Each username MUST BE on its own line!',
-	'ACP_USERREMINDER_PROTECTED_GROUPS'			=> 'Please select the default group(s) whose members are to be protected against getting reminded and deleted. Groups already selected are highlighted.<br>While pressing and holding the ´Ctrl´ key you can select more than one group by clicking the respective names',
+	'ACP_USERREMINDER_PROTECTED_MEMBERS'		=> 'Input of the usernames of users you want to protect against being reminded and deleted.<br>Each username MUST BE on its own line!',
+	'ACP_USERREMINDER_PROTECTED_GROUPS'			=> 'Please select the default group(s) whose members are to be protected against being reminded and deleted. Groups already selected are highlighted.<br>While pressing and holding the ´Ctrl´ key you can select more than one group by clicking the respective names',
 	// ACP Mail settings
 	'ACP_USERREMINDER_MAIL_SETTINGS_TITLE'		=> 'Email configuration',
 	'ACP_USERREMINDER_MAIL_LIMITS_TEXT'			=> 'Here you can enter the limits defined by your provider for sending e-mails; these settings are important to
@@ -113,7 +113,7 @@ $lang = array_merge($lang, [
 	'ACP_USERREMINDER_MAIL_LIMIT_NUMBER'		=> 'Maximum number of e-mails',
 	'ACP_USERREMINDER_MAIL_LIMIT_TIME'			=> 'Time frame in which this number of e-mails can be sent',
 	'ACP_USERREMINDER_MAIL_LIMIT_SECONDS'		=> 'seconds',
-	'ACP_USERREMINDER_CRON_EXP'					=> 'For your information you can see here at what time the cron task for sending e-mails run the last time and
+	'ACP_USERREMINDER_CRON_EXP'					=> 'For your information you can see here at what time the cron task for sending e-mails was run the last time and
 													how many e-mails can be sent currently without going into the queue.',
 	'ACP_USERREMINDER_LAST_CRON_RUN'			=> 'Last Cron run',
 	'ACP_USERREMINDER_AVAILABLE_MAIL_CHUNK'		=> 'Currently available number of e-mails',
@@ -128,8 +128,8 @@ $lang = array_merge($lang, [
 	'ACP_USERREMINDER_MAIL_ONE'					=> '1st. reminder',
 	'ACP_USERREMINDER_MAIL_TWO'					=> '2nd. reminder',
 	'ACP_USERREMINDER_MAIL_SLEEPER'				=> 'Sleeper reminder',
-	'ACP_USERREMINDER_MAIL_PREVIEW'				=> 'In the window to the right you can edit the text of the choosen email. By clicking on the ´Preview´ button the text is shown below like
-													it will be shown in the sent email. The tokens will be replaced with your respective dta. Together with the preview there will be shown a button
+	'ACP_USERREMINDER_MAIL_PREVIEW'				=> 'In the window to the right you can edit the text of the chosen email. By clicking on the ´Preview´ button the text is shown below as
+													it will be displayed in the sent email. The tokens will be replaced with your respective data. Together with the preview a button will be available
 													to save the text as a file on your server.<br>
 													You can use the following tokens as placeholders for the respective data of the addressed user:<br>
 													- {USERNAME}: The members nickname<br>

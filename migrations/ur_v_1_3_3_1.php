@@ -2,8 +2,8 @@
 
 /**
 *
-* @package User Reminder v1.4.0
-* @copyright (c) 2019 - 2021 Mike-on-Tour
+* @package User Reminder v1.4.1
+* @copyright (c) 2019 - 2022 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
@@ -18,48 +18,48 @@ class ur_v_1_3_3_1 extends \phpbb\db\migration\migration
 	*/
 	public static function depends_on()
 	{
-		return array('\mot\userreminder\migrations\ur_v_1_3_3_0');
+		return ['\mot\userreminder\migrations\ur_v_1_3_3_0'];
 	}
 
 	public function update_data()
 	{
 		return array(
-			array('if', array(
+			['if', [
 				$this->check_module('acp', 'ACP_USERREMINDER', 'ACP_USERREMINDER_REMINDER'),
-				array('module.add', array(
+				['module.add', [
 					'acp',
 					'ACP_USERREMINDER',
-					array(
+					[
 						'module_basename'	=> '\mot\userreminder\acp\reminder_module',
 						'module_langname'	=> 'ACP_USERREMINDER_REMINDER',
 						'module_mode'		=> 'reminders',
 						'module_auth'		=> 'ext_mot/userreminder && acl_a_board',
-				))),
-			)),
-			array('if', array(
-				$this->check_module('acp', 'ACP_USERREMINDER', 'ACP_USERREMINDER_SLEEPER'),
-				array('module.add', array(
+				]]],
+			]],
+			['if', [
+				$this->check_module('acp', 'ACP_USERREMINDER', 'ACP_USERREMINDER_REGISTERED_ONLY'),
+				['module.add', [
 					'acp',
 					'ACP_USERREMINDER',
-					array(
+					[
 						'module_basename'	=> '\mot\userreminder\acp\registrated_only_module',
-						'module_langname'	=> 'ACP_USERREMINDER_SLEEPER',
+						'module_langname'	=> 'ACP_USERREMINDER_REGISTERED_ONLY',
 						'module_mode'		=> 'sleepers',
 						'module_auth'		=> 'ext_mot/userreminder && acl_a_board',
-				))),
-			)),
-			array('if', array(
+				]]],
+			]],
+			['if', [
 				$this->check_module('acp', 'ACP_USERREMINDER', 'ACP_USERREMINDER_ZEROPOSTER'),
-				array('module.add', array(
+				['module.add', [
 					'acp',
 					'ACP_USERREMINDER',
-					array(
+					[
 						'module_basename'	=> '\mot\userreminder\acp\zeroposter_module',
 						'module_langname'	=> 'ACP_USERREMINDER_ZEROPOSTER',
 						'module_mode'		=> 'zeroposters',
 						'module_auth'		=> 'ext_mot/userreminder && acl_a_board',
-				))),
-			)),
+				]]],
+			]],
 		);
 	}
 

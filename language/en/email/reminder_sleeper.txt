@@ -9,10 +9,10 @@ In case you have forgotten your credentials you can always retrieve them using t
 
 {FORGOT_PASS}
 
-In any case you can always contact the administrator of the forum through this e-mail: {ADMIN_MAIL}.
+In any case you can always contact the administrator of the forum at this e-mail: {ADMIN_MAIL}.
 
-Shouldn't you be logged into our forum within the next {DAYS_DEL_SLEEPERS} days your account may be deleted without further notice.
+If you don't log in our forum within the next {DAYS_DEL_SLEEPERS} days your account may be deleted without further notice.
 
-Hpe to see you soon.
+Hope to see you soon.
 
 {EMAIL_SIG}

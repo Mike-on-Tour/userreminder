@@ -4,6 +4,26 @@ All changes to `Userreminder for phpBB` will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.4.1] - 2022-01-26
+
+### Added
+  
+### Changed
+-	Migration file `migrations/ur_v_0_1_0.php` from 'automatically' to 'manually' determine the module info in order to prevent error messages during a
+	fresh install of this version due to missing the (now obsolete and no longer present) `xyz_info.php` files
+-	Revoked the changes to `migrations/ur_v_1_3_3_0.php` and `migrations/ur_v_1_3_3_1.php` made in ver 1.4.0
+-	Some code optimisation in `controller/ur_acp.php`
+-	Replacement of long array declaration with short version in the a.m. changed files
+  
+### Fixed
+-	Some grammatical and spelling errors in en language files and mail texts
+-	A mis-named name attribute in `adm/style/acp_ur_sleeper.html` line 105 which prevented the array holding the sleepers selected for deletion from being
+	filled properly
+-	A problem with deleting this extension's data in `migrations/ur_v_1_4_0_0.php`
+  
+### Removed
+  
+  
 ## [1.4.0] - 2021-12-28
 
 ### Added

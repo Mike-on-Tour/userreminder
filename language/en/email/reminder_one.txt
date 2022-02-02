@@ -9,7 +9,7 @@ In case you have forgotten your credentials you can always retrieve them using t
 
 {FORGOT_PASS}
 
-In any case you can always contact the administrator of the forum through this e-mail: {ADMIN_MAIL}.
+In any case you can always contact the administrator of the forum at this e-mail: {ADMIN_MAIL}.
 
 Hope to see you back again.
 

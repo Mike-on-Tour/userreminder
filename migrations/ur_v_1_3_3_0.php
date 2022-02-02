@@ -2,8 +2,8 @@
 
 /**
 *
-* @package User Reminder v1.4.0
-* @copyright (c) 2019 - 2021 Mike-on-Tour
+* @package User Reminder v1.4.1
+* @copyright (c) 2019 - 2022 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
@@ -18,27 +18,27 @@ class ur_v_1_3_3_0 extends \phpbb\db\migration\migration
 	*/
 	public static function depends_on()
 	{
-		return array('\mot\userreminder\migrations\ur_v_1_3_2');
+		return ['\mot\userreminder\migrations\ur_v_1_3_2'];
 	}
 
 	public function update_data()
 	{
-		return array(
+		return [
 			// Update the version config variable
-			array('config.update', array('mot_ur_version', '1.3.3')),
+			['config.update', ['mot_ur_version', '1.3.3']],
 			// Remove the old ACP modules
-			array('if', array(
-				array('module.exists', array('acp', 'ACP_USERREMINDER', 'ACP_USERREMINDER_ZEROPOSTER')),
-				array('module.remove', array('acp', 'ACP_USERREMINDER', 'ACP_USERREMINDER_ZEROPOSTER')),
-			)),
-			array('if', array(
-				array('module.exists', array('acp', 'ACP_USERREMINDER', 'ACP_USERREMINDER_SLEEPER')),
-				array('module.remove', array('acp', 'ACP_USERREMINDER', 'ACP_USERREMINDER_SLEEPER')),
-			)),
-			array('if', array(
-				array('module.exists', array('acp', 'ACP_USERREMINDER', 'ACP_USERREMINDER_REMINDER')),
-				array('module.remove', array('acp', 'ACP_USERREMINDER', 'ACP_USERREMINDER_REMINDER')),
-			)),
-		);
+			['if', [
+				['module.exists', ['acp', 'ACP_USERREMINDER', 'ACP_USERREMINDER_ZEROPOSTER']],
+				['module.remove', ['acp', 'ACP_USERREMINDER', 'ACP_USERREMINDER_ZEROPOSTER']],
+			]],
+			['if', [
+				['module.exists', ['acp', 'ACP_USERREMINDER', 'ACP_USERREMINDER_REGISTERED_ONLY']],
+				['module.remove', ['acp', 'ACP_USERREMINDER', 'ACP_USERREMINDER_REGISTERED_ONLY']],
+			]],
+			['if', [
+				['module.exists', ['acp', 'ACP_USERREMINDER', 'ACP_USERREMINDER_REMINDER']],
+				['module.remove', ['acp', 'ACP_USERREMINDER', 'ACP_USERREMINDER_REMINDER']],
+			]],
+		];
 	}
 }
