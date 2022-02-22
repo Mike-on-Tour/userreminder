@@ -1,6 +1,6 @@
 # Userreminder
 
-![Version: 1.4.1](https://img.shields.io/badge/Version-1.4.1-green)  
+![Version: 1.4.2](https://img.shields.io/badge/Version-1.4.2-green)  
   
 ![phpBB 3.2.x Compatible](https://img.shields.io/badge/phpBB-3.2.x%20Compatible-009BDF)
 ![phpBB 3.3.x Compatible](https://img.shields.io/badge/phpBB-3.3.x%20Compatible-009BDF)

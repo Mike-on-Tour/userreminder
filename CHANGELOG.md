@@ -4,6 +4,18 @@ All changes to `Userreminder for phpBB` will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.4.2] - 2022-02-22
+
+### Added
+  
+### Changed
+  
+### Fixed
+-	The length of the column `remind_type` in the MOT_USERREMINDER_REMIND_QUEUE table which was too short (15 chars) to take the remind_type `reminder_sleeper'
+  
+### Removed
+  
+  
 ## [1.4.1] - 2022-01-26
 
 ### Added
