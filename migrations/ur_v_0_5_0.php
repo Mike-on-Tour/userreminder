@@ -18,15 +18,15 @@ class ur_v_0_5_0 extends \phpbb\db\migration\migration
 	*/
 	public static function depends_on()
 	{
-		return array('\mot\userreminder\migrations\ur_v_0_2_0');
+		return ['\mot\userreminder\migrations\ur_v_0_2_0'];
 	}
 
 	public function update_data()
 	{
-		return array(
+		return [
 			// set the initial values for column 'mot_last_login' from column 'user_lastvisit' in users table
-			array('custom', array(array($this, 'init_ur'))),
-		);
+			['custom', [[$this, 'init_ur']]],
+		];
 	}
 
 	public function init_ur()

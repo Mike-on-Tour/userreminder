@@ -18,15 +18,15 @@ class ur_v_1_2_0 extends \phpbb\db\migration\migration
 	*/
 	public static function depends_on()
 	{
-		return array('\mot\userreminder\migrations\ur_v_0_5_0');
+		return ['\mot\userreminder\migrations\ur_v_0_5_0'];
 	}
 
 	public function update_data()
 	{
-		return array(
+		return [
 			// Add the config text variable we want to be able to set
-			array('config_text.add', array('mot_ur_email_texts', json_encode(array()))),
-		);
+			['config_text.add', ['mot_ur_email_texts', json_encode([]) ]],
+		];
 	}
 
 }

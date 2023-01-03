@@ -23,7 +23,7 @@ class ur_v_1_3_3_1 extends \phpbb\db\migration\migration
 
 	public function update_data()
 	{
-		return array(
+		return [
 			['if', [
 				$this->check_module('acp', 'ACP_USERREMINDER', 'ACP_USERREMINDER_REMINDER'),
 				['module.add', [
@@ -60,7 +60,7 @@ class ur_v_1_3_3_1 extends \phpbb\db\migration\migration
 						'module_auth'		=> 'ext_mot/userreminder && acl_a_board',
 				]]],
 			]],
-		);
+		];
 	}
 
 	/*

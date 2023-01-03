@@ -3,32 +3,21 @@
     "type": "phpbb-extension",
     "description": "Remind and manage inactive users",
     "homepage": "https://www.mike-on-tour.com",
-    "version": "1.4.2",
-    "time": "2022-02-22 12:11:57",
+    "version": "1.5.0",
+    "time": "2022-01-03 12:11:57",
     "license": "GPL-2.0-only",
     "authors": [
         {
             "name": "Michael Vormwald",
             "email": "webmaster@mike-on-tour.de",
             "homepage": "https://www.mike-on-tour.com",
-            "role": "Lead Developer"
-        },
-        {
-            "name": "Claude (stone23)",
-            "homepage": "https://www.encreuse.net/forum/index.php",
-            "role": "French (FR) translation"
-        },
-        {
-            "name": "Jorge (Jorup16)",
-            "role": "Spanish (ES) translation"
-        },
-		{
-			"name": "JJGV",
-			"role": "Dutch (NL) translation"
-		}
+            "role": "Developer"
+        }
 	],
     "require": {
-        "php": ">=7.2"
+		"php": ">=7.2.0,<8.3.0",
+        "phpbb/phpbb": ">=3.2.0,<3.4.0@dev",
+        "composer/installers": "~1.0.0"
     },
     "require-dev": {
         "phpbb/epv": "dev-master"
@@ -36,7 +25,7 @@
     "extra": {
         "display-name": "Userreminder for phpbb",
         "soft-require": {
-            "phpbb/phpbb": ">=3.2.0"
+			"phpbb/phpbb": ">=3.2.0,<3.4.0@dev"
         },
         "version-check": {
             "host": "www.mike-on-tour.com",

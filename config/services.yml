@@ -8,6 +8,7 @@ services:
             - '@config'
             - '@dbal.conn'
             - '@mot.userreminder.common'
+            - '%mot.userreminder.tables.mot_userreminder_remind_queue%'
         tags:
             - { name: event.listener }
 

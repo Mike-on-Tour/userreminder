@@ -1,6 +1,6 @@
 # Userreminder
 
-![Version: 1.4.2](https://img.shields.io/badge/Version-1.4.2-green)  
+![Version: 1.5.0](https://img.shields.io/badge/Version-1.5.0-green)  
   
 ![phpBB 3.2.x Compatible](https://img.shields.io/badge/phpBB-3.2.x%20Compatible-009BDF)
 ![phpBB 3.3.x Compatible](https://img.shields.io/badge/phpBB-3.3.x%20Compatible-009BDF)
@@ -8,7 +8,7 @@
 
 [![Build Status](https://github.com/Mike-on-Tour/userreminder/workflows/Tests/badge.svg)](https://github.com/Mike-on-Tour/userreminder/actions)
 
-Userreminder is an extension to the phpBB bulletin board (**version 3.2.0 and later**) to manage inactive users
+Userreminder is an extension to the phpBB bulletin board (version 3.2.0 and later) to manage inactive users
 
 ## Description
 Userreminder enables administrators to check their board for three different types of users:
@@ -21,7 +21,8 @@ Userreminder enables administrators to check their board for three different typ
 
 All three above mentioned tables are displayed in the ACP Extension tab.
 
-The username displayed in these tables contains a link to this user's profile which will open in a new browser tab or window (depending on your browser settings).
+The username displayed in these tables contains a link to this user's profile which will open in a new browser tab or window (depending on your browser
+settings).
 
 ## Settings
 
@@ -79,11 +80,11 @@ and enter them here but keep in mind that your board's software might send other
 to not enter your provider's limit of e-mails but use only a percentage, e.g. 75% to be safe. If your provider allows you to send 250 e-mails within one
 hour it might be a good idea to enter a limit of 200 e-mails. Another example would be a limit of 3.000 e-mails within a one day (86.400 seconds) time frame.
 In this case it would be prudent to enter only 2.000 e-mails as your daily limit.  
-Why do you have set these limits? Imagine you have 500 members due to get a reminding mail but your provider only allows chunks of 100 e-mails per hour (3.600 seconds).
-When reminding your inactive members Userreminder checks those limits and sends only an initial chunk of 100 mails, the other 400 members' data is stored in
-a database table and you will see in the reminding tab that all your 500 members are reminded. After one hour (the time frame you have defined) Userreminder
-checks whether there are still members to be reminded in the database table. If this is the case it will send another 100 mails and after another hour
-another 100 mails and so on. In this way all members will be reminded without you having to worry about how many mails you can send at any given time.  
+Why do you have set these limits? Imagine you have 500 members due to get a reminding mail but your provider only allows chunks of 100 e-mails per hour (3.600
+seconds). When reminding your inactive members Userreminder checks those limits and sends only an initial chunk of 100 mails, the other 400 members' data is
+stored in a database table and you will see in the reminding tab that all your 500 members are reminded. After one hour (the time frame you have defined)
+Userreminder checks whether there are still members to be reminded in the database table. If this is the case it will send another 100 mails and after another
+hour another 100 mails and so on. In this way all members will be reminded without you having to worry about how many mails you can send at any given time.  
 Please note that you will find only the sent e-mail reminders in the admin log which means that with an e-mail limit of 150 e-mails per time frame and 600
 members to be reminded you will find four entries of sent reminder mails in the admin log with four different time stamps which are approximately the defined 
 time span apart.
@@ -113,6 +114,8 @@ These additional links can be activated through the `System` tab.
 -	Automatic sending of reminder mails or deletion of users is part of the login routine whenever a user logs into the board; at this moment the variables for
 	the last reminding mails - if there were any - are reset to zero to flag this user as active. Another part of this routine is checking whether automatic
 	mail sending and/or automatic deletion is activated, in this case the extension checks for users due to be reminded or deleted.
--	Starting with ver 1.3.3 Userreminder checks for banned users and adds them during execution to the protected users to prevent banned users from being reminded or deleted.
--	In ver 1.4.0 three ACP tabs have been added to the `Quick access` menu to enable admins to use the `Remind users`, `Sleepers` and `Zeroposters` tabs without going to the
-	extensions tab first. Please note that these tabs are inactive and have to be activated through the `System` tab prior to their usage.
+-	Starting with ver 1.3.3 Userreminder checks for banned users and adds them during execution to the protected users to prevent banned users from being
+	reminded or deleted.
+-	In ver 1.4.0 three ACP tabs have been added to the `Quick access` menu to enable admins to use the `Remind users`, `Sleepers` and `Zeroposters` tabs
+	without going to the extensions tab first.  
+	Please note that these tabs are inactive and have to be activated through the `System` tab prior to their usage.

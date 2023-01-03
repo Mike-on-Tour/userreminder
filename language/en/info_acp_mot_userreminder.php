@@ -38,7 +38,7 @@ $lang = array_merge($lang, [
 		1	=> 'Are you really certain that you want to delete 1 user?<br><br><strong>This removes the user permanently from the database and cannot be undone!</strong>',
 		2	=> 'Are you really certain that you want to delete %d users?<br><br><strong>This removes users permanently from the database and cannot be undone!</strong>',
 	],
-	'NO_USER_SELECTED'							=> 'You have not selected any user for this action, please mark at least one user.',
+	'NO_USER_SELECTED'							=> 'You have not selected any users for this action, please mark at least one user.',
 	'USER_DELETED'								=> [
 		1	=> '1 user successfully deleted',
 		2	=> '%d users successfully deleted',
@@ -107,7 +107,7 @@ $lang = array_merge($lang, [
 	// ACP Mail settings
 	'ACP_USERREMINDER_MAIL_SETTINGS_TITLE'		=> 'Email configuration',
 	'ACP_USERREMINDER_MAIL_LIMITS_TEXT'			=> 'Here you can enter the limits defined by your provider for sending e-mails; these settings are important to
-													prevent losing e-mails during sending a large number of e-mails which which exceeds those limits.<br>
+													prevent losing e-mails during sending a large number of e-mails which exceeds those limits.<br>
 													The pre-defined values stand for a maximum number of 150 e-mails which can be sent within one hour
 													(3600 seconds). <strong>Please enter the values which apply to your provider!</strong>',
 	'ACP_USERREMINDER_MAIL_LIMIT_NUMBER'		=> 'Maximum number of e-mails',

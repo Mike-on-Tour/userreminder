@@ -18,14 +18,14 @@ class ur_v_1_3_4 extends \phpbb\db\migration\migration
 	*/
 	public static function depends_on()
 	{
-		return array('\mot\userreminder\migrations\ur_v_1_3_3_1');
+		return ['\mot\userreminder\migrations\ur_v_1_3_3_1'];
 	}
 
 	public function update_data()
 	{
-		return array(
+		return [
 			// Update the version variable
-			array('config.update', array('mot_ur_version', '1.3.4')),
-		);
+			['config.update', ['mot_ur_version', '1.3.4']],
+		];
 	}
 }

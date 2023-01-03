@@ -18,39 +18,39 @@ class ur_v_0_2_0 extends \phpbb\db\migration\migration
 	*/
 	public static function depends_on()
 	{
-		return array('\mot\userreminder\migrations\ur_v_0_1_0');
+		return ['\mot\userreminder\migrations\ur_v_0_1_0'];
 	}
 
 	public function update_data()
 	{
-		return array(
+		return [
 			// Add the config variable we want to be able to set
-			array('config.add', array('mot_ur_email_cc', '')),
-			array('config.add', array('mot_ur_email_bcc', '')),
-			array('config.add', array('mot_ur_consec_run', 0)),
-		);
+			['config.add', ['mot_ur_email_cc', '']],
+			['config.add', ['mot_ur_email_bcc', '']],
+			['config.add', ['mot_ur_consec_run', 0]],
+		];
 	}
 
 	public function update_schema()
 	{
-		return array(
-			'add_columns' => array(
-				$this->table_prefix . 'users' => array(
-					'mot_last_login'	=> array('UINT:11', 0),
-				),
-			),
-		);
+		return [
+			'add_columns' => [
+				$this->table_prefix . 'users' => [
+					'mot_last_login'	=> ['UINT:11', 0],
+				],
+			],
+		];
 	}
 
 	public function revert_schema()
 	{
-		return array(
-			'drop_columns' => array(
-				$this->table_prefix . 'users' => array(
+		return [
+			'drop_columns' => [
+				$this->table_prefix . 'users' => [
 					'mot_last_login',
-				),
-			),
-		);
+				],
+			],
+		];
 	}
 
 }

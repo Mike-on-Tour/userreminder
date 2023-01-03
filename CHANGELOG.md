@@ -4,6 +4,35 @@ All changes to `Userreminder for phpBB` will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.5.0] - 2023-01-03
+
+### Added
+-	An additional language file in all languages present to support the extension requirements check
+  
+### Changed
+-	The range of usable PHP versions to 7.2.0 up to all versions less than 8.3.0
+-	The range of usable phpBB versions to 3.2.0 up to less than 3.4.0 dev
+-	The check for PHP and phpBB versions in `ext.php`
+-	All PHP files to short array syntax
+-	The radio buttons in the ACP settings tab into sliders with the "activated" state on the left and the "deactivated" state on the right side (according
+	to the "Yes" and "No" radio buttons) with a variable `SLIDERS` which can display the old radio buttons if set to 'false' in the
+	`adm/style/acp_ur_settings.html` file
+-	The explicit usage of `ENT_COMPAT` in the call of `htmlspecialchars_decode()` to comply with the changes in PHP 8.1 and above (`common.php`)
+-	The cron job no longer tries to get all rows from the REMIND_MAIL_QUEUE_TABLE but only the number of rows equivalent to the number of available mails
+  
+### Fixed
+-	The number of available mails was not updated if the mail limit was changed, therefore the new lines 117 - 122 and 144 - 149 in `controller/ur_acp.php`
+-	The display of a date of the last cron job run if the timestamp is equal to zero (line 275 in `controller/ur_acp.php`) which resulted in something
+	like 'Jan. 1, 1970 00:00'
+-	A missing condition in the query for inactive users by which sleepers with a post count greater zero are selected (new line 389 in `controller/ur_acp.php`)
+-	Delete user from the reminder queue during login to prevent sending a reminder mail after login if the mail to this user is in the queue
+	(new lines 121 - 125 in `event/main_listener.php`)
+-	Some minor errors in the English language pack
+  
+### Removed
+-	All language directories and files other than "de", "de_x_sie" and "en"
+  
+  
 ## [1.4.2] - 2022-02-22
 
 ### Added

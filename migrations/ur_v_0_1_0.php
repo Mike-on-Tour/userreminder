@@ -36,7 +36,7 @@ class ur_v_0_1_0 extends \phpbb\db\migration\migration
 
 	public function update_data()
 	{
-		return array(
+		return [
 			// Add the config variable we want to be able to set
 			['config.add', ['mot_ur_inactive_days', 70]],
 			['config.add', ['mot_ur_days_reminded', 10]],
@@ -93,7 +93,7 @@ class ur_v_0_1_0 extends \phpbb\db\migration\migration
 					'module_auth'       => 'ext_mot/userreminder && acl_a_board',
 				],
 			]],
-		);
+		];
 	}
 
 	public function revert_schema()

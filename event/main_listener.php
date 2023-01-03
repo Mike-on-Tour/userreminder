@@ -1,8 +1,8 @@
 <?php
 /**
 *
-* @package UserReminder v1.3.5
-* @copyright (c) 2019, 2021 Mike-on-Tour
+* @package UserReminder v1.5.0
+* @copyright (c) 2019, 2023 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
@@ -22,10 +22,10 @@ class main_listener implements EventSubscriberInterface
 
 	public static function getSubscribedEvents()
 	{
-		return array(
+		return [
 			'core.delete_user_before'		=> 'check_for_protected_member',
 			'core.session_create_after'		=> 'check_user_login',
-		);
+		];
 	}
 
 	const SECS_PER_DAY = 86400;
@@ -39,17 +39,22 @@ class main_listener implements EventSubscriberInterface
 	/** @var \mot\userreminder\common */
 	protected $common;
 
+	/** @var string mot.userreminder.tables.mot_userreminder_remind_queue */
+	protected $mot_userreminder_remind_queue;
+
 	/**
 	 * Constructor
 	 *
 	 * @param \phpbb\config\config $config   Config object
 	 * @param \phpbb\db\driver\driver_interface $db	Database object
 	 */
-	public function __construct(\phpbb\config\config $config, \phpbb\db\driver\driver_interface $db, \mot\userreminder\common $common)
+	public function __construct(\phpbb\config\config $config, \phpbb\db\driver\driver_interface $db, \mot\userreminder\common $common,
+								$mot_userreminder_remind_queue)
 	{
 		$this->config = $config;
 		$this->db = $db;
 		$this->common = $common;
+		$this->mot_userreminder_remind_queue = $mot_userreminder_remind_queue;
 	}
 
 
@@ -80,7 +85,8 @@ class main_listener implements EventSubscriberInterface
 
 	/**
 	* Set the reminding times to Zero every time a user logs into the forum in order to delete any reminders in case this user has been reminded and logs on again.
-	* In addition we set the value of "mot_last_login" to the time stamp the user logged in to make sure that there is no gap in which this "newborn" user gets reminded again.
+	* In addition we set the value of "mot_last_login" to the timestamp the user logged in to make sure that there is no gap in which this "newborn" user gets reminded again.
+	* Check if this user is part of the reminder queue and if he is delete him from the queue since he logged in is no linger to be reminded
 	* If in automatic mode check for users in need of being reminded or deleted
 	*
 	* @param session_data
@@ -100,15 +106,20 @@ class main_listener implements EventSubscriberInterface
 			// we set the current time variable first
 			$now = time();
 
-			$sql_ary = array(
+			$sql_ary = [
 				'mot_reminded_one'		=> 0,
 				'mot_reminded_two'		=> 0,
 				'mot_last_login'		=> $now,
 				'mot_sleeper_remind'	=> 0,
-			);
+			];
 
 			$sql = 'UPDATE ' . USERS_TABLE . '
 					SET ' . $this->db->sql_build_array('UPDATE', $sql_ary) . '
+					WHERE user_id = ' . (int) $session_data['session_user_id'];
+			$this->db->sql_query($sql);
+
+			// Delete this user from the reminder queue in case he is listed there to prevent sending a reminder mail after this login
+			$sql = 'DELETE FROM ' . $this->mot_userreminder_remind_queue . '
 					WHERE user_id = ' . (int) $session_data['session_user_id'];
 			$this->db->sql_query($sql);
 
@@ -138,7 +149,7 @@ class main_listener implements EventSubscriberInterface
 				// ignore inactive users, anonymous (=== guest) and bots
 				$query = 'SELECT user_id
 						FROM ' . USERS_TABLE . '
-						WHERE ' . $this->db->sql_in_set('user_type', array(USER_NORMAL,USER_FOUNDER)) . '
+						WHERE ' . $this->db->sql_in_set('user_type', [USER_NORMAL,USER_FOUNDER]) . '
 						AND mot_last_login > 0';
 				if (!$remind_zeroposters) // ignore zeroposters if these are not set to be reminded
 				{
@@ -162,7 +173,7 @@ class main_listener implements EventSubscriberInterface
 				$reminders = $this->db->sql_fetchrowset($result);
 				$this->db->sql_freeresult($result);
 
-				$marked = array();
+				$marked = [];
 				foreach ($reminders as $value)
 				{
 					$marked[] = $value['user_id'];
@@ -177,13 +188,13 @@ class main_listener implements EventSubscriberInterface
 			{
 				$day_limit = $now - (self::SECS_PER_DAY * $this->config['mot_ur_days_until_deleted']);
 
-				$marked_users = array();
+				$marked_users = [];
 
 				// ignore users who have never posted anything (they are dealt with in the "zeroposter" tab)
 				// get only users who have been reminded twice
 				$query = 'SELECT user_id
 						FROM ' . USERS_TABLE . '
-						WHERE ' . $this->db->sql_in_set('user_type', array(USER_NORMAL, USER_FOUNDER));
+						WHERE ' . $this->db->sql_in_set('user_type', [USER_NORMAL, USER_FOUNDER]);
 				if (!$remind_zeroposters) // ignore zeroposters if these are not set to be reminded
 				{
 					$query .= ' AND user_posts > 0';

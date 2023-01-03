@@ -123,7 +123,7 @@ $lang = array_merge($lang, [
 	'ACP_USERREMINDER_MAIL_LIMIT_TIME'			=> 'Zeitrahmen, in dem diese Anzahl versandt werden kann',
 	'ACP_USERREMINDER_MAIL_LIMIT_SECONDS'		=> 'Sekunden',
 	'ACP_USERREMINDER_CRON_EXP'					=> 'Hier findest du zu deiner Information Angaben darüber, wann die Cron-Aufgabe zum Versenden von E-Mails
-													zuletzt gestartet wurde und wieviele E-Mails atuell noch versendet werden können, ohne in die Warteschleife
+													zuletzt gestartet wurde und wieviele E-Mails aktuell noch versendet werden können, ohne in die Warteschleife
 													aufgenommen zu werden.',
 	'ACP_USERREMINDER_LAST_CRON_RUN'			=> 'Letzter Cron-Lauf',
 	'ACP_USERREMINDER_AVAILABLE_MAIL_CHUNK'		=> 'Aktuell verfügbare Anzahl an E-Mails',

@@ -62,7 +62,7 @@
 	{% endif %}
 
 	<fieldset class="display-options">
-		{{ lang('SORT_BY') }}{{ lang('COLON') }}
+		{{ lang('SORT_BY') ~ lang('COLON') }}
 		<select name="sort_key">
 			<option value="user_lastvisit" {% if SORT_KEY == 'user_lastvisit' %} selected {% endif %}>{{ lang('ACP_USERREMINDER_KEY_LV') }}</option>
 			<option value="user_regdate" {% if SORT_KEY == 'user_regdate' %} selected {% endif %}>{{ lang('ACP_USERREMINDER_KEY_RD') }}</option>

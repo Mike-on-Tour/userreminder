@@ -54,7 +54,7 @@
 	{% endif %}
 
 	<fieldset class="display-options">
-		{{ lang('SORT_BY') }}{{ lang('COLON') }}
+		{{ lang('SORT_BY') ~ lang('COLON') }}
 		{% if ENABLE_SORT_REMIND %}
 		<select name="sort_key">
 			<option value="user_regdate" {% if SORT_KEY == 'user_regdate' %} selected {% endif %}>{{ lang('ACP_USERREMINDER_KEY_RD') }}</option>
@@ -119,7 +119,7 @@
 	{% endif %}
 
 	<fieldset class="display-options">
-		{{ lang('SORT_BY') }}{{ lang('COLON') }}
+		{{ lang('SORT_BY') ~ lang('COLON') }}
 		<select name="sort_dir">
 			<option value="DESC" {% if SORT_DIR == 'DESC' %} selected {% endif %}>{{ lang('ACP_USERREMINDER_SORT_DESC') }}</option>
 			<option value="ASC" {% if SORT_DIR == 'ASC' %} selected {% endif %}>{{ lang('ACP_USERREMINDER_SORT_ASC') }}</option>

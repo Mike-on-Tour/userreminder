@@ -1,7 +1,7 @@
 /**
 *
-* package User Reminder v1.4.0
-* copyright (c) 2019 - 2021 Mike-on-Tour
+* package User Reminder v1.5.0
+* copyright (c) 2019 - 2023 Mike-on-Tour
 * license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
@@ -14,13 +14,25 @@
 	* Check the 'Remind sleeper' setting and hide or show the according settings
 	*/
 	$("input[name='mot_ur_remind_sleeper']").click(function() {
-		if ($(this).val() == 1) {
-			$("#mot_ur_sleeper_remind_settings").show();
-		} else {
-			$("#mot_ur_sleeper_remind_settings").hide();
+		// Check radio buttons
+		if ($(this).attr('type') == 'radio') {
+			if ($(this).val() == 1) {
+				$("#mot_ur_sleeper_remind_settings").show();
+			} else {
+				$("#mot_ur_sleeper_remind_settings").hide();
+			}
+		}
+		// Check checkbox
+		if ($(this).attr('type') == 'checkbox') {
+			if ($(this).is(":checked")) {
+				$("#mot_ur_sleeper_remind_settings").show();
+			} else {
+				$("#mot_ur_sleeper_remind_settings").hide();
+			}
 		}
 	});
 
+	// Show this div at the start if it is checked
 	if ($("input[name='mot_ur_remind_sleeper']:checked").val() == 1) {
 		$("#mot_ur_sleeper_remind_settings").show();
 	}
@@ -29,10 +41,21 @@
 	* Check the 'Autodelete sleeper' setting and hide or show the according setting
 	*/
 	$("input[name='mot_ur_sleeper_autodelete']").click(function() {
-		if ($(this).val() == 1) {
-			$("#mot_ur_sleeper_delete_settings").show();
-		} else {
-			$("#mot_ur_sleeper_delete_settings").hide();
+		// Check radio buttons
+		if ($(this).attr('type') == 'radio') {
+			if ($(this).val() == 1) {
+				$("#mot_ur_sleeper_delete_settings").show();
+			} else {
+				$("#mot_ur_sleeper_delete_settings").hide();
+			}
+		}
+		// Check checkbox
+		if ($(this).attr('type') == 'checkbox') {
+			if ($(this).is(":checked")) {
+				$("#mot_ur_sleeper_delete_settings").show();
+			} else {
+				$("#mot_ur_sleeper_delete_settings").hide();
+			}
 		}
 	});
 

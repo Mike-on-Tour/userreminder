@@ -1,8 +1,8 @@
 <?php
 /**
 *
-* @package User Reminder v1.4.1
-* @copyright (c) 2019 - 2022 Mike-on-Tour
+* @package User Reminder v1.5.0
+* @copyright (c) 2019 - 2023 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
@@ -110,10 +110,16 @@ class ur_acp
 
 			// get the names of members to be protected and convert it to array of user_ids
 			$protected_users_ids = [];
-			$protected_users_names = $this->request->variable('mot_ur_protected_members', '');
+			$protected_users_names = $this->request->variable('mot_ur_protected_members', '', true);
 			$username_arr = explode("\n", $protected_users_names);
 			user_get_id_name($protected_users_ids, $username_arr);
 			sort($protected_users_ids);
+
+			// get the current values of mail limits and available mail number to check against changed values
+			$current_mail_limit = $this->config['mot_ur_mail_limit_number'];
+			$current_mail_available = $this->config['mot_ur_mail_available'];
+			// get the new (?) value of mail limit
+			$mail_limit = $this->request->variable('mot_ur_mail_limit_number', 0);
 
 			// save the settings to the phpbb_config table
 			$this->config->set('mot_ur_rows_per_page', $this->request->variable('mot_ur_rows_per_page', 0));
@@ -131,10 +137,16 @@ class ur_acp
 			$this->config->set('mot_ur_remind_zeroposter', $this->request->variable('mot_ur_remind_zeroposter', 0));
 			$this->config->set('mot_ur_protected_members', json_encode($protected_users_ids));
 			$this->config->set('mot_ur_protected_groups', json_encode($this->request->variable('mot_ur_protected_groups', [0])));
-			$this->config->set('mot_ur_mail_limit_number', $this->request->variable('mot_ur_mail_limit_number', 0));
+			$this->config->set('mot_ur_mail_limit_number', $mail_limit);
 			$this->config->set('mot_ur_mail_limit_time_gc', $this->request->variable('mot_ur_mail_limit_time', 0));
 			$this->config->set('mot_ur_email_bcc', substr($this->request->variable('mot_ur_email_bcc', ''), 0, 255));
 			$this->config->set('mot_ur_email_cc', substr($this->request->variable('mot_ur_email_cc', ''), 0, 255));
+
+			// check whether we have to alter the current number of available mails
+			if (($current_mail_limit != $mail_limit) && (($mail_limit < $current_mail_available) || ($mail_limit > $current_mail_limit && $current_mail_available == $current_mail_limit)))
+			{
+				$this->config->set('mot_ur_mail_available', $mail_limit);
+			}
 
 			trigger_error($this->language->lang('ACP_USERREMINDER_SETTING_SAVED') . adm_back_link($this->u_action));
 		}
@@ -221,35 +233,24 @@ class ur_acp
 		sort($username_arr);
 		$protected_users_names = implode("\n", $username_arr);
 
-		// Get the group_ids of those groups used as default group for normal users and founders
-		$used_groups = [];
-		$sql = 'SELECT group_id FROM ' . USERS_TABLE . '
-				WHERE ' . $this->db->sql_in_set('user_type', [USER_NORMAL,USER_FOUNDER]) . '
-				GROUP BY group_id';
+		// Get the group properties of those groups used as default
+		$sql = 'SELECT g.group_id, g.group_type, g.group_name, u.group_id FROM ' .
+				GROUPS_TABLE . ' AS g, ' . USERS_TABLE . ' AS u
+				WHERE g.group_id = u.group_id
+				AND u.user_type IN (' . USER_NORMAL . ',' . USER_FOUNDER . ')
+				GROUP BY u.group_id
+				ORDER BY g.group_type DESC, g.group_name ASC';
 		$result = $this->db->sql_query($sql);
-		$group_ids = $this->db->sql_fetchrowset($result);
-		$this->db->sql_freeresult($result);
-		foreach ($group_ids as $row)
-		{
-			$used_groups[] = $row['group_id'];
-		}
-		// Get the groups, check if they are used as default group and set those already chosen for protection as selected
-		$protected_groups_arr = json_decode($this->config['mot_ur_protected_groups']);
-		$query = 'SELECT group_id, group_type, group_name FROM ' . GROUPS_TABLE . '
-				ORDER BY group_type DESC, group_name ASC';
-		$result = $this->db->sql_query($query);
 		$groups = $this->db->sql_fetchrowset($result);
 		$this->db->sql_freeresult($result);
-		$group_count = 0;
+		$group_count = count($groups);
 		$protected_groups = '';
+		$protected_groups_arr = json_decode($this->config['mot_ur_protected_groups']);
+
 		foreach ($groups as $option)
 		{
-			if (in_array($option['group_id'], $used_groups))
-			{
-				$selected = in_array($option['group_id'], $protected_groups_arr) ? ' selected="selected"' : '';
-				$protected_groups .= '<option ' . (($option['group_type'] == GROUP_SPECIAL) ? ' class="sep"' : '') . ' value="' . $option['group_id'] . '"' . $selected . '>' . $this->group_helper->get_name($option['group_name']) . '</option>';
-				$group_count++;
-			}
+			$selected = in_array($option['group_id'], $protected_groups_arr) ? ' selected="selected"' : '';
+			$protected_groups .= '<option ' . (($option['group_type'] == GROUP_SPECIAL) ? ' class="sep"' : '') . ' value="' . $option['group_id'] . '"' . $selected . '>' . $this->group_helper->get_name($option['group_name']) . '</option>';
 		}
 
 		$this->template->assign_vars([
@@ -271,7 +272,7 @@ class ur_acp
 			'ACP_USERREMINDER_PROTECTED_GROUPS'			=> $protected_groups,
 			'ACP_USERREMINDER_MAIL_LIMIT_NUMBER'		=> $this->config['mot_ur_mail_limit_number'],
 			'ACP_USERREMINDER_MAIL_LIMIT_TIME'			=> $this->config['mot_ur_mail_limit_time_gc'],
-			'ACP_USERREMINDER_LAST_CRON_RUN'			=> $this->user->format_date($this->config['mot_ur_mail_limit_time_last_gc']),
+			'ACP_USERREMINDER_LAST_CRON_RUN'			=> $this->config['mot_ur_mail_limit_time_last_gc'] > 0 ? $this->user->format_date($this->config['mot_ur_mail_limit_time_last_gc']) : '-',
 			'ACP_USERREMINDER_AVAILABLE_MAIL_CHUNK'		=> $this->config['mot_ur_mail_available'],
 			'ACP_USERREMINDER_EMAIL_BCC'				=> $this->config['mot_ur_email_bcc'],
 			'ACP_USERREMINDER_EMAIL_CC'					=> $this->config['mot_ur_email_cc'],
@@ -283,7 +284,6 @@ class ur_acp
 			'PREVIEW_TEXT'								=> $preview_text,
 			'SHOW_PREVIEW'								=> $show_preview,
 			'USERREMINDER_VERSION'						=> $this->language->lang('ACP_USERREMINDER_VERSION', $this->userreminder_version, date('Y')),
-			'ICON_PAYPAL'								=> '<img src="' . $this->root_path . 'ext/mot/userreminder/adm/images/Paypal.svg" />',
 		]);
 	}
 
@@ -386,7 +386,8 @@ class ur_acp
 				'FROM  ' . USERS_TABLE . '
 				WHERE ' . $this->db->sql_in_set('user_type', [USER_NORMAL, USER_FOUNDER]) . '
 				AND user_posts > 0
-				AND mot_last_login <= ' . (int) $day_limit;					// get all users who have been inactive for at least the number of days specified in settings
+				AND mot_last_login > 0
+				AND mot_last_login <= ' . (int) $day_limit;					// get all users who have been online at least once and inactive for at least the number of days specified in settings
 
 		if (!empty($protected_members))										// prevent sql errors due to empty array
 		{

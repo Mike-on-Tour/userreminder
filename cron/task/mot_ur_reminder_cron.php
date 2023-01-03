@@ -94,10 +94,10 @@ class mot_ur_reminder_cron extends \phpbb\cron\task\base
 		// We start a new time frame so we can assume the number of available mails is the limit
 		$mail_available = $this->config['mot_ur_mail_limit_number'];
 
-		// Get all users from the queue table
+		// Get the number of users from the queue table for which we have a mail contingent
 		$sql = "SELECT * FROM " . $this->mot_userreminder_remind_queue . "
 				ORDER BY 'mot_last_login' ASC";
-		$result = $this->db->sql_query($sql);
+		$result = $this->db->sql_query_limit($sql, $mail_available);
 		$users_in_queue = $this->db->sql_fetchrowset($result);
 		$this->db->sql_freeresult($result);
 
@@ -145,7 +145,7 @@ class mot_ur_reminder_cron extends \phpbb\cron\task\base
 
 				// Decrement the number of available mails and check whether the contingent is fully used
 				--$mail_available;
-				if ($mail_available == 0)
+				if ($mail_available <= 0)
 				{
 					break;	// Leave the foreach loop if no more mails are available
 				}

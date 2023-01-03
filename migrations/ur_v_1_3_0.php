@@ -18,18 +18,18 @@ class ur_v_1_3_0 extends \phpbb\db\migration\migration
 	*/
 	public static function depends_on()
 	{
-		return array('\mot\userreminder\migrations\ur_v_1_2_0');
+		return ['\mot\userreminder\migrations\ur_v_1_2_0'];
 	}
 
 	public function update_data()
 	{
-		return array(
+		return [
 			// Add the config variable we want to be able to set
-			array('config.add', array('mot_ur_remind_zeroposter', 0)),
-			array('config.add', array('mot_ur_protected_groups', json_encode(array()))),
+			['config.add', ['mot_ur_remind_zeroposter', 0]],
+			['config.add', ['mot_ur_protected_groups', json_encode([])]],
 			// convert the protected_members string into a json_encoded array
-			array('custom', array(array($this, 'convert_members_array'))),
-		);
+			['custom', [[$this, 'convert_members_array']]],
+		];
 	}
 
 	public function convert_members_array()

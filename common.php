@@ -53,11 +53,11 @@ class common
 		$this->phpEx = $phpEx;
 		$this->mot_userreminder_remind_queue = $mot_userreminder_remind_queue;
 
-		$this->sitename = htmlspecialchars_decode($this->config['sitename']);
+		$this->sitename = htmlspecialchars_decode($this->config['sitename'], ENT_COMPAT);
 		$script_path = (strlen($this->config['script_path']) > 1) ? $this->config['script_path'] : '';
 		$this->forgot_pass = $this->config['server_protocol'] . $this->config['server_name'] . $script_path . "/ucp.".$this->phpEx."?mode=sendpassword";
 		$this->admin_mail = $this->config['board_contact'];
-		$this->email_sig = str_replace('<br />', "\n", "-- \n" . htmlspecialchars_decode($this->config['board_email_sig']));
+		$this->email_sig = str_replace('<br>', "\n", "-- \n" . htmlspecialchars_decode($this->config['board_email_sig'], ENT_COMPAT));
 		$this->days_inactive = $this->config['mot_ur_inactive_days'];
 		$this->days_til_delete = $this->config['mot_ur_days_until_deleted'];
 		$this->days_del_sleepers = $this->config['mot_ur_sleeper_deletetime'];
@@ -329,7 +329,7 @@ class common
 		{
 			$ur_email_text = $this->email_arr[$row['user_lang']][$reminder_type];
 
-			$username = htmlspecialchars_decode($row['username']);
+			$username = htmlspecialchars_decode($row['username'], ENT_COMPAT);
 			$last_visit = $this->format_date_time($row['user_lang'], $row['user_timezone'], $row['user_dateformat'], $row['mot_last_login']);
 			$last_remind = $this->format_date_time($row['user_lang'], $row['user_timezone'], $row['user_dateformat'], $row['mot_reminded_one']);
 			$reg_date = $this->format_date_time($row['user_lang'], $row['user_timezone'], $row['user_dateformat'], $row['user_regdate']);
@@ -366,7 +366,7 @@ class common
 			$messenger->template($reminder_type, $row['user_lang'], $mail_template_path);
 
 			$messenger->assign_vars([
-				'USERNAME'			=> htmlspecialchars_decode($row['username']),
+				'USERNAME'			=> htmlspecialchars_decode($row['username'], ENT_COMPAT),
 				'LAST_VISIT'		=> $this->format_date_time($row['user_lang'], $row['user_timezone'], $row['user_dateformat'], $row['mot_last_login']),
 				'LAST_REMIND'		=> $this->format_date_time($row['user_lang'], $row['user_timezone'], $row['user_dateformat'], $row['mot_reminded_one']),
 				'DAYS_INACTIVE'		=> $this->days_inactive,
