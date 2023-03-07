@@ -1,8 +1,8 @@
 <?php
 /**
 *
-* @package UserReminder v1.4.0
-* @copyright (c) 2019 - 2021 Mike-on-Tour
+* @package UserReminder v1.7.0
+* @copyright (c) 2019 - 2023 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
@@ -37,6 +37,11 @@ if (empty($lang) || !is_array($lang))
 //
 
 $lang = array_merge($lang, [
+	// language pack author
+	'ACP_USERREMINDER_LANG_DESC'				=> 'English',
+	'ACP_USERREMINDER_LANG_EXT_VER' 			=> '1.7.0',
+	'ACP_USERREMINDER_LANG_AUTHOR' 				=> 'Mike-on-Tour',
+
 	// Module
 	'CONFIRM_USER_DELETE'						=> [
 		1	=> 'Are you really certain that you want to delete 1 user?<br><br><strong>This removes the user permanently from the database and cannot be undone!</strong>',
@@ -79,7 +84,7 @@ $lang = array_merge($lang, [
 													Please read the respective section in the ´README.md´ file prior to using this setting.</span>',
 	'ACP_USERREMINDER_TIME_SETTINGS_TITLE'		=> 'Configure the reminder intervals',
 	'ACP_USERREMINDER_TIME_SETTING_TEXT'		=> 'Configure the time in days until a user is viewed as inactive, the time in days between the first and second e-mail to remind this member that a login is necessary and the following period until this user is deleted.',
-	'ACP_USERREMINDER_INACTIVE'					=> 'Number of days a user is offline before this user is viewed as inactive',
+	'ACP_USERREMINDER_INACTIVE'					=> 'Number of days a user must be offline before this user is viewed as inactive',
 	'ACP_USERREMINDER_DAYS_REMINDED'			=> 'Number of days before a user regarded as inactive will get the second reminder mail;<br>
 													sending a second mail is inactivated if you input ´0´',
 	'ACP_USERREMINDER_AUTOREMIND'				=> 'Send reminder mails automatically?',
@@ -101,8 +106,14 @@ $lang = array_merge($lang, [
 	'ACP_USERREMINDER_SLEEPER_DELETETIME'		=> 'Number of days until deletion',
 	// ACP Zeroposter settings
 	'ACP_USERREMINDER_ZEROPOSTER_CONFIG'		=> 'Zeroposter configuration',
-	'ACP_USERREMINDER_ZEROPOSTER_CONFIG_TEXT'	=> 'Here you can choose whether zeroposters should be treated like original inactive users. If you select ´Yes´ all settings in the previous section will also apply to zeroposters. In this case zeroposters will then be displayed in an extended table showing the dates of the first and second reminder and a select box for deletion like the table for users to be reminded.',
+	'ACP_USERREMINDER_ZEROPOSTER_CONFIG_TEXT'	=> 'Here you can choose whether zeroposters should be treated like original inactive users. If you activate this setting you will be able to define the inactive settings for zeroposters like those for inactive users. In this case zeroposters will be displayed in an extended table showing the dates of the first and second reminder and a select box for deletion like the table for users to be reminded.',
 	'ACP_USERREMINDER_REMIND_ZEROPOSTER'		=> 'Do you want to remind and delete zeroposters like inactive users?',
+	'ACP_USERREMINDER_ZP_INACTIVE'				=> 'Number of days a zeroposter must be offline before this user is viewed as inactive',
+	'ACP_USERREMINDER_ZP_DAYS_REMINDED'			=> 'Number of days before a zeroposter regarded as inactive will get the second reminder mail;<br>
+													sending a second mail is inactivated if you input ´0´',
+	'ACP_USERREMINDER_ZP_AUTOREMIND'			=> 'Send reminder mails automatically?',
+	'ACP_USERREMINDER_ZP_DAYS_UNTIL_DELETED'	=> 'Number of days after last reminder before a zeroposter can be deleted',
+	'ACP_USERREMINDER_ZP_AUTODELETE'			=> 'Delete zeroposters automatically?',
 	// ACP Protection settings
 	'ACP_USERREMINDER_PROTECTION_CONFIG'		=> 'Protected users configuration',
 	'ACP_USERREMINDER_PROTECTION_CONFIG_TEXT'	=> 'You can also name users who are protected against any reminder emails and deletion. You can either select individual users with their username and/or all members of a default group by selecting this group. Both selections work independently.',
@@ -117,16 +128,19 @@ $lang = array_merge($lang, [
 	'ACP_USERREMINDER_MAIL_LIMIT_NUMBER'		=> 'Maximum number of emails',
 	'ACP_USERREMINDER_MAIL_LIMIT_TIME'			=> 'Time frame in which this number of emails can be sent',
 	'ACP_USERREMINDER_MAIL_LIMIT_SECONDS'		=> 'seconds',
-	'ACP_USERREMINDER_CRON_EXP'					=> 'For your information you can see here at what time the cron task for sending emails was run the last time and
-													how many emails can be sent currently without going into the queue.',
+	'ACP_USERREMINDER_CRON_EXP'					=> 'For your information you can see here at what time the cron task for sending emails was run the last time, how many emails can
+													be sent currently without going into the queue and how many emails are currently waiting in the mail queue.',
 	'ACP_USERREMINDER_LAST_CRON_RUN'			=> 'Last Cron run',
 	'ACP_USERREMINDER_AVAILABLE_MAIL_CHUNK'		=> 'Currently available number of emails',
 	'ACP_USERREMINDER_MAILS_WAITING'			=> 'Total number of mails currently in User Reminder´s mail queue',
 	'ACP_USERREMINDER_EMAIL_BCC_TEXT'			=> 'Here you can set one email address each for sending a blind carbon copy and/or a carbon copy of the reminding emails to.',
 	'ACP_USERREMINDER_EMAIL_BCC'				=> 'Send a blind carbon copy to',
 	'ACP_USERREMINDER_EMAIL_CC'					=> 'Send a carbon copy to',
-	'ACP_USERREMINDER_EMAIL_FROM_TEXT'			=> 'Here you can set an email address which will be used as the FROM email address in all the mails generated by User Reminder. If you leave this field empty the „From email address“ from the „Email settings“ tab will be used.',
 	'ACP_USERREMINDER_EMAIL_FROM'				=> 'From address used for reminder mails',
+	'ACP_USERREMINDER_EMAIL_FROM_TEXT'			=> 'Here you can set an email address which will be used as the FROM email address in all the mails generated by User Reminder. If you leave this field empty the „From email address“ from the „Email settings“ tab will be used.',
+	'ACP_USERREMINDER_SUPPRESS_REPLYTO'			=> 'Suppress the reply-to address of reminder mails',
+	'ACP_USERREMINDER_SUPPRESS_REPLYTO_TEXT'	=> 'If you want to suppress the reply-to address in reminding mails, e.g. because you are using a noreply address as sender, you
+													can do this here. After activating this setting the reply-to address will be deleted from the header of reminding mails.',
 	// ACP Mail text edit
 	'ACP_USERREMINDER_MAIL_EDIT_TITLE'			=> 'Edit the email texts',
 	'ACP_USERREMINDER_MAIL_EDIT_TEXT'			=> 'Here you can edit the pre-set text of the first and second reminding email.',

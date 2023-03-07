@@ -1,8 +1,8 @@
 <?php
 /**
 *
-* @package UserReminder v1.5.0
-* @copyright (c) 2019, 2023 Mike-on-Tour
+* @package UserReminder v1.7.0
+* @copyright (c) 2019 - 2023 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
@@ -25,6 +25,7 @@ class main_listener implements EventSubscriberInterface
 		return [
 			'core.delete_user_before'		=> 'check_for_protected_member',
 			'core.session_create_after'		=> 'check_user_login',
+			'core.modify_email_headers'		=> 'delete_replyto',
 		];
 	}
 
@@ -137,39 +138,24 @@ class main_listener implements EventSubscriberInterface
 			}
 			$this->db->sql_freeresult($result);
 
-			// and check whether zeroposters have to be reminded and deleted as well
-			$remind_zeroposters = $this->config['mot_ur_remind_zeroposter'] ? true : false;
-
 			/*
-			* Now we check whether reminder mails should be sent automatically and if yes we check what users are supposed to get a reminding email
+			* Now we check whether reminder mails should be sent automatically to inactive users and if yes we check what inactive users are supposed to get a reminding email
 			*/
 			if ($this->config['mot_ur_autoremind'] == 1)
 			{
 				$day_limit = $now - (self::SECS_PER_DAY * $this->config['mot_ur_inactive_days']);
 				// ignore inactive users, anonymous (=== guest) and bots
-				$query = 'SELECT user_id
-						FROM ' . USERS_TABLE . '
+				$sql = 'SELECT user_id FROM ' . USERS_TABLE . '
 						WHERE ' . $this->db->sql_in_set('user_type', [USER_NORMAL,USER_FOUNDER]) . '
-						AND mot_last_login > 0';
-				if (!$remind_zeroposters) // ignore zeroposters if these are not set to be reminded
-				{
-					$query .= ' AND user_posts > 0';
-				}
-				$query .= ' AND (
-						(mot_last_login <= ' . (int) $day_limit . ' AND mot_reminded_one = 0) ' .	// get all inactive users who have not been reminded yet
-						'OR (mot_reminded_one > 0 AND mot_reminded_two = 0)) ';						// get all inactive users due for the second reminder
+						AND mot_last_login > 0
+						AND user_posts > 0
+						AND ((mot_last_login <= ' . (int) $day_limit . ' AND mot_reminded_one = 0) ' .	// get all inactive users who have not been reminded yet
+						'OR (mot_reminded_one > 0 AND mot_reminded_two = 0))';							// get all inactive users due for the second reminder
+				$sql .= !empty($protected_members) ? ' AND ' . $this->db->sql_in_set('user_id', $protected_members, true) : '';	// prevent sql errors due to empty arrays
+				$sql .= !empty($protected_groups) ? ' AND ' . $this->db->sql_in_set('group_id', $protected_groups, true) : '';
+				$sql .= ' ORDER BY user_id';
 
-				if (!empty($protected_members))		// prevent sql errors due to empty array
-				{
-					$query .= ' AND ' . $this->db->sql_in_set('user_id', $protected_members, true);
-				}
-				if (!empty($protected_groups))
-				{
-					$query .= ' AND ' . $this->db->sql_in_set('group_id', $protected_groups, true);
-				}
-				$query .= ' ORDER BY user_id';
-
-				$result = $this->db->sql_query($query);
+				$result = $this->db->sql_query($sql);
 				$reminders = $this->db->sql_fetchrowset($result);
 				$this->db->sql_freeresult($result);
 
@@ -182,37 +168,24 @@ class main_listener implements EventSubscriberInterface
 			}
 
 			/*
-			* Now we check whether users should be deleted automatically and if yes we check what users are supposed to get deleted and do it
+			* Now we check whether inactive users should be deleted automatically and if yes we check what users are supposed to get deleted and do it
 			*/
 			if ($this->config['mot_ur_autodelete'] == 1)
 			{
 				$day_limit = $now - (self::SECS_PER_DAY * $this->config['mot_ur_days_until_deleted']);
-
 				$marked_users = [];
 
-				// ignore users who have never posted anything (they are dealt with in the "zeroposter" tab)
 				// get only users who have been reminded twice
-				$query = 'SELECT user_id
-						FROM ' . USERS_TABLE . '
-						WHERE ' . $this->db->sql_in_set('user_type', [USER_NORMAL, USER_FOUNDER]);
-				if (!$remind_zeroposters) // ignore zeroposters if these are not set to be reminded
-				{
-					$query .= ' AND user_posts > 0';
-				}
-				$query .= ' AND mot_reminded_two > 0
-							AND mot_reminded_two <= ' . (int) $day_limit;			// get all users who have been inactive since the 2nd reminder for at least the number of days specified in settings
+				$sql = 'SELECT user_id FROM ' . USERS_TABLE . '
+						WHERE ' . $this->db->sql_in_set('user_type', [USER_NORMAL, USER_FOUNDER]) . '
+						AND user_posts > 0
+						AND mot_reminded_two > 0
+						AND mot_reminded_two <= ' . (int) $day_limit;			// get all users who have been inactive since the 2nd reminder for at least the number of days specified in settings
+				$sql .= !empty($protected_members) ? ' AND ' . $this->db->sql_in_set('user_id', $protected_members, true) : '';	// prevent sql errors due to empty arrays
+				$sql .= !empty($protected_groups) ? ' AND ' . $this->db->sql_in_set('group_id', $protected_groups, true) : '';
+				$sql .= ' ORDER BY user_id';
 
-				if (!empty($protected_members))		// prevent sql errors due to empty array
-				{
-					$query .= ' AND ' . $this->db->sql_in_set('user_id', $protected_members, true);
-				}
-				if (!empty($protected_groups))
-				{
-					$query .= ' AND ' . $this->db->sql_in_set('group_id', $protected_groups, true);
-				}
-				$query .= ' ORDER BY user_id';
-
-				$result = $this->db->sql_query($query);
+				$result = $this->db->sql_query($sql);
 				$user_result = $this->db->sql_fetchrowset($result);
 				$this->db->sql_freeresult($result);
 				foreach ($user_result as $value)
@@ -220,6 +193,67 @@ class main_listener implements EventSubscriberInterface
 					$marked_users[] = $value['user_id'];
 				}
 				$this->common->delete_users($marked_users);
+			}
+
+			// And now check whether zeroposters have to be reminded and deleted as well
+			if ($this->config['mot_ur_remind_zeroposter'] == 1)
+			{
+				/*
+				* Now we check whether reminder mails should be sent automatically to zeroposters and if yes we check what zeroposters are supposed to get a reminding email
+				*/
+				if ($this->config['mot_ur_zp_autoremind'] == 1)
+				{
+					$day_limit = $now - (self::SECS_PER_DAY * $this->config['mot_ur_zp_inactive_days']);
+					// ignore inactive users, anonymous (=== guest) and bots
+					$sql = 'SELECT user_id FROM ' . USERS_TABLE . '
+							WHERE ' . $this->db->sql_in_set('user_type', [USER_NORMAL,USER_FOUNDER]) . '
+							AND mot_last_login > 0
+							AND user_posts = 0
+							AND ((mot_last_login <= ' . (int) $day_limit . ' AND mot_reminded_one = 0) ' .	// get all inactive users who have not been reminded yet
+							'OR (mot_reminded_one > 0 AND mot_reminded_two = 0))';							// get all inactive users due for the second reminder
+					$sql .= !empty($protected_members) ? ' AND ' . $this->db->sql_in_set('user_id', $protected_members, true) : '';	// prevent sql errors due to empty arrays
+					$sql .= !empty($protected_groups) ? ' AND ' . $this->db->sql_in_set('group_id', $protected_groups, true) : '';
+					$sql .= ' ORDER BY user_id';
+
+					$result = $this->db->sql_query($sql);
+					$reminders = $this->db->sql_fetchrowset($result);
+					$this->db->sql_freeresult($result);
+
+					$marked = [];
+					foreach ($reminders as $value)
+					{
+						$marked[] = $value['user_id'];
+					}
+					$this->common->remind_users($marked, true);
+				}
+
+				/*
+				* Now we check whether zeroposters should be deleted automatically and if yes we check what users are supposed to get deleted and do it
+				*/
+				if ($this->config['mot_ur_zp_autodelete'] == 1)
+				{
+					$day_limit = $now - (self::SECS_PER_DAY * $this->config['mot_ur_zp_days_until_deleted']);
+					$marked_users = [];
+
+					// get only users who have been reminded twice
+					$sql = 'SELECT user_id FROM ' . USERS_TABLE . '
+							WHERE ' . $this->db->sql_in_set('user_type', [USER_NORMAL, USER_FOUNDER]) . '
+							AND user_posts = 0
+							AND mot_reminded_two > 0
+							AND mot_reminded_two <= ' . (int) $day_limit;			// get all users who have been inactive since the 2nd reminder for at least the number of days specified in settings
+					$sql .= !empty($protected_members) ? ' AND ' . $this->db->sql_in_set('user_id', $protected_members, true) : '';	// prevent sql errors due to empty arrays
+					$sql .= !empty($protected_groups) ? ' AND ' . $this->db->sql_in_set('group_id', $protected_groups, true) : '';
+					$sql .= ' ORDER BY user_id';
+
+					$result = $this->db->sql_query($sql);
+					$user_result = $this->db->sql_fetchrowset($result);
+					$this->db->sql_freeresult($result);
+					foreach ($user_result as $value)
+					{
+						$marked_users[] = $value['user_id'];
+					}
+					$this->common->delete_users($marked_users);
+				}
 			}
 
 			// Now we check whether sleepers are to be reminded and done so automatically and do it with all sleepers due for reminding
@@ -298,4 +332,19 @@ class main_listener implements EventSubscriberInterface
 		}
 	}
 
+	public function delete_replyto($event)
+	{
+		if ($this->config['mot_ur_suppress_replyto'])
+		{
+			$header = $event['headers'];
+			foreach ($header as $key => $value)
+			{
+				if (strpos($value, 'Reply-To: ') !== false)
+				{
+					array_splice($header, $key, 1);
+				}
+			}
+			$event['headers'] = $header;
+		}
+	}
 }

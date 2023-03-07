@@ -1,6 +1,6 @@
 /**
 *
-* package User Reminder v1.5.0
+* package User Reminder v1.7.0
 * copyright (c) 2019 - 2023 Mike-on-Tour
 * license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
@@ -61,6 +61,32 @@
 
 	if ($("input[name='mot_ur_sleeper_autodelete']:checked").val() == 1) {
 		$("#mot_ur_sleeper_delete_settings").show();
+	}
+
+	/*
+	* Check the 'Remind zeroposters' setting and hide or show the according settings
+	*/
+	$("input[name='mot_ur_remind_zeroposter']").click(function() {
+		// Check radio buttons
+		if ($(this).attr('type') == 'radio') {
+			if ($(this).val() == 1) {
+				$("#mot_ur_zeroposter_settings").show();
+			} else {
+				$("#mot_ur_zeroposter_settings").hide();
+			}
+		}
+		// Check checkbox
+		if ($(this).attr('type') == 'checkbox') {
+			if ($(this).is(":checked")) {
+				$("#mot_ur_zeroposter_settings").show();
+			} else {
+				$("#mot_ur_zeroposter_settings").hide();
+			}
+		}
+	});
+
+	if ($("input[name='mot_ur_remind_zeroposter']:checked").val() == 1) {
+		$("#mot_ur_zeroposter_settings").show();
 	}
 
 	/*

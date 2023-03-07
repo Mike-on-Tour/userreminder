@@ -4,11 +4,24 @@ All changes to `Userreminder for phpBB` will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [1.6.0] - 2023-02-19
+## [1.7.0] - 2023-03-08
 
 ### Added
+-	The possibility to set reminding times for zeroposters independently from those of inactive users
+  
+### Changed
+-	Some code optimizations (e.g. exchanging if-clauses with ternary operators)
+  
+### Fixed
+  
+### Removed
+  
+  
+## [1.6.0] - 2023-02-22
+Please note that this version has not been released or published
+### Added
 -	An `Installation / Activation` section to the `README.md` file
--	To the `Email configuration` section the possibility to define a FROM email address for Userreminder mails
+-	To the `Email configuration` section the possibility to define a FROM email address for Userreminder mails and a switch to suppress the reply-to address
 -	To the `Email configuration` section the display of the total number of emails waiting in the mail queue 
 -	To the `Edit the email texts` section the ability to send a testmail to an address which can be defined there
   

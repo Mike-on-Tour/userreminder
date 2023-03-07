@@ -81,6 +81,28 @@
 			<dt><label for="mot_ur_remind_zeroposter">{{ lang('ACP_USERREMINDER_REMIND_ZEROPOSTER') ~ lang('COLON') }}</label></dt>
 			<dd>{{ _self.switch('mot_ur_remind_zeroposter', ACP_USERREMINDER_REMIND_ZEROPOSTER, SLIDERS) }}</dd>
 		</dl>
+		<div id="mot_ur_zeroposter_settings" hidden="true">
+			<dl>
+				<dt><label for="mot_ur_zp_inactive_days">{{ lang('ACP_USERREMINDER_ZP_INACTIVE') ~ lang('COLON') }}</label></dt>
+				<dd><input id="mot_ur_zp_inactive_days" type="number" min="1" name="mot_ur_zp_inactive_days" value="{{ ACP_USERREMINDER_ZP_INACTIVE_DAYS }}"></dd>
+			</dl>
+			<dl>
+				<dt><label for="mot_ur_zp_days_reminded">{{ lang('ACP_USERREMINDER_ZP_DAYS_REMINDED') ~ lang('COLON') }}</label></dt>
+				<dd><input id="mot_ur_zp_days_reminded" type="number" min="0" name="mot_ur_zp_days_reminded" value="{{ ACP_USERREMINDER_ZP_DAYS_REMINDED }}"></dd>
+			</dl>
+			<dl>
+				<dt><label for="mot_ur_zp_autoremind">{{ lang('ACP_USERREMINDER_ZP_AUTOREMIND') ~ lang('COLON') }}</label></dt>
+				<dd>{{ _self.switch('mot_ur_zp_autoremind', ACP_USERREMINDER_ZP_AUTOREMIND, SLIDERS) }}</dd>
+			</dl>
+		   <dl>
+				<dt><label for="mot_ur_zp_days_until_deleted">{{ lang('ACP_USERREMINDER_ZP_DAYS_UNTIL_DELETED') ~ lang('COLON') }}</label></dt>
+				<dd><input id="mot_ur_zp_days_until_deleted" type="number" min="1" name="mot_ur_zp_days_until_deleted" value="{{ ACP_USERREMINDER_ZP_DAYS_UNTIL_DELETED }}"></dd>
+			</dl>
+			<dl>
+				<dt><label for="mot_ur_zp_autodelete">{{ lang('ACP_USERREMINDER_ZP_AUTODELETE') ~ lang('COLON') }}</label></dt>
+				<dd>{{ _self.switch('mot_ur_zp_autodelete', ACP_USERREMINDER_ZP_AUTODELETE, SLIDERS) }}</dd>
+			</dl>
+		<div>
 	</fieldset>
 
 	<fieldset>
@@ -137,10 +159,17 @@
         </dl>
 
 		<hr>
-		<p>{{ lang('ACP_USERREMINDER_EMAIL_FROM_TEXT') }}</p>
+
 		<dl>
-			<dt><label for="mot_ur_email_from">{{ lang('ACP_USERREMINDER_EMAIL_FROM') ~ lang('COLON') }}</label></dt>
+			<dt><label for="mot_ur_email_from">{{ lang('ACP_USERREMINDER_EMAIL_FROM') ~ lang('COLON') }}</label><p>{{ lang('ACP_USERREMINDER_EMAIL_FROM_TEXT') }}</p></dt>
 			<dd><input id="mot_ur_email_from" type="text" size="70" maxlength="255" name="mot_ur_email_from" value="{{ ACP_USERREMINDER_EMAIL_FROM }}"></dd>
+		</dl>
+
+		<hr>
+
+		<dl>
+			<dt><label for="mot_ur_suppress_replyto">{{ lang('ACP_USERREMINDER_SUPPRESS_REPLYTO') ~ lang('COLON') }}</label><p>{{ lang('ACP_USERREMINDER_SUPPRESS_REPLYTO_TEXT') }}</p></dt>
+			<dd>{{ _self.switch('mot_ur_suppress_replyto', ACP_USERREMINDER_SUPPRESS_REPLYTO, SLIDERS) }}</dd>
 		</dl>
 	</fieldset>
 

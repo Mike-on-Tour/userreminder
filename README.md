@@ -1,6 +1,6 @@
 # Userreminder
 
-![Version: 1.6.0](https://img.shields.io/badge/Version-1.6.0-green)  
+![Version: 1.7.0](https://img.shields.io/badge/Version-1.7.0-green)  
   
 ![phpBB 3.2.x Compatible](https://img.shields.io/badge/phpBB-3.2.x%20Compatible-009BDF)
 ![phpBB 3.3.x Compatible](https://img.shields.io/badge/phpBB-3.3.x%20Compatible-009BDF)
@@ -60,9 +60,9 @@ respective time frame has elapsed.
 
 #### *Zeroposter configuration*
 
-Zeroposters can be enabled to be handled as inactive users, that is to be reminded and deleted like them. If you enable this setting all of the
-settings mentioned in the *Configure the reminder intervals* section will apply to zeroposters. The table with the zeroposters will then look like the one
-for inactive users.
+Zeroposters can be enabled to be handled as inactive users, that is to be reminded and deleted like them. If you enable this setting you will be able to set all of the
+settings mentioned in the *Configure the reminder intervals* section for zeroposters independently from those. The table with the zeroposters will then look like the one
+for inactive users. Otherwise you will only be able to manually select zeroposters for deletion.
 
 #### *Protected users configuration*
 
@@ -98,6 +98,8 @@ There is also a possibility to add one email address each for a bcc and/or cc co
 In addition you can define an email address which will be used as the FROM address for all emails sent by Userreminder. If you leave this field empty the
 FROM address defined in the `Email settings` page wil be used.  
 Please note that in the case of using the email address defined in this section the `Contact email address` will be used as the `Reply to` address!
+  
+If you want to suppress the `Reply to` address in the email header you can do this by activating the respective option in this section.
 
 #### *Edit the email texts*
 

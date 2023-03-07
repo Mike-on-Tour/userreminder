@@ -1,8 +1,8 @@
 <?php
 /**
 *
-* @package UserReminder v1.4.0
-* @copyright (c) 2019 - 2021 Mike-on-Tour
+* @package UserReminder v1.7.0
+* @copyright (c) 2019 - 2023 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
@@ -37,6 +37,11 @@ if (empty($lang) || !is_array($lang))
 //
 
 $lang = array_merge($lang, [
+	// language pack author
+	'ACP_USERREMINDER_LANG_DESC'				=> 'Deutsch (Du)',
+	'ACP_USERREMINDER_LANG_EXT_VER' 			=> '1.7.0',
+	'ACP_USERREMINDER_LANG_AUTHOR' 				=> 'Mike-on-Tour',
+
 	// Module
 	'CONFIRM_USER_DELETE'						=> [
 		1	=> 'Bist du dir sicher, dass du 1 Mitglied löschen möchtest?<br><br>Damit werden Mitglieder endgültig aus der Datenbank entfernt, <strong>dieser Vorgang kann nicht rückgängig gemacht werden!</strong>',
@@ -87,8 +92,7 @@ $lang = array_merge($lang, [
 													kann hier ausgewählt werden, ob Erinnerungs-Mails automatisch verschickt und Löschungen
 													automatisch erfolgen sollen.',
 	'ACP_USERREMINDER_INACTIVE'					=> 'Anzahl der Tage, die ein Mitglied offline sein muss, um als inaktiv zu gelten',
-	'ACP_USERREMINDER_DAYS_REMINDED'			=> 'Anzahl der Tage bis ein als inaktiv eingestuftes Mitglied die zweite Erinnerungs-Mail
-													bekommen soll;<br>
+	'ACP_USERREMINDER_DAYS_REMINDED'			=> 'Anzahl der Tage, bis ein als inaktiv eingestuftes Mitglied die zweite Erinnerungs-Mail bekommen soll;<br>
 													die Eingabe von ´0´ schaltet die zweite Erinnerungs-Mail ab',
 	'ACP_USERREMINDER_AUTOREMIND'				=> 'Erinnerungs-Mails automatisch versenden?',
 	'ACP_USERREMINDER_DAYS_UNTIL_DELETED'		=> 'Anzahl der Tage zwischen letzter Erinnerung und Löschen des Mitgliedes',
@@ -110,8 +114,14 @@ $lang = array_merge($lang, [
 	'ACP_USERREMINDER_SLEEPER_DELETETIME'		=> 'Anzahl Tage bis zum Löschen',
 	// ACP Zeroposter settings
 	'ACP_USERREMINDER_ZEROPOSTER_CONFIG'		=> 'Konfiguration für Null-Poster',
-	'ACP_USERREMINDER_ZEROPOSTER_CONFIG_TEXT'	=> 'Hier kannst du wählen, ob Null-Poster wie originäre inaktive Benutzer behandelt werden sollen. Wenn du ´Ja´ auswählst, gelten die Einstellungen im vorherigen Abschnitt auch für Null-Poster und sie werden statt in einer vereinfachten Tabelle in einer mit den Daten für die erste und zweite Erinnerung sowie für die Löschung dargestellt.',
+	'ACP_USERREMINDER_ZEROPOSTER_CONFIG_TEXT'	=> 'Hier kannst du wählen, ob Null-Poster wie originäre inaktive Benutzer behandelt werden sollen. Wenn du diese Einstellung aktivierst, kannst du auch für Null-Poster die Erinnerungs- und Löschintervalle auswählen (unabhängig von den Zeiten für inaktive Mitglieder) und sie werden statt in einer vereinfachten Tabelle in einer mit den Daten für die erste und zweite Erinnerung sowie für die Löschung dargestellt.',
 	'ACP_USERREMINDER_REMIND_ZEROPOSTER'		=> 'Sollen Null-Poster wie inaktive Benutzer erinnert und gelöscht werden?',
+	'ACP_USERREMINDER_ZP_INACTIVE'				=> 'Anzahl der Tage, die ein Null-Poster offline sein muss, um als inaktiv zu gelten',
+	'ACP_USERREMINDER_ZP_DAYS_REMINDED'			=> 'Anzahl der Tage, bis ein als inaktiv eingestufter Null-Poster die zweite Erinnerungs-Mail bekommen soll;<br>
+													die Eingabe von ´0´ schaltet die zweite Erinnerungs-Mail ab',
+	'ACP_USERREMINDER_ZP_AUTOREMIND'			=> 'Erinnerungs-Mails automatisch versenden?',
+	'ACP_USERREMINDER_ZP_DAYS_UNTIL_DELETED'	=> 'Anzahl der Tage zwischen letzter Erinnerung und Löschen des Null-Posters',
+	'ACP_USERREMINDER_ZP_AUTODELETE'			=> 'Null-Poster nach Ablauf aller Wartezeiten automatisch löschen?',
 	// ACP Protection settings
 	'ACP_USERREMINDER_PROTECTION_CONFIG'		=> 'Konfiguration für geschützte Mitglieder',
 	'ACP_USERREMINDER_PROTECTION_CONFIG_TEXT'	=> 'Hier kannst du Mitglieder auswählen, die vor Erinnerungen und Löschung geschützt werden sollen. Die Auswahl erfolgt für einzelne Mitglieder über den Benutzernamen und/oder für alle Mitglieder von auszuwählenden Hauptgruppen. Beide Möglichkeiten sind unabhängig voneinander.',
@@ -127,16 +137,20 @@ $lang = array_merge($lang, [
 	'ACP_USERREMINDER_MAIL_LIMIT_TIME'			=> 'Zeitrahmen, in dem diese Anzahl versandt werden kann',
 	'ACP_USERREMINDER_MAIL_LIMIT_SECONDS'		=> 'Sekunden',
 	'ACP_USERREMINDER_CRON_EXP'					=> 'Hier findest du zu deiner Information Angaben darüber, wann die Cron-Aufgabe zum Versenden von E-Mails
-													zuletzt gestartet wurde und wieviele E-Mails aktuell noch versendet werden können, ohne in die Warteschleife
-													aufgenommen zu werden.',
+													zuletzt gestartet wurde, wieviele E-Mails aktuell noch versendet werden können, ohne in die Warteschlange
+													aufgenommen zu werden und wieviele E-Mails sich in der Warteschlange befinden.',
 	'ACP_USERREMINDER_LAST_CRON_RUN'			=> 'Letzter Cron-Lauf',
 	'ACP_USERREMINDER_AVAILABLE_MAIL_CHUNK'		=> 'Aktuell verfügbare Anzahl an E-Mails',
 	'ACP_USERREMINDER_MAILS_WAITING'			=> 'Anzahl der aktuell in der Warteschlange befindlichen E-Mails',
 	'ACP_USERREMINDER_EMAIL_BCC_TEXT'			=> 'Hier kannst du jeweils eine E-Mail-Adresse angeben, die in Blindkopie und/oder in Kopie an den Erinnerungs-Mails beteiligt wird.',
 	'ACP_USERREMINDER_EMAIL_BCC'				=> 'Blindkopie der Erinnerungs-Mail an',
 	'ACP_USERREMINDER_EMAIL_CC'					=> 'Kopie der Erinnerungs-Mail an',
-	'ACP_USERREMINDER_EMAIL_FROM_TEXT'			=> 'Hier kannst du eine E-Mail-Adresse angeben, die als Absender-Adresse in den E-Mails des User Reminder verwendet wird. Wenn du hier keine Eintragung vornimmst, wird die „Absender-E-Mail-Adresse“ aus den Einstellungen „Board-E-Mails“ verwendet.',
 	'ACP_USERREMINDER_EMAIL_FROM'				=> 'Absender-Adresse für Erinnerungs-Mails',
+	'ACP_USERREMINDER_EMAIL_FROM_TEXT'			=> 'Hier kannst du eine E-Mail-Adresse angeben, die als Absender-Adresse in den E-Mails des User Reminder verwendet wird. Wenn du hier keine Eintragung vornimmst, wird die „Absender-E-Mail-Adresse“ aus den Einstellungen „Board-E-Mails“ verwendet.',
+	'ACP_USERREMINDER_SUPPRESS_REPLYTO'			=> 'Unterdrücke die Angabe einer Reply-To Adresse in den Erinnerungs-Mails',
+	'ACP_USERREMINDER_SUPPRESS_REPLYTO_TEXT'	=> 'Wenn du die Angabe einer Reply-To Adresse in den Erinnerungs-Mails unterdrücken möchtest, z.B. weil du als Absender eine
+													Noreply-Adresse angegeben hast, kannst du dies hier tun. Nach Aktivierung werden die Angaben zur Reply-To Adresse aus dem
+													Kopf der E-Mail gelöscht.',
 	// ACP Mail text edit
 	'ACP_USERREMINDER_MAIL_EDIT_TITLE'			=> 'Bearbeiten der E-Mail Texte',
 	'ACP_USERREMINDER_MAIL_EDIT_TEXT'			=> 'Bearbeitung des voreingestellten Textes für die erste und zweite Erinnerungs-Mail.',

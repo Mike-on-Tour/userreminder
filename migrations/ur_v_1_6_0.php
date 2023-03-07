@@ -25,6 +25,7 @@ class ur_v_1_6_0 extends \phpbb\db\migration\migration
 	{
 		return [
 			['config.add', ['mot_ur_email_from', '']],
+			['config.add', ['mot_ur_suppress_replyto', 0]],
 		];
 	}
 }
