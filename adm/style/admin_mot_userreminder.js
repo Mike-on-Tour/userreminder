@@ -64,9 +64,9 @@
 	}
 
 	/*
-	* Check whether input into the BCC or CC field is formally a valid e-mail address and empty the field if it is not
+	* Check whether input into the BCC, CC or FROM field is formally a valid e-mail address and empty the field if it is not
 	*/
-	$("#mot_ur_email_bcc, #mot_ur_email_cc").blur(function() {
+	$("#mot_ur_email_bcc, #mot_ur_email_cc, #mot_ur_email_from").blur(function() {
 		// Define the search patterns
 		var emailMatch = /^([A-Za-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/;
 		// Get the element value

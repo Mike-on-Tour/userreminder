@@ -40,6 +40,7 @@ services:
             - '@user'
             - '%core.php_ext%'
             - '%core.root_path%'
+            - '%mot.userreminder.tables.mot_userreminder_remind_queue%'
 
     mot.userreminder.cron.task.mot_ur_reminder_cron:
         class: mot\userreminder\cron\task\mot_ur_reminder_cron

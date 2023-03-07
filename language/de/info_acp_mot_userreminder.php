@@ -31,6 +31,10 @@ if (empty($lang) || !is_array($lang))
 // You do not need this where single placeholders are used, e.g. 'Message %d' is fine
 // equally where a string contains only two placeholders which are used to wrap text
 // in a url you again do not need to specify an order e.g., 'Click %sHERE%s' is fine
+//
+// Some characters you may want to copy&paste:
+// ’ » „ “ — …
+//
 
 $lang = array_merge($lang, [
 	// Module
@@ -127,9 +131,12 @@ $lang = array_merge($lang, [
 													aufgenommen zu werden.',
 	'ACP_USERREMINDER_LAST_CRON_RUN'			=> 'Letzter Cron-Lauf',
 	'ACP_USERREMINDER_AVAILABLE_MAIL_CHUNK'		=> 'Aktuell verfügbare Anzahl an E-Mails',
+	'ACP_USERREMINDER_MAILS_WAITING'			=> 'Anzahl der aktuell in der Warteschlange befindlichen E-Mails',
 	'ACP_USERREMINDER_EMAIL_BCC_TEXT'			=> 'Hier kannst du jeweils eine E-Mail-Adresse angeben, die in Blindkopie und/oder in Kopie an den Erinnerungs-Mails beteiligt wird.',
 	'ACP_USERREMINDER_EMAIL_BCC'				=> 'Blindkopie der Erinnerungs-Mail an',
 	'ACP_USERREMINDER_EMAIL_CC'					=> 'Kopie der Erinnerungs-Mail an',
+	'ACP_USERREMINDER_EMAIL_FROM_TEXT'			=> 'Hier kannst du eine E-Mail-Adresse angeben, die als Absender-Adresse in den E-Mails des User Reminder verwendet wird. Wenn du hier keine Eintragung vornimmst, wird die „Absender-E-Mail-Adresse“ aus den Einstellungen „Board-E-Mails“ verwendet.',
+	'ACP_USERREMINDER_EMAIL_FROM'				=> 'Absender-Adresse für Erinnerungs-Mails',
 	// ACP Mail text edit
 	'ACP_USERREMINDER_MAIL_EDIT_TITLE'			=> 'Bearbeiten der E-Mail Texte',
 	'ACP_USERREMINDER_MAIL_EDIT_TEXT'			=> 'Bearbeitung des voreingestellten Textes für die erste und zweite Erinnerungs-Mail.',
@@ -160,6 +167,12 @@ $lang = array_merge($lang, [
 	'ACP_USERREMINDER_FILE_NOT_FOUND'			=> 'Datei ´%s´ konnte nicht geladen werden.',
 	'ACP_USERREMINDER_FILE_ERROR'				=> 'Beim Speichern der Datei ´%s´ trat ein Fehler auf!<br>Die Datei wurde <strong>nicht gespeichert</strong>.',
 	'ACP_USERREMINDER_FILE_SAVED'				=> 'Die Datei ´%s´ wurde erfolgreich gespeichert.',
+	'ACP_USERREMINDER_SEND_TESTMAIL'			=> 'E-Mail-Text als Testmail an diese E-Mail-Adresse senden',
+	'ACP_USERREMINDER_SEND_TESTMAIL_EXPL'		=> 'Nutze die vorausgewählte E-Mail-Adresse bzw. gib eine andere Adresse ein, zu der der oben ausgewählte E-Mail-Text als Test-Mail versandt werden soll.<br>
+													ACHTUNG: Falls du den Text geändert hast, speichere ihn vor dem Senden erst ab, ansonsten wird der unveränderte Text verwendet!',
+	'ACP_USERREMINDER_ENTER_EMAIL_ADDRESS'		=> 'Eingabe einer gültigen E-Mail-Adresse',
+	'ACP_USERREMINDER_SENDMAIL'					=> 'Mail senden',
+	'ACP_USERREMINDER_TESTMAIL_SENT'			=> 'Test-Mail wurde gesendet; bitte prüfe den angegebenen E-Mail-Briefkasten auf den Eingang dieser E-Mail.',
 	// ACP Reminder
 	'ACP_USERREMINDER_REMINDER'					=> 'Mitglieder erinnern',
 	'ACP_USERREMINDER_REMINDER_EXPLAIN'			=> 'Hier werden die Mitglieder aufgelistet, die nach Registrierung und Aktivierung bereits online waren und Beiträge gepostet haben, aber seit der in den Einstellungen vorgegebenen Anzahl von Tagen nicht mehr online waren.

@@ -35,6 +35,7 @@
 	border-radius: 50px;
 	cursor: pointer;
 	font-family: FontAwesome;
+	transition: background-color 0.3s;
 }
 
 .toggle:before {
@@ -49,18 +50,23 @@
 	align-items: center;
 	left: 22px;
 	content: "\f00d";
+	transition: 0.3s;
 }
 
 .toggle,
 .toggle:hover,
 .toggle:focus {
-	background-color: #aa0000;
+	background-color: #cccccc;
+/*	background-color: #c0c0c0;*/
+/*	background-color: #aa0000;*/
 	border: none;
 	color: #000000;
 }
 
 .toggle:checked {
-	background-color: #3fa651;
+	background-color: #3b87ab;
+/*	background-color: #494999;*/
+/*	background-color: #3fa651;*/
 }
 
 .toggle:checked:before {

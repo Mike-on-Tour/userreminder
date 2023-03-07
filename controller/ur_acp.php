@@ -52,13 +52,16 @@ class ur_acp
 	/** @var string phpBB phpbb root path */
 	protected $root_path;
 
+	/** @var string mot.userreminder.tables.mot_userreminder_remind_queue */
+	protected $mot_userreminder_remind_queue;
+
 	/**
 	 * {@inheritdoc
 	 */
 	public function __construct(\mot\userreminder\common $common, \phpbb\config\config $config, \phpbb\config\db_text $config_text,
 								\phpbb\db\driver\driver_interface $db, \phpbb\group\helper $group_helper, \phpbb\language\language $language,
 								\phpbb\pagination $pagination, \phpbb\extension\manager $phpbb_extension_manager, \phpbb\request\request_interface $request,
-								\phpbb\template\template $template, \phpbb\user $user, $php_ext, $root_path)
+								\phpbb\template\template $template, \phpbb\user $user, $php_ext, $root_path, $mot_userreminder_remind_queue)
 	{
 		$this->common = $common;
 		$this->config = $config;
@@ -73,6 +76,7 @@ class ur_acp
 		$this->user = $user;
 		$this->php_ext = $php_ext;
 		$this->root_path = $root_path;
+		$this->mot_userreminder_remind_queue = $mot_userreminder_remind_queue;
 
 		$this->md_manager = $this->phpbb_extension_manager->create_extension_metadata_manager('mot/userreminder');
 		$this->userreminder_version = $this->md_manager->get_metadata('version');
@@ -141,6 +145,7 @@ class ur_acp
 			$this->config->set('mot_ur_mail_limit_time_gc', $this->request->variable('mot_ur_mail_limit_time', 0));
 			$this->config->set('mot_ur_email_bcc', substr($this->request->variable('mot_ur_email_bcc', ''), 0, 255));
 			$this->config->set('mot_ur_email_cc', substr($this->request->variable('mot_ur_email_cc', ''), 0, 255));
+			$this->config->set('mot_ur_email_from', substr($this->request->variable('mot_ur_email_from', ''), 0, 255));
 
 			// check whether we have to alter the current number of available mails
 			if (($current_mail_limit != $mail_limit) && (($mail_limit < $current_mail_available) || ($mail_limit > $current_mail_limit && $current_mail_available == $current_mail_limit)))
@@ -218,6 +223,30 @@ class ur_acp
 			trigger_error($this->language->lang('ACP_USERREMINDER_FILE_SAVED', $ur_lang . '/' . $lang_arr[$ur_file]) . adm_back_link($this->u_action), E_USER_NOTICE);
 		}
 
+		/*
+		* This IF clause gets activated when the 'send_testmail' button is pressed
+		*/
+		if ($this->request->is_set_post('send_testmail'))
+		{
+			// since we have at least one user to remind we check for messenger class, include it if necessary and construct an instance
+			if (!class_exists('\messenger'))
+			{
+				include($this->root_path . 'includes/functions_messenger.' . $this->php_ext);
+			}
+			$messenger = new \messenger(false);
+
+			$user_data = $this->user->data;
+			$user_data['user_notify_type'] = NOTIFY_EMAIL;
+			$user_data['user_lang'] = $this->request->variable('mot_ur_mail_lang', '');
+			$user_data['user_email'] = $this->request->variable('mot_ur_test_mail', '');
+
+			$this->common->email_arr = json_decode($this->config_text->get('mot_ur_email_texts'), true);
+			$this->common->reminder_mail($user_data, $messenger, $this->request->variable('mot_ur_mail_file', ''));
+			unset($messenger);
+
+			trigger_error($this->language->lang('ACP_USERREMINDER_TESTMAIL_SENT') . adm_back_link($this->u_action));
+		}
+
 		$dirs = $this->common->load_dirs($lang_dir);
 		foreach ($dirs as $value)
 		{
@@ -253,6 +282,14 @@ class ur_acp
 			$protected_groups .= '<option ' . (($option['group_type'] == GROUP_SPECIAL) ? ' class="sep"' : '') . ' value="' . $option['group_id'] . '"' . $selected . '>' . $this->group_helper->get_name($option['group_name']) . '</option>';
 		}
 
+		// Check total number of emails waiting in the mail queue
+		$sql = 'SELECT COUNT(*) AS mail_number FROM ' . $this->mot_userreminder_remind_queue;
+		$result = $this->db->sql_query($sql);
+		$total_mails = $this->db->sql_fetchfield('mail_number');
+		$this->db->sql_freeresult($result);
+
+		$email_bcc = $this->config['mot_ur_email_bcc'];
+		$email_cc = $this->config['mot_ur_email_cc'];
 		$this->template->assign_vars([
 			'ACP_USERREMINDER_ROWS_PER_PAGE'			=> $this->config['mot_ur_rows_per_page'],
 			'ACP_USERREMINDER_EXPERT_MODE'				=> $this->config['mot_ur_expert_mode'] ? true : false,
@@ -274,9 +311,12 @@ class ur_acp
 			'ACP_USERREMINDER_MAIL_LIMIT_TIME'			=> $this->config['mot_ur_mail_limit_time_gc'],
 			'ACP_USERREMINDER_LAST_CRON_RUN'			=> $this->config['mot_ur_mail_limit_time_last_gc'] > 0 ? $this->user->format_date($this->config['mot_ur_mail_limit_time_last_gc']) : '-',
 			'ACP_USERREMINDER_AVAILABLE_MAIL_CHUNK'		=> $this->config['mot_ur_mail_available'],
-			'ACP_USERREMINDER_EMAIL_BCC'				=> $this->config['mot_ur_email_bcc'],
-			'ACP_USERREMINDER_EMAIL_CC'					=> $this->config['mot_ur_email_cc'],
+			'ACP_USERREMINDER_MAILS_WAITING'			=> $total_mails,
+			'ACP_USERREMINDER_EMAIL_BCC'				=> $email_bcc,
+			'ACP_USERREMINDER_EMAIL_CC'					=> $email_cc,
+			'ACP_USERREMINDER_EMAIL_FROM'				=> $this->config['mot_ur_email_from'],
 			'ACP_USERREMINDER_EMAIL_TEXT'				=> $ur_email_text,
+			'ACP_USERREMINDER_TEST_MAIL_ADDRESS'		=> $email_bcc != '' ? $email_bcc : ($email_cc != '' ? $email_cc : $this->language->lang('ACP_USERREMINDER_ENTER_EMAIL_ADDRESS')),
 			'U_ACTION'									=> $this->u_action,
 			'CHOOSE_LANG'								=> $ur_lang,
 			'CHOOSE_FILE'								=> $ur_file,

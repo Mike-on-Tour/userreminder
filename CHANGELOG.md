@@ -4,6 +4,23 @@ All changes to `Userreminder for phpBB` will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.6.0] - 2023-02-19
+
+### Added
+-	An `Installation / Activation` section to the `README.md` file
+-	To the `Email configuration` section the possibility to define a FROM email address for Userreminder mails
+-	To the `Email configuration` section the display of the total number of emails waiting in the mail queue 
+-	To the `Edit the email texts` section the ability to send a testmail to an address which can be defined there
+  
+### Changed
+-	The slider colours into `gray` (deactivated) and `blue` (activated) to improve readability for colorblind persons
+  
+### Fixed
+  
+### Removed
+-	The `spaceless` tag from the `adm/style/acp_ur_settings.html` file since this is deprecated with TWIG 2.7
+  
+  
 ## [1.5.0] - 2023-01-03
 
 ### Added

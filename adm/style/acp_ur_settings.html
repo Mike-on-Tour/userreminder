@@ -119,11 +119,15 @@
 			<dt><label>{{ lang('ACP_USERREMINDER_AVAILABLE_MAIL_CHUNK') ~ lang('COLON') }}</label></dt>
 			<dd>{{ ACP_USERREMINDER_AVAILABLE_MAIL_CHUNK }}</dd>
 		</dl>
+		<dl>
+			<dt><label>{{ lang('ACP_USERREMINDER_MAILS_WAITING') ~ lang('COLON') }}</label></dt>
+			<dd>{{ ACP_USERREMINDER_MAILS_WAITING }}</dd>
+		</dl>
 
 		<hr>
 		<p>{{ lang('ACP_USERREMINDER_EMAIL_BCC_TEXT') }}</p>
 
-        <dl>
+       <dl>
             <dt><label for="mot_ur_email_bcc">{{ lang('ACP_USERREMINDER_EMAIL_BCC') ~ lang('COLON') }}</label></dt>
             <dd><input id="mot_ur_email_bcc" type="text" size="70" maxlength="255" name="mot_ur_email_bcc" value="{{ ACP_USERREMINDER_EMAIL_BCC }}"></dd>
         </dl>
@@ -131,8 +135,15 @@
             <dt><label for="mot_ur_email_cc">{{ lang('ACP_USERREMINDER_EMAIL_CC') ~ lang('COLON') }}</label></dt>
             <dd><input id="mot_ur_email_cc" type="text" size="70" maxlength="255" name="mot_ur_email_cc" value="{{ ACP_USERREMINDER_EMAIL_CC }}"></dd>
         </dl>
+
+		<hr>
+		<p>{{ lang('ACP_USERREMINDER_EMAIL_FROM_TEXT') }}</p>
+		<dl>
+			<dt><label for="mot_ur_email_from">{{ lang('ACP_USERREMINDER_EMAIL_FROM') ~ lang('COLON') }}</label></dt>
+			<dd><input id="mot_ur_email_from" type="text" size="70" maxlength="255" name="mot_ur_email_from" value="{{ ACP_USERREMINDER_EMAIL_FROM }}"></dd>
+		</dl>
 	</fieldset>
-	
+
 	<fieldset>
         <p class="submit-buttons">
             <input class="button1" type="submit" id="submit" name="submit" value="{{ lang('SUBMIT') }}">&nbsp;
@@ -141,16 +152,16 @@
 
 	{{ S_FORM_TOKEN }}
 	</fieldset>
-	
+
 {#
 	----- From here on is everything needed to load, edit, preview and save email texts -----
 #}
 	<hr>
-	
+
 	<fieldset>
 		<legend>{{ lang('ACP_USERREMINDER_MAIL_EDIT_TITLE') }}</legend>
 		<p>{{ lang('ACP_USERREMINDER_MAIL_EDIT_TEXT') }}</p>
-		
+
 		<dl>
 			<dt><label for="mot_ur_mail_lang">{{ lang('ACP_USERREMINDER_MAIL_LANG') ~ lang('COLON') }}</label></dt>
 			<dd>
@@ -171,20 +182,29 @@
 				</select>
 			</dd>
 		</dl>
-		
+
 		<dl>
 			<dt></dt>
 			<dd>
 				<input class="button1 load_file" type="submit" name="load_file" value="{{ lang('ACP_USERREMINDER_MAIL_LOAD_FILE') }}">
 			</dd>
 		</dl>
-		
+		<br>
+		<hr>
+		<dl>
+			<dt><label for="mot_ur_test_mail">{{ lang('ACP_USERREMINDER_SEND_TESTMAIL') ~ lang('COLON') }}</label><p>{{ lang('ACP_USERREMINDER_SEND_TESTMAIL_EXPL') }}</p></dt>
+			<dd>
+				<input type="text" size="50" maxlength="255" id="mot_ur_test_mail" name="mot_ur_test_mail" value="{{ ACP_USERREMINDER_TEST_MAIL_ADDRESS }}">
+				<input class="button1 load_file" type="submit" name="send_testmail" value="{{ lang('ACP_USERREMINDER_SENDMAIL') }}">
+			</dd>
+		</dl>
+
 		{% if SHOW_FILECONTENT %}
 		<dl>
 			<dt>
 				<p>{{ lang('ACP_USERREMINDER_MAIL_PREVIEW') }}</p>
 			</dt>
-			
+
 			<dd>
 				<textarea name="mot_ur_mail_text" rows="10" cols="60" style="width: 95%;" onselect="storeCaret(this);" onclick="storeCaret(this);" onkeyup="storeCaret(this);" onfocus="initInsertions();">{{ ACP_USERREMINDER_EMAIL_TEXT }}</textarea>
 				<input class="button2" type="submit" name="preview" value="{{ lang('PREVIEW') }}">
@@ -204,7 +224,7 @@
 		</dl>
 		<script>window.scrollBy(0, 3000);</script>
 		{% endif %}
-		
+
 		{% if SHOW_FILECONTENT %}
 		<hr>
 		<dl>
@@ -214,7 +234,7 @@
 			</dd>
 		</dl>
 		{% endif %}
-		
+
 	</fieldset>
 </form>
 
@@ -237,9 +257,7 @@
 
 {% macro switch(name, checked = false, slider) %}
 	{% if slider %}
-		{% spaceless %}
-			<input type="checkbox" class="toggle" name="{{ name }}" value="1"{{ checked ? ' checked' }}>
-		{% endspaceless %}
+		<input type="checkbox" class="toggle" name="{{ name }}" value="1"{{ checked ? ' checked' }}>
 	{% else %}
         <label><input type="radio" class="radio" name="{{ name }}" value="1"{{ checked ? ' checked' }}> {{ lang('YES') }}</label>
         <label><input type="radio" class="radio" name="{{ name }}" value="0"{{ !checked ? ' checked' }}> {{ lang('NO') }}</label>

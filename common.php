@@ -315,6 +315,12 @@ class common
 		}
 		$messenger->anti_abuse_headers($this->config, $this->user);
 
+		// Set FROM address if applicable
+		if ($this->config['mot_ur_email_from'] != '')
+		{
+			$messenger->from($this->config['mot_ur_email_from']);
+		}
+
 		// check whether the user's language exists in the extension
 		$lang_dir = $this->root_path . 'ext/mot/userreminder/language';
 		$dirs = $this->load_dirs($lang_dir);

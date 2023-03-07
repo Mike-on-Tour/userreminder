@@ -1,6 +1,6 @@
 # Userreminder
 
-![Version: 1.5.0](https://img.shields.io/badge/Version-1.5.0-green)  
+![Version: 1.6.0](https://img.shields.io/badge/Version-1.6.0-green)  
   
 ![phpBB 3.2.x Compatible](https://img.shields.io/badge/phpBB-3.2.x%20Compatible-009BDF)
 ![phpBB 3.3.x Compatible](https://img.shields.io/badge/phpBB-3.3.x%20Compatible-009BDF)
@@ -72,33 +72,41 @@ are displayed and only their members can be protected.
 
 #### *Email configuration*
 
-Sometimes - especially right after installing Userreminder - there may be a large number of members due to get a reminder by e-mail, this number could very
-well be larger than the number of e-mails you are allowed to sent within a short time. If the number of e-mails to be sent exceeds the limits defined by
-your provider it is probable that not all e-mails are being sent although you may think that they have been sent.  
-To prevent "loosing" e-mails you can set the number of e-mails being sent in a given time frame in this section. Please get the limits from your provider
-and enter them here but keep in mind that your board's software might send other e-mails as well, e.g. for notification. Therefore it is a sound decision
-to not enter your provider's limit of e-mails but use only a percentage, e.g. 75% to be safe. If your provider allows you to send 250 e-mails within one
-hour it might be a good idea to enter a limit of 200 e-mails. Another example would be a limit of 3.000 e-mails within a one day (86.400 seconds) time frame.
-In this case it would be prudent to enter only 2.000 e-mails as your daily limit.  
-Why do you have set these limits? Imagine you have 500 members due to get a reminding mail but your provider only allows chunks of 100 e-mails per hour (3.600
+Sometimes - especially right after installing Userreminder - there may be a large number of members due to get a reminder by email, this number could very
+well be larger than the number of emails you are allowed to sent within a short time. If the number of emails to be sent exceeds the limits defined by
+your provider it is probable that not all emails are being sent although you may think that they have been sent.  
+To prevent "loosing" emails you can set the number of emails being sent in a given time frame in this section. Please get the limits from your provider
+and enter them here but keep in mind that your board's software might send other emails as well, e.g. for notification. Therefore it is a sound decision
+to not enter your provider's limit of emails but use only a percentage, e.g. 75% to be safe. If your provider allows you to send 250 emails within one
+hour it might be a good idea to enter a limit of 200 emails. Another example would be a limit of 3.000 emails within a one day (86.400 seconds) time frame.
+In this case it would be prudent to enter only 2.000 emails as your daily limit.  
+Why do you have set these limits? Imagine you have 500 members due to get a reminding mail but your provider only allows chunks of 100 emails per hour (3.600
 seconds). When reminding your inactive members Userreminder checks those limits and sends only an initial chunk of 100 mails, the other 400 members' data is
 stored in a database table and you will see in the reminding tab that all your 500 members are reminded. After one hour (the time frame you have defined)
 Userreminder checks whether there are still members to be reminded in the database table. If this is the case it will send another 100 mails and after another
 hour another 100 mails and so on. In this way all members will be reminded without you having to worry about how many mails you can send at any given time.  
-Please note that you will find only the sent e-mail reminders in the admin log which means that with an e-mail limit of 150 e-mails per time frame and 600
+Please note that you will find only the sent email reminders in the admin log which means that with an email limit of 150 emails per time frame and 600
 members to be reminded you will find four entries of sent reminder mails in the admin log with four different time stamps which are approximately the defined 
 time span apart.
   
-As a means to monitor the status of the cron task for sending e-mails waiting in the e-mail queue you find an information panel displaying the time this cron
-task run the last time and how many e-mails can currently be sent without being moved into the queue. If this last number equals zero the cron task used all
-available e-mails during its last run.
+As a means to monitor the status of the cron task for sending emails waiting in the email queue you find an information panel displaying the time this cron
+task run the last time and how many emails can currently be sent without being moved into the queue. If this last number equals zero the cron task used all
+available emails during its last run.
   
 There is also a possibility to add one email address each for a bcc and/or cc copy of the reminding mails.
+  
+In addition you can define an email address which will be used as the FROM address for all emails sent by Userreminder. If you leave this field empty the
+FROM address defined in the `Email settings` page wil be used.  
+Please note that in the case of using the email address defined in this section the `Contact email address` will be used as the `Reply to` address!
 
 #### *Edit the email texts*
 
 In the last section of the settings tab you can edit the text of the emails, including a preview of how your text will look like. For the latter the user
 data of the administrator (you) will be used.
+  
+Starting with **ver 1.6.0** you can send a testmail from this section. If you have defined a BCC or CC mail address these will be preselected in this order as the
+addressee of this testmail but you can edit this field and enter any email address you wish. After hitting the `Send mail` button an email will be sent to
+this address in the selected language with the selected mail text.
 
 ---------
   
@@ -119,3 +127,11 @@ These additional links can be activated through the `System` tab.
 -	In ver 1.4.0 three ACP tabs have been added to the `Quick access` menu to enable admins to use the `Remind users`, `Sleepers` and `Zeroposters` tabs
 	without going to the extensions tab first.  
 	Please note that these tabs are inactive and have to be activated through the `System` tab prior to their usage.
+
+## Installation / Activation
+To install Userreminder on your board copy the unzipped files into the `/ext` folder on your server using a FTP software which supports the binary transfer
+mode and strictly use this mode! After finishing the file transfer you should find a directory structure like `/ext/mot/userreminder` on your server with
+the `composer.json` file in the latter folder.
+Then go to your board's ACP and select the `Customise` tab and there the `Manage extensions` link. In the now opening window you will find Userreminder in the
+`Not installed extensions:` section. Please click on the `Enable` link in the line containing Userreminder and follow the instructions.
+After successfully enabling Userreminder you will find its pages on the `Extensions` tab.
