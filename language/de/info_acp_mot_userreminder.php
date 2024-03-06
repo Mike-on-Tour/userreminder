@@ -1,8 +1,8 @@
 <?php
 /**
 *
-* @package UserReminder v1.7.0
-* @copyright (c) 2019 - 2023 Mike-on-Tour
+* @package UserReminder v1.7.1
+* @copyright (c) 2019 - 2024 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
@@ -39,30 +39,30 @@ if (empty($lang) || !is_array($lang))
 $lang = array_merge($lang, [
 	// language pack author
 	'ACP_USERREMINDER_LANG_DESC'				=> 'Deutsch (Du)',
-	'ACP_USERREMINDER_LANG_EXT_VER' 			=> '1.7.0',
+	'ACP_USERREMINDER_LANG_EXT_VER' 			=> '1.7.1',
 	'ACP_USERREMINDER_LANG_AUTHOR' 				=> 'Mike-on-Tour',
 
 	// Module
-	'CONFIRM_USER_DELETE'						=> [
+	'ACP_USERREMINDER_CONFIRM_USER_DELETE'		=> [
 		1	=> 'Bist du dir sicher, dass du 1 Mitglied löschen möchtest?<br><br>Damit werden Mitglieder endgültig aus der Datenbank entfernt, <strong>dieser Vorgang kann nicht rückgängig gemacht werden!</strong>',
 		2	=> 'Bist du dir sicher, dass du %d Mitglieder löschen möchtest?<br><br>Damit werden Mitglieder endgültig aus der Datenbank entfernt, <strong>dieser Vorgang kann nicht rückgängig gemacht werden!</strong>',
 	],
-	'NO_USER_SELECTED'							=> 'Es wurde kein Mitglied für diese Aktion markiert. Bitte mindestens ein Mitglied markieren.',
-	'USER_DELETED'								=> [
+	'ACP_USERREMINDER_NO_USER_SELECTED'			=> 'Es wurde kein Mitglied für diese Aktion markiert. Bitte mindestens ein Mitglied markieren.',
+	'ACP_USERREMINDER_USER_DELETED'				=> [
 		1	=> '1 Mitglied erfolgreich gelöscht',
 		2	=> '%d Mitglieder erfolgreich gelöscht',
 	],
-	'USER_REMINDED'								=> [
+	'ACP_USERREMINDER_USER_REMINDED'			=> [
 		1	=> '1 Mitglied per eMail erinnert',
 		2	=> '%d Mitglieder per eMail erinnert',
 	],
-	'USER_POSTS'								=> 'Beiträge',
-	'DAYS_AGO'									=> 'vor Anzahl Tagen',
-	'AT_DATE'									=> 'Am',
-	'MARK_REMIND'								=> 'Erinnern',
-	'MARK_DELETE'								=> 'Löschen',
-	'REMIND_MARKED'								=> 'Markierte erinnern',
-	'REMIND_ALL'								=> 'Alle erinnern',
+	'ACP_USERREMINDER_USER_POSTS'				=> 'Beiträge',
+	'ACP_USERREMINDER_DAYS_AGO'					=> 'vor Anzahl Tagen',
+	'ACP_USERREMINDER_AT_DATE'					=> 'Am',
+	'ACP_USERREMINDER_MARK_REMIND'				=> 'Erinnern',
+	'ACP_USERREMINDER_MARK_DELETE'				=> 'Löschen',
+	'ACP_USERREMINDER_REMIND_MARKED'			=> 'Markierte erinnern',
+	'ACP_USERREMINDER_REMIND_ALL'				=> 'Alle erinnern',
 	'ACP_USERREMINDER_REMIND_ALL_TEXT'			=> 'Erinnert alle zur Erinnerung heranstehenden Mitglieder in dieser Tabelle.',
 	'ACP_USERREMINDER_DELETE_ALL_TEXT'			=> '<span style="color:red">Löscht <b>ALLE</b> in dieser Tabelle gelisteten Mitglieder!</span>',
 	'LOG_INACTIVE_REMIND_ONE'					=> '<strong>Erste Erinnerungs-E-Mail an inaktive Benutzer verschickt</strong><br>» %s',
@@ -211,5 +211,5 @@ $lang = array_merge($lang, [
 	'ACP_USERREMINDER_ZEROPOSTER_EXPLAIN'		=> 'Hier werden die Mitglieder aufgelistet, die zwar regelmäßig online sind, aber bisher noch keine Beiträge gepostet haben.',
 	// Support and Copyright
 	'ACP_USERREMINDER_SUPPORT'					=> 'Wenn du die Entwicklung der Erweiterung ´User Reminder´ unterstützen möchtest, kannst du das hier tun',
-	'ACP_USERREMINDER_VERSION'					=> '<img src="https://img.shields.io/badge/Version-%1$s-green.svg?style=plastic" /><br>&copy; 2019 - %2$d by Mike-on-Tour',
+	'ACP_USERREMINDER_VERSION'					=> '<img src="https://img.shields.io/badge/Version-%1$s-green.svg?style=plastic"><br>&copy; 2019 - %2$d by Mike-on-Tour',
 ]);

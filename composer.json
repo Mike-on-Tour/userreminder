@@ -3,8 +3,8 @@
     "type": "phpbb-extension",
     "description": "Remind and manage inactive users",
     "homepage": "https://www.mike-on-tour.com",
-    "version": "1.7.0",
-    "time": "2023-03-08 12:11:57",
+    "version": "1.7.1",
+    "time": "2024-03-06 12:11:57",
     "license": "GPL-2.0-only",
     "authors": [
         {

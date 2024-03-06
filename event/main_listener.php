@@ -87,7 +87,7 @@ class main_listener implements EventSubscriberInterface
 	/**
 	* Set the reminding times to Zero every time a user logs into the forum in order to delete any reminders in case this user has been reminded and logs on again.
 	* In addition we set the value of "mot_last_login" to the timestamp the user logged in to make sure that there is no gap in which this "newborn" user gets reminded again.
-	* Check if this user is part of the reminder queue and if he is delete him from the queue since he logged in is no linger to be reminded
+	* Check if this user is part of the reminder queue and if he is delete him from the queue since he logged in is no longer to be reminded
 	* If in automatic mode check for users in need of being reminded or deleted
 	*
 	* @param session_data

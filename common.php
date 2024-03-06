@@ -2,8 +2,8 @@
 
 /**
 *
-* @package UserReminder v1.7.0
-* @copyright (c) 2019 - 2023 Mike-on-Tour
+* @package UserReminder v1.7.1
+* @copyright (c) 2019 - 2024 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
@@ -140,9 +140,9 @@ class common
 
 				foreach ($second_reminders as $row)
 				{
+					$second_username_ary[] = $row['username'];
 					if ($mail_available > 0)
 					{
-						$second_username_ary[] = $row['username'];
 						$this->reminder_mail($row, $messenger, 'reminder_two');
 						--$mail_available;
 					}
@@ -189,9 +189,9 @@ class common
 				$first_username_ary = [];
 				foreach ($first_reminders as $row)
 				{
+					$first_username_ary[] = $row['username'];
 					if ($mail_available > 0)
 					{
-						$first_username_ary[] = $row['username'];
 						$this->reminder_mail($row, $messenger, 'reminder_one');
 						--$mail_available;
 					}
@@ -403,22 +403,8 @@ class common
 	*/
 	private function save_user_data($user_row, $reminder_type)
 	{
-		$sql_arr = [
-			'mot_last_login'		=> $user_row['mot_last_login'],
-			'user_id'				=> $user_row['user_id'],
-			'username'				=> $user_row['username'],
-			'user_email'			=> $user_row['user_email'],
-			'user_lang'				=> $user_row['user_lang'],
-			'user_timezone'			=> $user_row['user_timezone'],
-			'user_dateformat'		=> $user_row['user_dateformat'],
-			'user_jabber'			=> $user_row['user_jabber'],
-			'user_notify_type'		=> $user_row['user_notify_type'],
-			'mot_reminded_one'		=> $user_row['mot_reminded_one'],
-			'user_regdate'			=> $user_row['user_regdate'],
-			'mot_sleeper_remind'	=> $user_row['mot_sleeper_remind'],
-			'remind_type'			=> $reminder_type,
-		];
-		$sql = 'INSERT INTO ' . $this->mot_userreminder_remind_queue . ' ' . $this->db->sql_build_array('INSERT', $sql_arr);
+		$user_row['remind_type'] = $reminder_type;
+		$sql = 'INSERT INTO ' . $this->mot_userreminder_remind_queue . ' ' . $this->db->sql_build_array('INSERT', $user_row);
 		$this->db->sql_query($sql);
 	}
 

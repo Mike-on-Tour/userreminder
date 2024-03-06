@@ -1,7 +1,7 @@
-{% set SLIDERS = true %}	{# Set this to 'false' and then purge the cache in order to get the old radio buttons. #}
 {% include 'overall_header.html' %}
 {% INCLUDEJS '@mot_userreminder/admin_mot_userreminder.js' %}
 {% INCLUDECSS '@mot_userreminder/admin_mot_userreminder.css' %}
+{% set switch_type = TOGGLECTRL_TYPE ?? 'toggle' %}
 
 <h1>{{ lang('SETTINGS') }}</h1>
 <p>{{ lang('ACP_USERREMINDER_SETTINGS_EXPLAIN') }}</p>
@@ -15,7 +15,7 @@
 		</dl>
  		<dl>
 			<dt><label for="mot_ur_expert_mode">{{ lang('ACP_USERREMINDER_EXPERT_MODE') ~ lang('COLON') }}</label><p>{{ lang('ACP_USERREMINDER_EXPERT_MODE_TEXT') }}</p></dt>
-			<dd>{{ _self.switch('mot_ur_expert_mode', ACP_USERREMINDER_EXPERT_MODE, SLIDERS) }}</dd>
+			<dd>{{ _self.switch('mot_ur_expert_mode', ACP_USERREMINDER_EXPERT_MODE, switch_type) }}</dd>
 		</dl>
 	</fieldset>
 
@@ -32,7 +32,7 @@
         </dl>
  		<dl>
 			<dt><label for="mot_ur_autoremind">{{ lang('ACP_USERREMINDER_AUTOREMIND') ~ lang('COLON') }}</label></dt>
-			<dd>{{ _self.switch('mot_ur_autoremind', ACP_USERREMINDER_AUTOREMIND, SLIDERS) }}</dd>
+			<dd>{{ _self.switch('mot_ur_autoremind', ACP_USERREMINDER_AUTOREMIND, switch_type) }}</dd>
 		</dl>
        <dl>
             <dt><label for="mot_ur_days_until_deleted">{{ lang('ACP_USERREMINDER_DAYS_UNTIL_DELETED') ~ lang('COLON') }}</label></dt>
@@ -40,7 +40,7 @@
         </dl>
 		<dl>
 			<dt><label for="mot_ur_autodelete">{{ lang('ACP_USERREMINDER_AUTODELETE') ~ lang('COLON') }}</label></dt>
-			<dd>{{ _self.switch('mot_ur_autodelete', ACP_USERREMINDER_AUTODELETE, SLIDERS) }}</dd>
+			<dd>{{ _self.switch('mot_ur_autodelete', ACP_USERREMINDER_AUTODELETE, switch_type) }}</dd>
 		</dl>
 	</fieldset>
 
@@ -49,7 +49,7 @@
 		<p>{{ lang('ACP_USERREMINDER_SLEEPER_CONFIG_TEXT') }}</p>
 		<dl>
 			<dt><label for="mot_ur_remind_sleeper">{{ lang('ACP_USERREMINDER_REMIND_SLEEPER') ~ lang('COLON') }}</label><p>{{ lang('ACP_USERREMINDER_REMIND_SLEEPER_TEXT') }}</p></dt>
-			<dd>{{ _self.switch('mot_ur_remind_sleeper', ACP_USERREMINDER_REMIND_SLEEPER, SLIDERS) }}</dd>
+			<dd>{{ _self.switch('mot_ur_remind_sleeper', ACP_USERREMINDER_REMIND_SLEEPER, switch_type) }}</dd>
 		</dl>
 		<div id="mot_ur_sleeper_remind_settings" hidden="true">
 			<dl>
@@ -58,13 +58,13 @@
 			</dl>
 			<dl>
 				<dt><label for="mot_ur_sleeper_autoremind">{{ lang('ACP_USERREMINDER_AUTOREMIND') ~ lang('COLON') }}</label></dt>
-			<dd>{{ _self.switch('mot_ur_sleeper_autoremind', ACP_USERREMINDER_SLEEPER_AUTOREMIND, SLIDERS) }}</dd>
+			<dd>{{ _self.switch('mot_ur_sleeper_autoremind', ACP_USERREMINDER_SLEEPER_AUTOREMIND, switch_type) }}</dd>
 			</dl>
 		</div>
 
 		<dl>
 			<dt><label for="mot_ur_sleeper_autodelete">{{ lang('ACP_USERREMINDER_AUTODELETE_SLEEPER') ~ lang('COLON') }}</label><p>{{ lang('ACP_USERREMINDER_AUTODELETE_SLEEPER_TEXT') }}</p></dt>
-			<dd>{{ _self.switch('mot_ur_sleeper_autodelete', ACP_USERREMINDER_AUTODELETE_SLEEPER, SLIDERS) }}</dd>
+			<dd>{{ _self.switch('mot_ur_sleeper_autodelete', ACP_USERREMINDER_AUTODELETE_SLEEPER, switch_type) }}</dd>
 		</dl>
 		<div id="mot_ur_sleeper_delete_settings" hidden="true">
 			<dl>
@@ -79,7 +79,7 @@
 		<p>{{ lang('ACP_USERREMINDER_ZEROPOSTER_CONFIG_TEXT') }}</p>
 		<dl>
 			<dt><label for="mot_ur_remind_zeroposter">{{ lang('ACP_USERREMINDER_REMIND_ZEROPOSTER') ~ lang('COLON') }}</label></dt>
-			<dd>{{ _self.switch('mot_ur_remind_zeroposter', ACP_USERREMINDER_REMIND_ZEROPOSTER, SLIDERS) }}</dd>
+			<dd>{{ _self.switch('mot_ur_remind_zeroposter', ACP_USERREMINDER_REMIND_ZEROPOSTER, switch_type) }}</dd>
 		</dl>
 		<div id="mot_ur_zeroposter_settings" hidden="true">
 			<dl>
@@ -92,7 +92,7 @@
 			</dl>
 			<dl>
 				<dt><label for="mot_ur_zp_autoremind">{{ lang('ACP_USERREMINDER_ZP_AUTOREMIND') ~ lang('COLON') }}</label></dt>
-				<dd>{{ _self.switch('mot_ur_zp_autoremind', ACP_USERREMINDER_ZP_AUTOREMIND, SLIDERS) }}</dd>
+				<dd>{{ _self.switch('mot_ur_zp_autoremind', ACP_USERREMINDER_ZP_AUTOREMIND, switch_type) }}</dd>
 			</dl>
 		   <dl>
 				<dt><label for="mot_ur_zp_days_until_deleted">{{ lang('ACP_USERREMINDER_ZP_DAYS_UNTIL_DELETED') ~ lang('COLON') }}</label></dt>
@@ -100,7 +100,7 @@
 			</dl>
 			<dl>
 				<dt><label for="mot_ur_zp_autodelete">{{ lang('ACP_USERREMINDER_ZP_AUTODELETE') ~ lang('COLON') }}</label></dt>
-				<dd>{{ _self.switch('mot_ur_zp_autodelete', ACP_USERREMINDER_ZP_AUTODELETE, SLIDERS) }}</dd>
+				<dd>{{ _self.switch('mot_ur_zp_autodelete', ACP_USERREMINDER_ZP_AUTODELETE, switch_type) }}</dd>
 			</dl>
 		<div>
 	</fieldset>
@@ -114,7 +114,7 @@
 		</dl>
 		<dl>
 			<dt><label for="mot_ur_protected_groups">{{ lang('ACP_USERREMINDER_PROTECTED_GROUPS') ~ lang('COLON') }}</label></dt>
-            <dd><select class="no-scroll" id="mot_ur_protected_groups" name="mot_ur_protected_groups[]"  size="{{ ACP_USERREMINDER_GROUP_COUNT }}" multiple="multiple">{{ ACP_USERREMINDER_PROTECTED_GROUPS }}</select></dd>
+            <dd><select class="no-scroll" id="mot_ur_protected_groups" name="mot_ur_protected_groups[]" size="{{ ACP_USERREMINDER_GROUP_COUNT }}" multiple="multiple">{{ ACP_USERREMINDER_PROTECTED_GROUPS }}</select></dd>
 		</dl>
 	</fieldset>
 
@@ -124,11 +124,11 @@
 
 		<dl>
 			<dt><label for="mot_ur_mail_limit_number">{{ lang('ACP_USERREMINDER_MAIL_LIMIT_NUMBER') ~ lang('COLON') }}</label></dt>
-			<dd><input id="mot_ur_mail_limit_number" type="number" name="mot_ur_mail_limit_number" value="{{ ACP_USERREMINDER_MAIL_LIMIT_NUMBER }}"/></dd>
+			<dd><input id="mot_ur_mail_limit_number" type="number" name="mot_ur_mail_limit_number" value="{{ ACP_USERREMINDER_MAIL_LIMIT_NUMBER }}"></dd>
 		</dl>
 		<dl>
 			<dt><label for="mot_ur_mail_limit_time">{{ lang('ACP_USERREMINDER_MAIL_LIMIT_TIME') ~ lang('COLON') }}</label></dt>
-			<dd><input id="mot_ur_mail_limit_time" type="number" name="mot_ur_mail_limit_time" value="{{ ACP_USERREMINDER_MAIL_LIMIT_TIME }}"/> {{ lang('ACP_USERREMINDER_MAIL_LIMIT_SECONDS') }}</dd>
+			<dd><input id="mot_ur_mail_limit_time" type="number" name="mot_ur_mail_limit_time" value="{{ ACP_USERREMINDER_MAIL_LIMIT_TIME }}"> {{ lang('ACP_USERREMINDER_MAIL_LIMIT_SECONDS') }}</dd>
 		</dl>
 		<hr>
 		<p>{{ lang('ACP_USERREMINDER_CRON_EXP') }}</p>
@@ -169,7 +169,7 @@
 
 		<dl>
 			<dt><label for="mot_ur_suppress_replyto">{{ lang('ACP_USERREMINDER_SUPPRESS_REPLYTO') ~ lang('COLON') }}</label><p>{{ lang('ACP_USERREMINDER_SUPPRESS_REPLYTO_TEXT') }}</p></dt>
-			<dd>{{ _self.switch('mot_ur_suppress_replyto', ACP_USERREMINDER_SUPPRESS_REPLYTO, SLIDERS) }}</dd>
+			<dd>{{ _self.switch('mot_ur_suppress_replyto', ACP_USERREMINDER_SUPPRESS_REPLYTO, switch_type) }}</dd>
 		</dl>
 	</fieldset>
 
@@ -284,11 +284,11 @@
 
 {% include 'overall_footer.html' %}
 
-{% macro switch(name, checked = false, slider) %}
-	{% if slider %}
-		<input type="checkbox" class="toggle" name="{{ name }}" value="1"{{ checked ? ' checked' }}>
-	{% else %}
-        <label><input type="radio" class="radio" name="{{ name }}" value="1"{{ checked ? ' checked' }}> {{ lang('YES') }}</label>
-        <label><input type="radio" class="radio" name="{{ name }}" value="0"{{ !checked ? ' checked' }}> {{ lang('NO') }}</label>
-	{% endif %}
-{% endmacro %}
+{% macro switch(name, checked = false, type = 'toggle') -%}
+	{% if type == 'toggle' || type == 'checkbox' -%}
+		<input type="checkbox" class="{{ type }}" name="{{ name }}" value="1"{{ checked ? ' checked' }}>
+	{%- elseif type == 'radio' -%}
+		<label><input type="radio" class="radio" name="{{ name }}" value="1"{{ checked ? ' checked' }}> {{ lang('YES') }}</label>
+		<label><input type="radio" class="radio" name="{{ name }}" value="0"{{ !checked ? ' checked' }}> {{ lang('NO') }}</label>
+	{%- endif %}
+{%- endmacro %}

@@ -18,14 +18,14 @@
 				<th rowspan="2" style="width: 30%;">{{ lang('USERNAME') }}</th>
 				<th colspan="2" style="text-align: center;">{{ lang('JOINED') }}</th>
 				<th colspan="2" style="text-align: center;">{{ lang('ACP_USERREMINDER_REMINDER') }}</th>
-				<th rowspan="2" style="width: 70px; text-align: center;">{{ lang('MARK_REMIND') }}</th>
-				<th rowspan="2" style="width: 70px; text-align: center;">{{ lang('MARK_DELETE') }}</th>
+				<th rowspan="2" style="width: 70px; text-align: center;">{{ lang('ACP_USERREMINDER_MARK_REMIND') }}</th>
+				<th rowspan="2" style="width: 70px; text-align: center;">{{ lang('ACP_USERREMINDER_MARK_DELETE') }}</th>
 			</tr>
 			<tr>
-				<th style="text-align: center;">{{ lang('AT_DATE') }}</th>
-				<th style="text-align: center;">{{ lang('DAYS_AGO') }}</th>
-				<th style="text-align: center;">{{ lang('AT_DATE') }}</th>
-				<th style="text-align: center;">{{ lang('DAYS_AGO') }}</th>
+				<th style="text-align: center;">{{ lang('ACP_USERREMINDER_AT_DATE') }}</th>
+				<th style="text-align: center;">{{ lang('ACP_USERREMINDER_DAYS_AGO') }}</th>
+				<th style="text-align: center;">{{ lang('ACP_USERREMINDER_AT_DATE') }}</th>
+				<th style="text-align: center;">{{ lang('ACP_USERREMINDER_DAYS_AGO') }}</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -36,8 +36,8 @@
 				<td style="text-align: center;">{{ registered_only.OFFLINE_DAYS }}</td>
 				<td style="text-align: center;">{{ registered_only.REMINDED_DATE }}</td>
 				<td style="text-align: center;">{{ registered_only.REMINDED_AGO }}</td>
-				<td style="text-align: center;">{% if registered_only.REMINDER_ENABLED %}<input type="checkbox" class="radio" name="mark_remind[]" value="{{ registered_only.USER_ID }}" />{% endif %}</td>
-				<td style="text-align: center;">{% if registered_only.DEL_ENABLED %}<input type="checkbox" class="radio" name="mark_delete[]" value="{{ registered_only.USER_ID }}" />{% endif %}</td>
+				<td style="text-align: center;">{% if registered_only.REMINDER_ENABLED %}<input type="checkbox" class="radio" name="mark_remind[]" value="{{ registered_only.USER_ID }}">{% endif %}</td>
+				<td style="text-align: center;">{% if registered_only.DEL_ENABLED %}<input type="checkbox" class="radio" name="mark_delete[]" value="{{ registered_only.USER_ID }}">{% endif %}</td>
 			</tr>
 		{% else %}
 			<tr>
@@ -65,24 +65,24 @@
 			<option value="DESC" {% if SORT_DIR == 'DESC' %} selected {% endif %}>{{ lang('ACP_USERREMINDER_SORT_DESC') }}</option>
 			<option value="ASC" {% if SORT_DIR == 'ASC' %} selected {% endif %}>{{ lang('ACP_USERREMINDER_SORT_ASC') }}</option>
 		</select>
-		<input class="button2" type="submit" value="{{ lang('GO') }}" name="sort" />
+		<input class="button2" type="submit" value="{{ lang('GO') }}" name="sort">
 	</fieldset>
-	<hr />
+	<hr>
 
 	{% if ENABLE_REMIND %}
 	<fieldset class="quick">
-		<input class="button2" type="submit" name="rem_marked" value="{{ lang('REMIND_MARKED') }}" /><br>
+		<input class="button2" type="submit" name="rem_marked" value="{{ lang('ACP_USERREMINDER_REMIND_MARKED') }}"><br>
 		<p class="small"><a href="#" onclick="marklist('acp_userreminder_registered_only', 'mark_remind', true); return false;">{{ lang('MARK_ALL') }}</a> &bull; <a href="#" onclick="marklist('acp_userreminder_registered_only', 'mark_remind', false); return false;">{{ lang('UNMARK_ALL') }}</a></p>
 	</fieldset>
 	{% endif %}
 
 	{% if ENABLE_REMIND and ENABLE_DELETE %}		{# Let's show the horizontal ruler only if both sets of buttons are shown #}
-		<hr />
+		<hr>
 	{% endif %}
 
 	{% if ENABLE_DELETE %}
 	<fieldset class="quick">
-		<input class="button2" type="submit" name="delmarked" value="{{ lang('DELETE_MARKED') }}" /><br>
+		<input class="button2" type="submit" name="delmarked" value="{{ lang('DELETE_MARKED') }}"><br>
 		<p class="small"><a href="#" onclick="marklist('acp_userreminder_registered_only', 'mark_delete', true); return false;">{{ lang('MARK_ALL') }}</a> &bull; <a href="#" onclick="marklist('acp_userreminder_registered_only', 'mark_delete', false); return false;">{{ lang('UNMARK_ALL') }}</a></p>
 	</fieldset>
 	{% endif %}
@@ -92,7 +92,7 @@
 			<tr>
 				<th style="width: 30%;">{{ lang('USERNAME') }}</th>
 				<th style="text-align: center;">{{ lang('JOINED') }}</th>
-				<th style="text-align: center;">{{ lang('DAYS_AGO') }}</th>
+				<th style="text-align: center;">{{ lang('ACP_USERREMINDER_DAYS_AGO') }}</th>
 				<th style="width: 80px; text-align: center;">{{ lang('MARK') }}</th>
 			</tr>
 		</thead>
@@ -102,7 +102,7 @@
 				<td><a href="{{ registered_only.SERVER_CONFIG }}" target="_blank" {% if registered_only.USER_COLOUR %}style="color: #{{ registered_only.USER_COLOUR }};" class="username-coloured"{% endif %}>{{ registered_only.USERNAME }}</a></td>
 				<td style="text-align: center;">{{ registered_only.JOINED }}</td>
 				<td style="text-align: center;">{{ registered_only.OFFLINE_DAYS }}</td>
-				<td style="text-align: center;"><input type="checkbox" class="radio" name="mark_delete[]" value="{{ registered_only.USER_ID }}" /></td>
+				<td style="text-align: center;"><input type="checkbox" class="radio" name="mark_delete[]" value="{{ registered_only.USER_ID }}"></td>
 			</tr>
 		{% else %}
 			<tr>
@@ -124,13 +124,16 @@
 			<option value="DESC" {% if SORT_DIR == 'DESC' %} selected {% endif %}>{{ lang('ACP_USERREMINDER_SORT_DESC') }}</option>
 			<option value="ASC" {% if SORT_DIR == 'ASC' %} selected {% endif %}>{{ lang('ACP_USERREMINDER_SORT_ASC') }}</option>
 		</select>
-		<input class="button2" type="submit" value="{{ lang('GO') }}" name="sort" />
+		<input class="button2" type="submit" name="sort" value="{{ lang('GO') }}">
 	</fieldset>
-	<hr />
+	<hr>
 
 	<fieldset class="quick">
-		<input class="button2" type="submit" name="delmarked" value="{{ lang('DELETE_MARKED') }}" /><br>
-		<p class="small"><a href="#" onclick="marklist('acp_userreminder_registered_only', 'mark_delete', true); return false;">{{ lang('MARK_ALL') }}</a> &bull; <a href="#" onclick="marklist('acp_userreminder_registered_only', 'mark', false); return false;">{{ lang('UNMARK_ALL') }}</a></p>
+		<input class="button2" type="submit" name="delmarked" value="{{ lang('DELETE_MARKED') }}"><br>
+		<p class="small">
+			<a href="#" onclick="marklist('acp_userreminder_registered_only', 'mark_delete', true); return false;">{{ lang('MARK_ALL') }}</a>&bull;
+			<a href="#" onclick="marklist('acp_userreminder_registered_only', 'mark', false); return false;">{{ lang('UNMARK_ALL') }}</a>
+		</p>
 	</fieldset>
 {% endif %}
 
@@ -138,10 +141,10 @@
 		<hr>
 		<fieldset class="quick">
 			<div class="mot_ur_expert_div">
-				{{ lang('ACP_USERREMINDER_REMIND_ALL_TEXT') }} <input class="button2" type="submit" name="remind_all" value="{{ lang('REMIND_ALL') }}" /><br>
+				{{ lang('ACP_USERREMINDER_REMIND_ALL_TEXT') }} <input class="button2" type="submit" name="remind_all" value="{{ lang('ACP_USERREMINDER_REMIND_ALL') }}"><br>
 			</div>
 			<div class="mot_ur_expert_div">
-				{{ lang('ACP_USERREMINDER_DELETE_ALL_TEXT') }} <input class="button2" type="submit" name="delete_all" value="{{ lang('DELETE_ALL') }}" />
+				{{ lang('ACP_USERREMINDER_DELETE_ALL_TEXT') }} <input class="button2" type="submit" name="delete_all" value="{{ lang('DELETE_ALL') }}">
 			</div>
 		</fieldset>
 	{% endif %}

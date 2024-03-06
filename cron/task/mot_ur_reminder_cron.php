@@ -1,8 +1,8 @@
 <?php
 /**
 *
-* @package User Reminder v1.4.0
-* @copyright (c) 2019 - 2021 Mike-on-Tour
+* @package User Reminder v1.7.1
+* @copyright (c) 2019 - 2024 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
@@ -151,7 +151,7 @@ class mot_ur_reminder_cron extends \phpbb\cron\task\base
 				}
 			}
 
-			// If any sleepers have been reminded delete the respetive users from the reminder_queue table and log this action
+			// If any sleepers have been reminded set the actual reminder time and log this action
 			if (!empty($sleeper_reminders_ary))
 			{
 				$sql_ary = [
@@ -166,7 +166,7 @@ class mot_ur_reminder_cron extends \phpbb\cron\task\base
 				$this->log->add('admin', $this->user->data['user_id'], $this->user->ip, 'LOG_SLEEPER_REMIND', false, [implode(', ', $sleeper_username_ary)]);
 			}
 
-			// If any mails with the second reminder have been sent delete the respetive users from the reminder_queue table and log this action
+			// If any sleepers have been reminded set the actual reminder time and log this action
 			if (!empty($second_reminders_ary))
 			{
 				$sql_ary = [

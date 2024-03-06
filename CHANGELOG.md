@@ -4,6 +4,23 @@ All changes to `Userreminder for phpBB` will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.7.1] - 2024-03-06
+
+### Added
+  
+### Changed
+-	The usage of either toggles, checkboxes or radio buttons according to a general template variable called `TOGGLECTRL_TYPE` which is implemented with the
+	`lukewcs/togglectrl` extension, default is still 'toggles'
+-	Some code optimizations
+-	A number of language variables still had no extension prefix which in at least one case collided with phpBB itself and another extension (LFWWH)
+  
+### Fixed
+-	Usernames were not logged if queue was full and newly reminded members did not get an instant e-mail but were stored in the queue
+  
+### Removed
+-	All XHTML remnants
+  
+  
 ## [1.7.0] - 2023-03-08
 
 ### Added
@@ -13,6 +30,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 -	Some code optimizations (e.g. exchanging if-clauses with ternary operators)
   
 ### Fixed
+-	Some typos in the German language packs
   
 ### Removed
   

@@ -1,8 +1,8 @@
 <?php
 /**
 *
-* @package UserReminder v1.7.0
-* @copyright (c) 2019 - 2023 Mike-on-Tour
+* @package UserReminder v1.7.1
+* @copyright (c) 2019 - 2024 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
@@ -39,30 +39,30 @@ if (empty($lang) || !is_array($lang))
 $lang = array_merge($lang, [
 	// language pack author
 	'ACP_USERREMINDER_LANG_DESC'				=> 'English',
-	'ACP_USERREMINDER_LANG_EXT_VER' 			=> '1.7.0',
+	'ACP_USERREMINDER_LANG_EXT_VER' 			=> '1.7.1',
 	'ACP_USERREMINDER_LANG_AUTHOR' 				=> 'Mike-on-Tour',
 
 	// Module
-	'CONFIRM_USER_DELETE'						=> [
+	'ACP_USERREMINDER_CONFIRM_USER_DELETE'		=> [
 		1	=> 'Are you really certain that you want to delete 1 user?<br><br><strong>This removes the user permanently from the database and cannot be undone!</strong>',
 		2	=> 'Are you really certain that you want to delete %d users?<br><br><strong>This removes users permanently from the database and cannot be undone!</strong>',
 	],
-	'NO_USER_SELECTED'							=> 'You have not selected any users for this action, please mark at least one user.',
-	'USER_DELETED'								=> [
+	'ACP_USERREMINDER_NO_USER_SELECTED'			=> 'You have not selected any users for this action, please mark at least one user.',
+	'ACP_USERREMINDER_USER_DELETED'				=> [
 		1	=> '1 user successfully deleted',
 		2	=> '%d users successfully deleted',
 	],
-	'USER_REMINDED'								=> [
+	'ACP_USERREMINDER_USER_REMINDED'			=> [
 		1	=> 'Reminding email sent to 1 user',
 		2	=> 'Reminding email sent to %d users',
 	],
-	'USER_POSTS'								=> 'Posts',
-	'DAYS_AGO'									=> 'No. of days ago',
-	'AT_DATE'									=> 'On',
-	'MARK_REMIND'								=> 'Remind',
-	'MARK_DELETE'								=> 'Delete',
-	'REMIND_MARKED'								=> 'Remind marked',
-	'REMIND_ALL'								=> 'Remind all',
+	'ACP_USERREMINDER_USER_POSTS'				=> 'Posts',
+	'ACP_USERREMINDER_DAYS_AGO'					=> 'No. of days ago',
+	'ACP_USERREMINDER_AT_DATE'					=> 'On',
+	'ACP_USERREMINDER_MARK_REMIND'				=> 'Remind',
+	'ACP_USERREMINDER_MARK_DELETE'				=> 'Delete',
+	'ACP_USERREMINDER_REMIND_MARKED'			=> 'Remind marked',
+	'ACP_USERREMINDER_REMIND_ALL'				=> 'Remind all',
 	'ACP_USERREMINDER_REMIND_ALL_TEXT'			=> 'Reminds all members listed in this table due for a reminder.',
 	'ACP_USERREMINDER_DELETE_ALL_TEXT'			=> '<span style="color:red">Deletes <b>ALL</b> members listed in this table!</span>',
 	'LOG_INACTIVE_REMIND_ONE'					=> '<strong>Sent first reminder email to inactive users</strong><br>» %s',
@@ -201,5 +201,5 @@ $lang = array_merge($lang, [
 	'ACP_USERREMINDER_ZEROPOSTER_EXPLAIN'		=> 'A list of those users who are online on a regular basis but have never posted anything.',
 	// Support and Copyright
 	'ACP_USERREMINDER_SUPPORT'					=> 'If you want to donate to User Reminder´s development please use this link',
-	'ACP_USERREMINDER_VERSION'					=> '<img src="https://img.shields.io/badge/Version-%1$s-green.svg?style=plastic" /><br>&copy; 2019 - %2$d by Mike-on-Tour',
+	'ACP_USERREMINDER_VERSION'					=> '<img src="https://img.shields.io/badge/Version-%1$s-green.svg?style=plastic"><br>&copy; 2019 - %2$d by Mike-on-Tour',
 ]);
