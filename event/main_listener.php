@@ -1,8 +1,8 @@
 <?php
 /**
 *
-* @package UserReminder v1.7.0
-* @copyright (c) 2019 - 2023 Mike-on-Tour
+* @package UserReminder v1.7.2
+* @copyright (c) 2019 - 2024 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
@@ -63,10 +63,10 @@ class main_listener implements EventSubscriberInterface
 	* Check whether a user to be deleted (no matter from where and by whomsoever) is part of the protected members array. If he is, delete this user from the array as well
 	*
 	* @param array	$event	containing:
-	*	@var string		mode				Mode of posts deletion (retain|delete)
-	*	@var array		user_ids			ID(s) of the user(s) bound to be deleted
-	*	@var bool		retain_username		True if username should be retained, false otherwise
-	*	@var array		user_rows			Array containing data of the user(s) bound to be deleted (since 3.2.4-RC1)
+	*	key	string		mode				Mode of posts deletion (retain|delete)
+	*	key	array		user_ids			ID(s) of the user(s) bound to be deleted
+	*	key	bool		retain_username		True if username should be retained, false otherwise
+	*	key	array		user_rows			Array containing data of the user(s) bound to be deleted (since 3.2.4-RC1)
 	*
 	*/
 	public function check_for_protected_member($event)

@@ -57,16 +57,12 @@
 .toggle:hover,
 .toggle:focus {
 	background-color: #cccccc;
-/*	background-color: #c0c0c0;*/
-/*	background-color: #aa0000;*/
 	border: none;
 	color: #000000;
 }
 
 .toggle:checked {
 	background-color: #3b87ab;
-/*	background-color: #494999;*/
-/*	background-color: #3fa651;*/
 }
 
 .toggle:checked:before {

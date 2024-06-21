@@ -1,7 +1,7 @@
 <?php
 /**
 *
-* @package UserReminder v1.7.1
+* @package Userreminder v1.8.0
 * @copyright (c) 2019 - 2024 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
@@ -39,7 +39,7 @@ if (empty($lang) || !is_array($lang))
 $lang = array_merge($lang, [
 	// language pack author
 	'ACP_USERREMINDER_LANG_DESC'				=> 'English',
-	'ACP_USERREMINDER_LANG_EXT_VER' 			=> '1.7.1',
+	'ACP_USERREMINDER_LANG_EXT_VER' 			=> '1.8.0',
 	'ACP_USERREMINDER_LANG_AUTHOR' 				=> 'Mike-on-Tour',
 
 	// Module
@@ -68,11 +68,11 @@ $lang = array_merge($lang, [
 	'LOG_INACTIVE_REMIND_ONE'					=> '<strong>Sent first reminder email to inactive users</strong><br>» %s',
 	'LOG_INACTIVE_REMIND_TWO'					=> '<strong>Sent second reminder email to inactive users</strong><br>» %s',
 	'LOG_SLEEPER_REMIND'						=> '<strong>Sent reminder email to sleepers</strong><br>» %s',
-	//ACP
-	'ACP_USERREMINDER'							=> 'User reminder',
-	'ACP_USERREMINDER_SETTINGS'					=> 'Settings for the user reminder',
-	'ACP_USERREMINDER_SETTINGS_EXPLAIN'			=> 'This is where you customise the user reminder.',
-	'ACP_USERREMINDER_SETTING_SAVED'			=> 'Settings for the user reminder successfully saved.',
+	//ACP Settings
+	'ACP_USERREMINDER'							=> 'Userreminder',
+	'ACP_USERREMINDER_SETTINGS'					=> 'Settings for Userreminder',
+	'ACP_USERREMINDER_SETTINGS_EXPLAIN'			=> 'This is where you customise Userreminder.',
+	'ACP_USERREMINDER_SETTING_SAVED'			=> 'Settings for Userreminder successfully saved.',
 	'ACP_USERREMINDER_GENERAL_SETTINGS'			=> 'General settings',
 	'ACP_USERREMINDER_ROWS_PER_PAGE'			=> 'Rows per table page',
 	'ACP_USERREMINDER_ROWS_PER_PAGE_TEXT'		=> 'Choose the number of rows to be displayed per table page on the other tabs.',
@@ -191,15 +191,20 @@ $lang = array_merge($lang, [
 	'ACP_USERREMINDER_KEY_LV'					=> 'Last visit',
 	'ACP_USERREMINDER_KEY_RO'					=> '1st reminder',
 	'ACP_USERREMINDER_KEY_RT'					=> '2nd reminder',
+	'ACP_USERREMINDER_ITEMS'					=> [
+		0		=> '',
+		1		=> '%1$d Item',
+		2		=> '%1$d Items',
+	],
 	// ACP Sleeper
 	'ACP_USERREMINDER_SLEEPER'					=> 'Sleepers',
 	'ACP_USERREMINDER_SLEEPER_EXPLAIN'			=> 'A list of those users who have never been online after registration and activation.',
-	'ACP_USERREMINDER_REMINDER'					=> 'Reminder',
+	'ACP_USERREMINDER_SLEEPER_REMINDER'			=> 'Reminder',
 	'ACP_USERREMINDER_KEY_RE'					=> 'Date',
 	// ACP Zeroposters
 	'ACP_USERREMINDER_ZEROPOSTER'				=> 'Zeroposters',
 	'ACP_USERREMINDER_ZEROPOSTER_EXPLAIN'		=> 'A list of those users who are online on a regular basis but have never posted anything.',
 	// Support and Copyright
 	'ACP_USERREMINDER_SUPPORT'					=> 'If you want to donate to User Reminder´s development please use this link',
-	'ACP_USERREMINDER_VERSION'					=> '<img src="https://img.shields.io/badge/Version-%1$s-green.svg?style=plastic"><br>&copy; 2019 - %2$d by Mike-on-Tour',
+	'ACP_USERREMINDER_VERSION'					=> '<img src="https://img.shields.io/badge/Version-%1$s-green.svg?style=plastic" alt=""><br>&copy; 2019 - %2$d by Mike-on-Tour',
 ]);

@@ -1,7 +1,7 @@
 <?php
 /**
 *
-* @package User Reminder v1.7.1
+* @package Userreminder v1.8.0
 * @copyright (c) 2019 - 2024 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
@@ -298,18 +298,18 @@ class ur_acp
 		$email_cc = $this->config['mot_ur_email_cc'];
 		$this->template->assign_vars([
 			'ACP_USERREMINDER_ROWS_PER_PAGE'			=> $this->config['mot_ur_rows_per_page'],
-			'ACP_USERREMINDER_EXPERT_MODE'				=> $this->config['mot_ur_expert_mode'] ? true : false,
+			'ACP_USERREMINDER_EXPERT_MODE'				=> (bool) $this->config['mot_ur_expert_mode'],
 			'ACP_USERREMINDER_INACTIVE_DAYS'			=> $this->config['mot_ur_inactive_days'],
 			'ACP_USERREMINDER_DAYS_REMINDED'			=> $this->config['mot_ur_days_reminded'],
-			'ACP_USERREMINDER_AUTOREMIND'				=> $this->config['mot_ur_autoremind'] ? true : false,
+			'ACP_USERREMINDER_AUTOREMIND'				=> (bool) $this->config['mot_ur_autoremind'],
 			'ACP_USERREMINDER_DAYS_UNTIL_DELETED'		=> $this->config['mot_ur_days_until_deleted'],
-			'ACP_USERREMINDER_AUTODELETE'				=> $this->config['mot_ur_autodelete'] ? true : false,
-			'ACP_USERREMINDER_REMIND_SLEEPER'			=> $this->config['mot_ur_remind_sleeper'] ? true : false,
+			'ACP_USERREMINDER_AUTODELETE'				=> (bool) $this->config['mot_ur_autodelete'],
+			'ACP_USERREMINDER_REMIND_SLEEPER'			=> (bool) $this->config['mot_ur_remind_sleeper'],
 			'ACP_USERREMINDER_SLEEPER_INACTIVE_DAYS'	=> $this->config['mot_ur_sleeper_inactive_days'],
-			'ACP_USERREMINDER_SLEEPER_AUTOREMIND'		=> $this->config['mot_ur_sleeper_autoremind'] ? true : false,
-			'ACP_USERREMINDER_AUTODELETE_SLEEPER'		=> $this->config['mot_ur_sleeper_autodelete'] ? true : false,
+			'ACP_USERREMINDER_SLEEPER_AUTOREMIND'		=> (bool) $this->config['mot_ur_sleeper_autoremind'],
+			'ACP_USERREMINDER_AUTODELETE_SLEEPER'		=> (bool) $this->config['mot_ur_sleeper_autodelete'],
 			'ACP_USERREMINDER_SLEEPER_DELETETIME'		=> $this->config['mot_ur_sleeper_deletetime'],
-			'ACP_USERREMINDER_REMIND_ZEROPOSTER'		=> $this->config['mot_ur_remind_zeroposter'] ? true : false,
+			'ACP_USERREMINDER_REMIND_ZEROPOSTER'		=> (bool) $this->config['mot_ur_remind_zeroposter'],
 			'ACP_USERREMINDER_ZP_INACTIVE_DAYS'			=> $this->config['mot_ur_zp_inactive_days'],
 			'ACP_USERREMINDER_ZP_DAYS_REMINDED'			=> $this->config['mot_ur_zp_days_reminded'],
 			'ACP_USERREMINDER_ZP_AUTOREMIND'			=> $this->config['mot_ur_zp_autoremind'],
@@ -396,7 +396,7 @@ class ur_acp
 				}
 				else
 				{
-					confirm_box(false, '<p>'.$this->language->lang('ACP_USERREMINDER_CONFIRM_USER_DELETE', count($marked)).'</p>', build_hidden_fields([
+					confirm_box(false, '<p>' . $this->language->lang('ACP_USERREMINDER_CONFIRM_USER_DELETE', count($marked)) . '</p>', build_hidden_fields([
 						'delmarked'		=> $deletemark,
 						'mark_delete'	=> $marked,
 						'sk'			=> $sort_key,
@@ -534,6 +534,7 @@ class ur_acp
 			'ENABLE_DELETE'					=> $delete_enabled,
 			'SHOW_EXPERT_MODE'				=> $this->config['mot_ur_expert_mode'],
 			'USERREMINDER_VERSION'			=> $this->language->lang('ACP_USERREMINDER_VERSION', $this->userreminder_version, date('Y')),
+			'ACP_MOT_UR_REMIND_COUNT'		=> $count_reminders,
 		]);
 	}
 
@@ -726,6 +727,7 @@ class ur_acp
 			'ENABLE_DELETE'				=> $delete_enabled,
 			'SHOW_EXPERT_MODE'			=> $this->config['mot_ur_expert_mode'],
 			'USERREMINDER_VERSION'		=> $this->language->lang('ACP_USERREMINDER_VERSION', $this->userreminder_version, date('Y')),
+			'ACP_MOT_UR_SLEEPER_COUNT'	=> $count_sleepers,
 		]);
 	}
 
@@ -920,7 +922,7 @@ class ur_acp
 		$this->template->assign_vars([
 			'SORT_KEY'						=> $sort_key,
 			'SORT_DIR'						=> $sort_dir,
-			'REMIND_ZEROPOSTERS'			=> $this->config['mot_ur_remind_zeroposter'] ? true : false,
+			'REMIND_ZEROPOSTERS'			=> (bool) $this->config['mot_ur_remind_zeroposter'],
 			'SORT_ONE_ABLE'					=> $enable_sort_one,
 			'SORT_TWO_ABLE'					=> $enable_sort_two,
 			'ENABLE_REMIND'					=> $enable_remind,
@@ -928,6 +930,7 @@ class ur_acp
 			'SHOW_EXPERT_MODE'				=> $this->config['mot_ur_expert_mode'],
 			'USERREMINDER_VERSION'			=> $this->language->lang('ACP_USERREMINDER_VERSION', $this->userreminder_version, date('Y')),
 			'U_ACTION'						=> $this->u_action,
+			'ACP_MOT_UR_ZP_COUNT'			=> $count_zeroposters,
 		]);
 	}
 

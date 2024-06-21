@@ -1,3 +1,11 @@
+{#
+*
+* @package Userreminder v1.8.0
+* @copyright (c) 2019 - 2024 Mike-on-Tour
+* @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
+*
+#}
+
 {% include 'overall_header.html' %}
 {% INCLUDECSS '@mot_userreminder/admin_mot_userreminder.css' %}
 
@@ -5,11 +13,14 @@
 <p>{{ lang('ACP_USERREMINDER_ZEROPOSTER_EXPLAIN') }}</p>
 
 <form id="acp_userreminder_zeroposter" method="post" action="{{ U_ACTION }}">
-	{% if pagination %}
 	<div class="pagination top-pagination">
-		{% include 'pagination.html' %}
+		{% if ACP_MOT_UR_ZP_COUNT %}
+			{{ lang('ACP_USERREMINDER_ITEMS', ACP_MOT_UR_ZP_COUNT) }}
+		{% endif %}
+		{% if pagination %}
+			&nbsp;&bull;&nbsp;{% include 'pagination.html' %}
+		{% endif %}
 	</div>
-	{% endif %}
 
 {% if REMIND_ZEROPOSTERS %}
 	<table class="table1 zebra-table fixed-width-table">
@@ -33,20 +44,20 @@
 			</tr>
 		</thead>
 		<tbody>
-		{% for zeroposter in zeroposter %}
-			<tr>
-				<td><a href="{{ zeroposter.SERVER_CONFIG }}" target="_blank" {% if zeroposter.USER_COLOUR %}style="color: #{{ zeroposter.USER_COLOUR }};" class="username-coloured"{% endif %}>{{ zeroposter.USERNAME }}</a></td>
-				<td style="text-align: center;">{{ zeroposter.JOINED }}</td>
-				<td style="text-align: center;">{{ zeroposter.LAST_VISIT }}</td>
-				<td style="text-align: center;">{{ zeroposter.OFFLINE_DAYS }}</td>
-				<td style="text-align: center;">{{ zeroposter.REMINDER_ONE }}</td>
-				<td style="text-align: center;">{{ zeroposter.ONE_AGO }}</td>
-				<td style="text-align: center;">{{ zeroposter.REMINDER_TWO }}</td>
-				<td style="text-align: center;">{{ zeroposter.TWO_AGO }}</td>
-				<td style="text-align: center;">{% if zeroposter.REMINDER_ENABLED %}<input type="checkbox" class="radio" name="mark_remind[]" value="{{ zeroposter.USER_ID }}">{% endif %}</td>
-				<td style="text-align: center;">{% if zeroposter.DEL_ENABLED == 1 %}<input type="checkbox" class="radio" name="mark_delete[]" value="{{ zeroposter.USER_ID }}">{% endif %}</td>
-			</tr>
-		{% else %}
+			{% for zeroposter in zeroposter %}
+				<tr>
+					<td><a href="{{ zeroposter.SERVER_CONFIG }}" target="_blank" {% if zeroposter.USER_COLOUR %}style="color: #{{ zeroposter.USER_COLOUR }};" class="username-coloured"{% endif %}>{{ zeroposter.USERNAME }}</a></td>
+					<td style="text-align: center;">{{ zeroposter.JOINED }}</td>
+					<td style="text-align: center;">{{ zeroposter.LAST_VISIT }}</td>
+					<td style="text-align: center;">{{ zeroposter.OFFLINE_DAYS }}</td>
+					<td style="text-align: center;">{{ zeroposter.REMINDER_ONE }}</td>
+					<td style="text-align: center;">{{ zeroposter.ONE_AGO }}</td>
+					<td style="text-align: center;">{{ zeroposter.REMINDER_TWO }}</td>
+					<td style="text-align: center;">{{ zeroposter.TWO_AGO }}</td>
+					<td style="text-align: center;">{% if zeroposter.REMINDER_ENABLED %}<input type="checkbox" class="radio" name="mark_remind[]" value="{{ zeroposter.USER_ID }}">{% endif %}</td>
+					<td style="text-align: center;">{% if zeroposter.DEL_ENABLED == 1 %}<input type="checkbox" class="radio" name="mark_delete[]" value="{{ zeroposter.USER_ID }}">{% endif %}</td>
+				</tr>
+			{% else %}
 		<tr>
 			<td colspan="10" style="text-align: center;">{{ lang('ACP_USERREMINDER_NO_ENTRIES') }}</td>
 		</tr>
@@ -55,10 +66,11 @@
 	</table>
 
 	{% if pagination %}
-	<div class="pagination">
-		{% include 'pagination.html' %}
-	</div>
+		<div class="pagination">
+			{% include 'pagination.html' %}
+		</div>
 	{% endif %}
+
 	<fieldset class="display-options">
 		{{ lang('SORT_BY') ~ lang('COLON') }}
 		<select name="sort_key">

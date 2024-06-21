@@ -1,7 +1,7 @@
 <?php
 /**
 *
-* @package UserReminder v1.7.1
+* @package Userreminder v1.8.0
 * @copyright (c) 2019 - 2024 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
@@ -39,7 +39,7 @@ if (empty($lang) || !is_array($lang))
 $lang = array_merge($lang, [
 	// language pack author
 	'ACP_USERREMINDER_LANG_DESC'				=> 'Deutsch (Du)',
-	'ACP_USERREMINDER_LANG_EXT_VER' 			=> '1.7.1',
+	'ACP_USERREMINDER_LANG_EXT_VER' 			=> '1.8.0',
 	'ACP_USERREMINDER_LANG_AUTHOR' 				=> 'Mike-on-Tour',
 
 	// Module
@@ -201,15 +201,20 @@ $lang = array_merge($lang, [
 	'ACP_USERREMINDER_KEY_LV'					=> 'Letzter Besuch',
 	'ACP_USERREMINDER_KEY_RO'					=> '1. Erinnerung',
 	'ACP_USERREMINDER_KEY_RT'					=> '2. Erinnerung',
+	'ACP_USERREMINDER_ITEMS'					=> [
+		0		=> '',
+		1		=> '%1$d Eintrag',
+		2		=> '%1$d Einträge',
+	],
 	// ACP Sleeper
 	'ACP_USERREMINDER_SLEEPER'					=> 'Schläfer',
 	'ACP_USERREMINDER_SLEEPER_EXPLAIN'			=> 'Hier werden die Mitglieder aufgelistet, die nach Registrierung und Aktivierung noch nie online waren.',
-	'ACP_USERREMINDER_REMINDER'					=> 'Erinnerung',
+	'ACP_USERREMINDER_SLEEPER_REMINDER'			=> 'Erinnerung',
 	'ACP_USERREMINDER_KEY_RE'					=> 'Erinnerungsdatum',
 	// ACP Zeroposters
 	'ACP_USERREMINDER_ZEROPOSTER'				=> 'Null-Poster',
 	'ACP_USERREMINDER_ZEROPOSTER_EXPLAIN'		=> 'Hier werden die Mitglieder aufgelistet, die zwar regelmäßig online sind, aber bisher noch keine Beiträge gepostet haben.',
 	// Support and Copyright
 	'ACP_USERREMINDER_SUPPORT'					=> 'Wenn du die Entwicklung der Erweiterung ´User Reminder´ unterstützen möchtest, kannst du das hier tun',
-	'ACP_USERREMINDER_VERSION'					=> '<img src="https://img.shields.io/badge/Version-%1$s-green.svg?style=plastic"><br>&copy; 2019 - %2$d by Mike-on-Tour',
+	'ACP_USERREMINDER_VERSION'					=> '<img src="https://img.shields.io/badge/Version-%1$s-green.svg?style=plastic" alt=""><br>&copy; 2019 - %2$d by Mike-on-Tour',
 ]);

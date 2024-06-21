@@ -1,3 +1,11 @@
+{#
+*
+* @package Userreminder v1.8.0
+* @copyright (c) 2019 - 2024 Mike-on-Tour
+* @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
+*
+#}
+
 {% include 'overall_header.html' %}
 {% INCLUDECSS '@mot_userreminder/admin_mot_userreminder.css' %}
 
@@ -5,11 +13,14 @@
 <p>{{ lang('ACP_USERREMINDER_SLEEPER_EXPLAIN') }}</p>
 
 <form id="acp_userreminder_registered_only" method="post" action="{{ U_ACTION }}">
-	{% if pagination %}
 	<div class="pagination top-pagination">
-		{% include 'pagination.html' %}
+		{% if ACP_MOT_UR_SLEEPER_COUNT %}
+			{{ lang('ACP_USERREMINDER_ITEMS', ACP_MOT_UR_SLEEPER_COUNT) }}
+		{% endif %}
+		{% if pagination %}
+			&nbsp;&bull;&nbsp;{% include 'pagination.html' %}
+		{% endif %}
 	</div>
-	{% endif %}
 
 {% if REMIND_SLEEPER %}
 	<table class="table1 zebra-table fixed-width-table">
@@ -17,7 +28,7 @@
 			<tr>
 				<th rowspan="2" style="width: 30%;">{{ lang('USERNAME') }}</th>
 				<th colspan="2" style="text-align: center;">{{ lang('JOINED') }}</th>
-				<th colspan="2" style="text-align: center;">{{ lang('ACP_USERREMINDER_REMINDER') }}</th>
+				<th colspan="2" style="text-align: center;">{{ lang('ACP_USERREMINDER_SLEEPER_REMINDER') }}</th>
 				<th rowspan="2" style="width: 70px; text-align: center;">{{ lang('ACP_USERREMINDER_MARK_REMIND') }}</th>
 				<th rowspan="2" style="width: 70px; text-align: center;">{{ lang('ACP_USERREMINDER_MARK_DELETE') }}</th>
 			</tr>

@@ -1,6 +1,6 @@
 # Userreminder
 
-![Version: 1.7.1](https://img.shields.io/badge/Version-1.7.1-green)  
+![Version: 1.8.0](https://img.shields.io/badge/Version-1.8.0-green)  
   
 ![phpBB 3.2.x Compatible](https://img.shields.io/badge/phpBB-3.2.x%20Compatible-009BDF)
 ![phpBB 3.3.x Compatible](https://img.shields.io/badge/phpBB-3.3.x%20Compatible-009BDF)
@@ -80,7 +80,7 @@ and enter them here but keep in mind that your board's software might send other
 to not enter your provider's limit of emails but use only a percentage, e.g. 75% to be safe. If your provider allows you to send 250 emails within one
 hour it might be a good idea to enter a limit of 200 emails. Another example would be a limit of 3.000 emails within a one day (86.400 seconds) time frame.
 In this case it would be prudent to enter only 2.000 emails as your daily limit.  
-Why do you have set these limits? Imagine you have 500 members due to get a reminding mail but your provider only allows chunks of 100 emails per hour (3.600
+Why do you have to set these limits? Imagine you have 500 members due to get a reminding mail but your provider only allows chunks of 100 emails per hour (3.600
 seconds). When reminding your inactive members Userreminder checks those limits and sends only an initial chunk of 100 mails, the other 400 members' data is
 stored in a database table and you will see in the reminding tab that all your 500 members are reminded. After one hour (the time frame you have defined)
 Userreminder checks whether there are still members to be reminded in the database table. If this is the case it will send another 100 mails and after another
