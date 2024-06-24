@@ -2,7 +2,7 @@
 
 /**
 *
-* @package UserReminder v1.7.1
+* @package UserReminder v1.8.1
 * @copyright (c) 2019 - 2024 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
@@ -115,7 +115,6 @@ class common
 			*	and secondly those users who have a value of Zero (which means they have not been reminded yet) .
 			*	This sequence is necessary due to the fact that we set this date in the DB while sending the first mail and thus we would be sending both mails if we did it the other way round.
 			*/
-			$this->email_arr = json_decode($this->config_text->get('mot_ur_email_texts'), true);
 			$now = time();
 			// Since inactive users and zeroposters may have different time frames we have to distinguish here
 			$reminder1 = $zeroposters ? $now - (self::SECS_PER_DAY * $this->config['mot_ur_zp_days_reminded']) : $now - (self::SECS_PER_DAY * $this->config['mot_ur_days_reminded']);
@@ -248,7 +247,6 @@ class common
 			// Now we get the number of available mails to be sent in the current time frame
 			$mail_available = $this->config['mot_ur_mail_available'];
 
-			$this->email_arr = json_decode($this->config_text->get('mot_ur_email_texts'), true);
 			$now = time();
 
 			// Get the data of all sleepers due for reminding
@@ -306,6 +304,7 @@ class common
 	*/
 	public function reminder_mail($row, $messenger, $reminder_type)
 	{
+		// Get
 		// Reset the messenger variables to prevent errors
 		$messenger->reset();
 
@@ -337,9 +336,10 @@ class common
 		}
 
 		// First check whether email text has been edited and saved in the config_text table since in this case we have to take care of setting all the variables and do the correct sending ourselves
-		if (array_key_exists($row['user_lang'], $this->email_arr) && array_key_exists($reminder_type, $this->email_arr[$row['user_lang']]))
+		$email_arr = json_decode($this->config_text->get('mot_ur_email_texts'), true);
+		if (array_key_exists($row['user_lang'], $email_arr) && array_key_exists($reminder_type, $email_arr[$row['user_lang']]))
 		{
-			$ur_email_text = $this->email_arr[$row['user_lang']][$reminder_type];
+			$ur_email_text = $email_arr[$row['user_lang']][$reminder_type];
 
 			$username = htmlspecialchars_decode($row['username'], ENT_COMPAT);
 			$last_visit = $this->format_date_time($row['user_lang'], $row['user_timezone'], $row['user_dateformat'], $row['mot_last_login']);

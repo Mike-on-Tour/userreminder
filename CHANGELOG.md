@@ -4,6 +4,18 @@ All changes to `Userreminder for phpBB` will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.8.1] - 2024-06-24
+
+### Added
+  
+### Changed
+  
+### Fixed
+-	A bug which could lead to a fatal error when sending reminder mails if the reminder mails were not edited by the admin (`common.php`)
+  
+### Removed
+  
+  
 ## [1.8.0] - 2024-06-13
 
 ### Added
@@ -21,6 +33,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 -	A duplicate language key in the `language/xx/info_acp_mot_userreminder.php` and `adm/style/acp_ur_sleeper.html` files
 -	A missing ` alt=""` within the language key `ACP_USERREMINDER_VERSION` in the `language/xx/info_acp_mot_userreminder.php` files
 -	A problem reported in conjunction with the cron job not running properly because the config variable holding the time stamp of the last run was not dynamic
+-	A bug which could lead to a fatal error if the reminder mails were not edited by the admin (`common.php`)
   
 ### Removed
   
