@@ -1,8 +1,8 @@
 <?php
 /**
 *
-* @package UserReminder v1.7.2
-* @copyright (c) 2019 - 2024 Mike-on-Tour
+* @package Userreminder v1.9.0
+* @copyright (c) 2019 - 2025 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
@@ -130,7 +130,7 @@ class main_listener implements EventSubscriberInterface
 
 			// Get user_ids of banned members since we don't want to remind them (they wouldn't be able to log in anyway), they will be handled as protected members to prevent reminding (and deletion)
 			$sql = 'SELECT ban_userid FROM ' . BANLIST_TABLE . '
-					WHERE ban_userid <> 0';
+					WHERE ban_userid > 0';
 			$result = $this->db->sql_query($sql);
 			while ($row = $this->db->sql_fetchrow($result))
 			{

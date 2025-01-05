@@ -1,6 +1,15 @@
+{#
+*
+* @package UserReminder v1.9.0
+* @copyright (c) 2019 - 2025 Mike-on-Tour
+* @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
+*
+#}
+
 {% include 'overall_header.html' %}
 {% INCLUDEJS '@mot_userreminder/admin_mot_userreminder.js' %}
 {% INCLUDECSS '@mot_userreminder/admin_mot_userreminder.css' %}
+{% import "acp_mot_ur_macro.html" as forms %}
 {% set switch_type = TOGGLECTRL_TYPE ?? 'toggle' %}
 
 <h1>{{ lang('SETTINGS') }}</h1>
@@ -15,7 +24,7 @@
 		</dl>
  		<dl>
 			<dt><label for="mot_ur_expert_mode">{{ lang('ACP_USERREMINDER_EXPERT_MODE') ~ lang('COLON') }}</label><p>{{ lang('ACP_USERREMINDER_EXPERT_MODE_TEXT') }}</p></dt>
-			<dd>{{ _self.switch('mot_ur_expert_mode', ACP_USERREMINDER_EXPERT_MODE, switch_type) }}</dd>
+			<dd>{{ forms.switch('mot_ur_expert_mode', ACP_USERREMINDER_EXPERT_MODE, switch_type) }}</dd>
 		</dl>
 	</fieldset>
 
@@ -32,7 +41,7 @@
         </dl>
  		<dl>
 			<dt><label for="mot_ur_autoremind">{{ lang('ACP_USERREMINDER_AUTOREMIND') ~ lang('COLON') }}</label></dt>
-			<dd>{{ _self.switch('mot_ur_autoremind', ACP_USERREMINDER_AUTOREMIND, switch_type) }}</dd>
+			<dd>{{ forms.switch('mot_ur_autoremind', ACP_USERREMINDER_AUTOREMIND, switch_type) }}</dd>
 		</dl>
        <dl>
             <dt><label for="mot_ur_days_until_deleted">{{ lang('ACP_USERREMINDER_DAYS_UNTIL_DELETED') ~ lang('COLON') }}</label></dt>
@@ -40,7 +49,7 @@
         </dl>
 		<dl>
 			<dt><label for="mot_ur_autodelete">{{ lang('ACP_USERREMINDER_AUTODELETE') ~ lang('COLON') }}</label></dt>
-			<dd>{{ _self.switch('mot_ur_autodelete', ACP_USERREMINDER_AUTODELETE, switch_type) }}</dd>
+			<dd>{{ forms.switch('mot_ur_autodelete', ACP_USERREMINDER_AUTODELETE, switch_type) }}</dd>
 		</dl>
 	</fieldset>
 
@@ -49,7 +58,7 @@
 		<p>{{ lang('ACP_USERREMINDER_SLEEPER_CONFIG_TEXT') }}</p>
 		<dl>
 			<dt><label for="mot_ur_remind_sleeper">{{ lang('ACP_USERREMINDER_REMIND_SLEEPER') ~ lang('COLON') }}</label><p>{{ lang('ACP_USERREMINDER_REMIND_SLEEPER_TEXT') }}</p></dt>
-			<dd>{{ _self.switch('mot_ur_remind_sleeper', ACP_USERREMINDER_REMIND_SLEEPER, switch_type) }}</dd>
+			<dd>{{ forms.switch('mot_ur_remind_sleeper', ACP_USERREMINDER_REMIND_SLEEPER, switch_type) }}</dd>
 		</dl>
 		<div id="mot_ur_sleeper_remind_settings" hidden="true">
 			<dl>
@@ -58,13 +67,13 @@
 			</dl>
 			<dl>
 				<dt><label for="mot_ur_sleeper_autoremind">{{ lang('ACP_USERREMINDER_AUTOREMIND') ~ lang('COLON') }}</label></dt>
-			<dd>{{ _self.switch('mot_ur_sleeper_autoremind', ACP_USERREMINDER_SLEEPER_AUTOREMIND, switch_type) }}</dd>
+			<dd>{{ forms.switch('mot_ur_sleeper_autoremind', ACP_USERREMINDER_SLEEPER_AUTOREMIND, switch_type) }}</dd>
 			</dl>
 		</div>
 
 		<dl>
 			<dt><label for="mot_ur_sleeper_autodelete">{{ lang('ACP_USERREMINDER_AUTODELETE_SLEEPER') ~ lang('COLON') }}</label><p>{{ lang('ACP_USERREMINDER_AUTODELETE_SLEEPER_TEXT') }}</p></dt>
-			<dd>{{ _self.switch('mot_ur_sleeper_autodelete', ACP_USERREMINDER_AUTODELETE_SLEEPER, switch_type) }}</dd>
+			<dd>{{ forms.switch('mot_ur_sleeper_autodelete', ACP_USERREMINDER_AUTODELETE_SLEEPER, switch_type) }}</dd>
 		</dl>
 		<div id="mot_ur_sleeper_delete_settings" hidden="true">
 			<dl>
@@ -79,7 +88,7 @@
 		<p>{{ lang('ACP_USERREMINDER_ZEROPOSTER_CONFIG_TEXT') }}</p>
 		<dl>
 			<dt><label for="mot_ur_remind_zeroposter">{{ lang('ACP_USERREMINDER_REMIND_ZEROPOSTER') ~ lang('COLON') }}</label></dt>
-			<dd>{{ _self.switch('mot_ur_remind_zeroposter', ACP_USERREMINDER_REMIND_ZEROPOSTER, switch_type) }}</dd>
+			<dd>{{ forms.switch('mot_ur_remind_zeroposter', ACP_USERREMINDER_REMIND_ZEROPOSTER, switch_type) }}</dd>
 		</dl>
 		<div id="mot_ur_zeroposter_settings" hidden="true">
 			<dl>
@@ -92,7 +101,7 @@
 			</dl>
 			<dl>
 				<dt><label for="mot_ur_zp_autoremind">{{ lang('ACP_USERREMINDER_ZP_AUTOREMIND') ~ lang('COLON') }}</label></dt>
-				<dd>{{ _self.switch('mot_ur_zp_autoremind', ACP_USERREMINDER_ZP_AUTOREMIND, switch_type) }}</dd>
+				<dd>{{ forms.switch('mot_ur_zp_autoremind', ACP_USERREMINDER_ZP_AUTOREMIND, switch_type) }}</dd>
 			</dl>
 		   <dl>
 				<dt><label for="mot_ur_zp_days_until_deleted">{{ lang('ACP_USERREMINDER_ZP_DAYS_UNTIL_DELETED') ~ lang('COLON') }}</label></dt>
@@ -100,7 +109,7 @@
 			</dl>
 			<dl>
 				<dt><label for="mot_ur_zp_autodelete">{{ lang('ACP_USERREMINDER_ZP_AUTODELETE') ~ lang('COLON') }}</label></dt>
-				<dd>{{ _self.switch('mot_ur_zp_autodelete', ACP_USERREMINDER_ZP_AUTODELETE, switch_type) }}</dd>
+				<dd>{{ forms.switch('mot_ur_zp_autodelete', ACP_USERREMINDER_ZP_AUTODELETE, switch_type) }}</dd>
 			</dl>
 		<div>
 	</fieldset>
@@ -169,7 +178,7 @@
 
 		<dl>
 			<dt><label for="mot_ur_suppress_replyto">{{ lang('ACP_USERREMINDER_SUPPRESS_REPLYTO') ~ lang('COLON') }}</label><p>{{ lang('ACP_USERREMINDER_SUPPRESS_REPLYTO_TEXT') }}</p></dt>
-			<dd>{{ _self.switch('mot_ur_suppress_replyto', ACP_USERREMINDER_SUPPRESS_REPLYTO, switch_type) }}</dd>
+			<dd>{{ forms.switch('mot_ur_suppress_replyto', ACP_USERREMINDER_SUPPRESS_REPLYTO, switch_type) }}</dd>
 		</dl>
 	</fieldset>
 
@@ -194,21 +203,13 @@
 		<dl>
 			<dt><label for="mot_ur_mail_lang">{{ lang('ACP_USERREMINDER_MAIL_LANG') ~ lang('COLON') }}</label></dt>
 			<dd>
-				<select id="mot_ur_mail_lang" name="mot_ur_mail_lang">
-					{% for lang in langs %}
-						<option value="{{ lang.VALUE }}" {% if CHOOSE_LANG == lang.VALUE %} selected {% endif %}>{{ lang.VALUE }}</option>
-					{% endfor %}
-				</select>
+				{{ forms.select('mot_ur_mail_lang', ACP_MOT_UR_CHOOSE_LANG, ACP_MOT_UR_LANGS_ARR) }}
 			</dd>
 		</dl>
 		<dl>
 			<dt><label for="mot_ur_mail_file">{{ lang('ACP_USERREMINDER_MAIL_FILE') ~ lang('COLON') }}</label></dt>
 			<dd>
-				<select id="mot_ur_mail_file" name="mot_ur_mail_file">
-					<option value="reminder_one" {% if CHOOSE_FILE == 'reminder_one' %} selected {% endif %}>{{ lang('ACP_USERREMINDER_MAIL_ONE') }}</option>
-					<option value="reminder_two" {% if CHOOSE_FILE == 'reminder_two' %} selected {% endif %}>{{ lang('ACP_USERREMINDER_MAIL_TWO') }}</option>
-					<option value="reminder_sleeper" {% if CHOOSE_FILE == 'reminder_sleeper' %} selected {% endif %}>{{ lang('ACP_USERREMINDER_MAIL_SLEEPER') }}</option>
-				</select>
+				{{ forms.select('mot_ur_mail_file', ACP_MOT_UR_CHOOSE_FILE, ACP_MOT_UR_FILES_ARR) }}
 			</dd>
 		</dl>
 
@@ -283,12 +284,3 @@
 <p id="centered_text">{{ USERREMINDER_VERSION }}</p>
 
 {% include 'overall_footer.html' %}
-
-{% macro switch(name, checked = false, type = 'toggle') -%}
-	{% if type == 'toggle' || type == 'checkbox' -%}
-		<input type="checkbox" class="{{ type }}" name="{{ name }}" value="1"{{ checked ? ' checked' }}>
-	{%- elseif type == 'radio' -%}
-		<label><input type="radio" class="radio" name="{{ name }}" value="1"{{ checked ? ' checked' }}> {{ lang('YES') }}</label>
-		<label><input type="radio" class="radio" name="{{ name }}" value="0"{{ !checked ? ' checked' }}> {{ lang('NO') }}</label>
-	{%- endif %}
-{%- endmacro %}
