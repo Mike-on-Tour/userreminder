@@ -1,8 +1,8 @@
 <?php
 /**
 *
-* @package Userreminder v1.8.0
-* @copyright (c) 2019 - 2024 Mike-on-Tour
+* @package Userreminder v1.9.0
+* @copyright (c) 2019 - 2025 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
@@ -80,12 +80,18 @@ class ur_acp
 
 		$this->md_manager = $this->phpbb_extension_manager->create_extension_metadata_manager('mot/userreminder');
 		$this->userreminder_version = $this->md_manager->get_metadata('version');
+
+		$this->sort_dir_arr = [
+			'DESC'		=> $this->language->lang('ACP_USERREMINDER_SORT_DESC'),
+			'ASC'		=> $this->language->lang('ACP_USERREMINDER_SORT_ASC'),
+		];
 	}
 
 
 	public function settings()
 	{
-		add_form_key('acp_userreminder_settings');
+		$form_key = 'acp_userreminder_settings';
+		add_form_key($form_key);
 
 		// Check for this function and include it if not existent since it is needed to convert user_id into usernames and vice versa for the protected members section
 		if (!function_exists('user_get_id_name'))
@@ -107,7 +113,7 @@ class ur_acp
 		*/
 		if ($this->request->is_set_post('submit'))
 		{
-			if (!check_form_key('acp_userreminder_settings'))
+			if (!check_form_key($form_key))
 			{
 				trigger_error($this->language->lang('FORM_INVALID') . adm_back_link($this->u_action), E_USER_WARNING);
 			}
@@ -246,7 +252,7 @@ class ur_acp
 			$user_data['user_lang'] = $this->request->variable('mot_ur_mail_lang', '');
 			$user_data['user_email'] = $this->request->variable('mot_ur_test_mail', '');
 
-			$this->common->email_arr = json_decode($this->config_text->get('mot_ur_email_texts'), true);
+//			$this->common->email_arr = json_decode($this->config_text->get('mot_ur_email_texts'), true);
 			$this->common->reminder_mail($user_data, $messenger, $this->request->variable('mot_ur_mail_file', ''));
 			unset($messenger);
 
@@ -254,11 +260,10 @@ class ur_acp
 		}
 
 		$dirs = $this->common->load_dirs($lang_dir);
-		foreach ($dirs as $value)
+		$lang_dirs = [];
+		foreach ($dirs as $dir)
 		{
-			$this->template->assign_block_vars('langs', [
-				'VALUE'		=> $value,
-			]);
+			$lang_dirs[$dir] = $dir;
 		}
 
 		// Get the user_ids of protected members and convert it to string for use in template
@@ -269,12 +274,17 @@ class ur_acp
 		$protected_users_names = implode("\n", $username_arr);
 
 		// Get the group properties of those groups used as default
-		$sql = 'SELECT g.group_id, g.group_type, g.group_name, u.group_id FROM ' .
-				GROUPS_TABLE . ' AS g, ' . USERS_TABLE . ' AS u
-				WHERE g.group_id = u.group_id
-				AND u.user_type IN (' . USER_NORMAL . ',' . USER_FOUNDER . ')
-				GROUP BY u.group_id
-				ORDER BY g.group_type DESC, g.group_name ASC';
+		$sql_arr = [
+			'SELECT'		=> 'u.group_id, g.group_id, g.group_type, g.group_name',
+			'FROM'			=> [
+					USERS_TABLE		=> 'u',
+					GROUPS_TABLE	=> 'g',
+			],
+			'WHERE'			=> 'g.group_id = u.group_id AND u.user_type IN (' . USER_NORMAL . ',' . USER_FOUNDER . ')',
+			'GROUP_BY'		=> 'u.group_id',
+			'ORDER_BY'		=> 'g.group_type DESC, g.group_name ASC',
+		];
+		$sql = $this->db->sql_build_query('SELECT', $sql_arr);
 		$result = $this->db->sql_query($sql);
 		$groups = $this->db->sql_fetchrowset($result);
 		$this->db->sql_freeresult($result);
@@ -330,7 +340,14 @@ class ur_acp
 			'ACP_USERREMINDER_EMAIL_TEXT'				=> $ur_email_text,
 			'ACP_USERREMINDER_TEST_MAIL_ADDRESS'		=> $email_bcc != '' ? $email_bcc : ($email_cc != '' ? $email_cc : $this->language->lang('ACP_USERREMINDER_ENTER_EMAIL_ADDRESS')),
 			'U_ACTION'									=> $this->u_action,
-			'CHOOSE_LANG'								=> $ur_lang,
+			'ACP_MOT_UR_LANGS_ARR'						=> $lang_dirs,
+			'ACP_MOT_UR_CHOOSE_LANG'					=> $ur_lang,
+			'ACP_MOT_UR_FILES_ARR'						=> [
+				'reminder_one'			=> $this->language->lang('ACP_USERREMINDER_MAIL_ONE'),
+				'reminder_two'			=> $this->language->lang('ACP_USERREMINDER_MAIL_TWO'),
+				'reminder_sleeper'		=> $this->language->lang('ACP_USERREMINDER_MAIL_SLEEPER'),
+			],
+			'ACP_MOT_UR_CHOOSE_FILE'					=> $ur_file,
 			'CHOOSE_FILE'								=> $ur_file,
 			'SHOW_FILECONTENT'							=> $show_filecontent,
 			'PREVIEW_TEXT'								=> $preview_text,
@@ -417,8 +434,9 @@ class ur_acp
 
 		// Get user_ids of banned members since we don't want to remind them (they wouldn't be able to log in anyway), they will be handled as protected members to prevent reminding (and deletion)
 		$sql = 'SELECT ban_userid FROM ' . BANLIST_TABLE . '
-				WHERE ban_userid <> 0';
+				WHERE ban_userid > 0';
 		$result = $this->db->sql_query($sql);
+
 		while ($row = $this->db->sql_fetchrow($result))
 		{
 			$protected_members[] = $row['ban_userid'];
@@ -497,11 +515,8 @@ class ur_acp
 		$enable_remind = $delete_enabled = false;
 		foreach ($reminders as $row)
 		{
-			$no_offline_days = (int) (($now - $row['mot_last_login']) / self::SECS_PER_DAY);
-			$date_reminder_one = ($row['mot_reminded_one'] > 0) ? $this->user->format_date($row['mot_reminded_one']) : '-';
 			$reminder_one_ago = ($row['mot_reminded_one'] > 0) ? (int) (($now - $row['mot_reminded_one']) / self::SECS_PER_DAY) : '-';
 			$reminder_enabled = (($row['mot_reminded_one'] == 0) || (($row['mot_reminded_two'] == 0) && ($reminder_one_ago >= $this->config['mot_ur_days_reminded'])));
-			$date_reminder_two = ($row['mot_reminded_two'] > 0) ? $this->user->format_date($row['mot_reminded_two']) : '-';
 			$reminder_two_ago = ($row['mot_reminded_two'] > 0) ? (int) (($now - $row['mot_reminded_two']) / self::SECS_PER_DAY) : '-';
 			$enable_delete = ($reminder_two_ago >= $this->config['mot_ur_days_until_deleted']);
 			$enable_remind = $reminder_enabled ? true : $enable_remind;
@@ -514,22 +529,29 @@ class ur_acp
 				'JOINED'			=> $this->user->format_date($row['user_regdate']),
 				'USER_POSTS'		=> $row['user_posts'],
 				'LAST_VISIT'		=> $this->user->format_date($row['mot_last_login']),
-				'OFFLINE_DAYS'		=> $no_offline_days,
-				'REMINDER_ONE'		=> $date_reminder_one,
+				'OFFLINE_DAYS'		=> (int) (($now - $row['mot_last_login']) / self::SECS_PER_DAY),
+				'REMINDER_ONE'		=> ($row['mot_reminded_one'] > 0) ? $this->user->format_date($row['mot_reminded_one']) : '-',
 				'ONE_AGO'			=> $reminder_one_ago,
 				'REMINDER_ENABLED'	=> $reminder_enabled,
-				'REMINDER_TWO'		=> $date_reminder_two,
+				'REMINDER_TWO'		=> ($row['mot_reminded_two'] > 0) ? $this->user->format_date($row['mot_reminded_two']) : '-',
 				'TWO_AGO'			=> $reminder_two_ago,
 				'DEL_ENABLED'		=> $enable_delete,
 				'USER_ID'			=> $row['user_id'],
 			]);
 		}
 
+		$sort_key_arr = [
+			'user_lastvisit'	=> $this->language->lang('ACP_USERREMINDER_KEY_LV'),
+			'user_regdate'		=> $this->language->lang('ACP_USERREMINDER_KEY_RD'),
+		];
+		$sort_key_arr = $enable_sort_one ? array_merge($sort_key_arr, ['mot_reminded_one' => $this->language->lang('ACP_USERREMINDER_KEY_RO')]) : $sort_key_arr;
+		$sort_key_arr = $enable_sort_two ? array_merge($sort_key_arr, ['mot_reminded_two' => $this->language->lang('ACP_USERREMINDER_KEY_RT')]) : $sort_key_arr;
+
 		$this->template->assign_vars([
 			'SORT_KEY'						=> $sort_key,
+			'ACP_MOT_UR_SORT_KEY_ARR'		=> $sort_key_arr,
 			'SORT_DIR'						=> $sort_dir,
-			'SORT_ONE_ABLE'					=> $enable_sort_one,
-			'SORT_TWO_ABLE'					=> $enable_sort_two,
+			'ACP_MOT_UR_SORT_DIR_ARR'		=> $this->sort_dir_arr,
 			'ENABLE_REMIND'					=> $enable_remind,
 			'ENABLE_DELETE'					=> $delete_enabled,
 			'SHOW_EXPERT_MODE'				=> $this->config['mot_ur_expert_mode'],
@@ -612,7 +634,7 @@ class ur_acp
 
 		// Get user_ids of banned members since we don't want to remind them (they wouldn't be able to log in anyway), they will be handled as protected members to prevent reminding (and deletion)
 		$sql = 'SELECT ban_userid FROM ' . BANLIST_TABLE . '
-				WHERE ban_userid <> 0';
+				WHERE ban_userid > 0';
 		$result = $this->db->sql_query($sql);
 		while ($row = $this->db->sql_fetchrow($result))
 		{
@@ -721,7 +743,12 @@ class ur_acp
 		$this->template->assign_vars([
 			'REMIND_SLEEPER'			=> $this->config['mot_ur_remind_sleeper'],
 			'SORT_KEY'					=> $sort_key,
+			'ACP_MOT_UR_SORT_KEY_ARR'	=> [
+				'user_regdate'				=> $this->language->lang('ACP_USERREMINDER_KEY_RD'),
+				'mot_sleeper_remind'		=> $this->language->lang('ACP_USERREMINDER_KEY_RE'),
+			],
 			'SORT_DIR'					=> $sort_dir,
+			'ACP_MOT_UR_SORT_DIR_ARR'	=> $this->sort_dir_arr,
 			'ENABLE_SORT_REMIND'		=> $enable_sort_remind,
 			'ENABLE_REMIND'				=> $enable_remind,
 			'ENABLE_DELETE'				=> $delete_enabled,
@@ -809,7 +836,7 @@ class ur_acp
 
 		// Get user_ids of banned members since we don't want to remind them (they wouldn't be able to log in anyway), they will be handled as protected members to prevent reminding (and deletion)
 		$sql = 'SELECT ban_userid FROM ' . BANLIST_TABLE . '
-				WHERE ban_userid <> 0';
+				WHERE ban_userid > 0';
 		$result = $this->db->sql_query($sql);
 		while ($row = $this->db->sql_fetchrow($result))
 		{
@@ -892,11 +919,9 @@ class ur_acp
 		foreach ($zero_posters as $row)
 		{
 			$no_of_days = (int) (($now - $row['mot_last_login']) / self::SECS_PER_DAY);
-			$date_reminder_one = ($row['mot_reminded_one'] > 0) ? $this->user->format_date($row['mot_reminded_one']) : '-';
 			$reminder_one_ago = ($row['mot_reminded_one'] > 0) ? (int) (($now - $row['mot_reminded_one']) / self::SECS_PER_DAY) : '-';
 			// since still all zeroposters are displayed we have to make certain that only those with more than the selected number of inactive days are selectable for reminding
 			$reminder_enabled = ((($row['mot_reminded_one'] == 0) && ($no_of_days >= $this->config['mot_ur_zp_inactive_days'])) || (($row['mot_reminded_two'] == 0) && ($reminder_one_ago >= $this->config['mot_ur_days_reminded']))) ? true : false;
-			$date_reminder_two = ($row['mot_reminded_two'] > 0) ? $this->user->format_date($row['mot_reminded_two']) : '-';
 			$reminder_two_ago = ($row['mot_reminded_two'] > 0) ? (int) (($now - $row['mot_reminded_two']) / self::SECS_PER_DAY) : '-';
 			$enable_delete = ($reminder_two_ago >= $this->config['mot_ur_zp_days_until_deleted']) ? true : false;
 			$enable_remind = $reminder_enabled ? true : $enable_remind;
@@ -909,22 +934,29 @@ class ur_acp
 				'JOINED'			=> $this->user->format_date($row['user_regdate']),
 				'LAST_VISIT'		=> $this->user->format_date($row['mot_last_login']),
 				'OFFLINE_DAYS'		=> $no_of_days,
-				'REMINDER_ONE'		=> $date_reminder_one,
+				'REMINDER_ONE'		=> ($row['mot_reminded_one'] > 0) ? $this->user->format_date($row['mot_reminded_one']) : '-',
 				'ONE_AGO'			=> $reminder_one_ago,
 				'REMINDER_ENABLED'	=> $reminder_enabled,
-				'REMINDER_TWO'		=> $date_reminder_two,
+				'REMINDER_TWO'		=> ($row['mot_reminded_two'] > 0) ? $this->user->format_date($row['mot_reminded_two']) : '-',
 				'TWO_AGO'			=> $reminder_two_ago,
 				'DEL_ENABLED'		=> $enable_delete,
 				'USER_ID'			=> $row['user_id'],
 			]);
 		}
 
+		$sort_key_arr = [
+			'user_lastvisit'	=> $this->language->lang('ACP_USERREMINDER_KEY_LV'),
+			'user_regdate'		=> $this->language->lang('ACP_USERREMINDER_KEY_RD'),
+		];
+		$sort_key_arr = $enable_sort_one ? array_merge($sort_key_arr, ['mot_reminded_one' => $this->language->lang('ACP_USERREMINDER_KEY_RO')]) : $sort_key_arr;
+		$sort_key_arr = $enable_sort_two ? array_merge($sort_key_arr, ['mot_reminded_two' => $this->language->lang('ACP_USERREMINDER_KEY_RT')]) : $sort_key_arr;
+
 		$this->template->assign_vars([
 			'SORT_KEY'						=> $sort_key,
+			'ACP_MOT_UR_SORT_KEY_ARR'		=> $sort_key_arr,
 			'SORT_DIR'						=> $sort_dir,
+			'ACP_MOT_UR_SORT_DIR_ARR'		=> $this->sort_dir_arr,
 			'REMIND_ZEROPOSTERS'			=> (bool) $this->config['mot_ur_remind_zeroposter'],
-			'SORT_ONE_ABLE'					=> $enable_sort_one,
-			'SORT_TWO_ABLE'					=> $enable_sort_two,
 			'ENABLE_REMIND'					=> $enable_remind,
 			'ENABLE_DELETE'					=> $delete_enabled,
 			'SHOW_EXPERT_MODE'				=> $this->config['mot_ur_expert_mode'],

@@ -2,8 +2,8 @@
 
 /**
 *
-* @package UserReminder v1.8.1
-* @copyright (c) 2019 - 2024 Mike-on-Tour
+* @package UserReminder v1.9.0
+* @copyright (c) 2019 - 2025 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
@@ -304,7 +304,6 @@ class common
 	*/
 	public function reminder_mail($row, $messenger, $reminder_type)
 	{
-		// Get
 		// Reset the messenger variables to prevent errors
 		$messenger->reset();
 
@@ -412,7 +411,7 @@ class common
 	/**
 	* @param string	$user_lang			addressed user's language
 	* @param string	$user_timezone		addressed user's time zone
-	* @param string	$user_dateformat	addressed user's date/time format
+	* @param string	$user_dateformat		addressed user's date/time format
 	* @param int	$user_timestamp		addressed user's php timestamp (registration date, last login, reminder mails as UNIX timestamp from users table)
 	*
 	* @return string	the timestamp in user's choosen date/time format and time zone as DateTime string
@@ -437,7 +436,7 @@ class common
 		{
 			foreach ($matches[0] as $value)
 			{
-				$time = preg_replace("/".$value."/", $lang->lang(['datetime', $value]), $time);
+				$time = preg_replace("/" . $value . "/", $lang->lang(['datetime', $value]), $time);
 			}
 		}
 

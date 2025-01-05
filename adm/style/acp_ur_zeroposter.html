@@ -1,13 +1,14 @@
 {#
 *
-* @package Userreminder v1.8.0
-* @copyright (c) 2019 - 2024 Mike-on-Tour
+* @package UserReminder v1.9.0
+* @copyright (c) 2019 - 2025 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 #}
 
 {% include 'overall_header.html' %}
 {% INCLUDECSS '@mot_userreminder/admin_mot_userreminder.css' %}
+{% import "acp_mot_ur_macro.html" as forms %}
 
 <h1>{{ lang('ACP_USERREMINDER_ZEROPOSTER') }}</h1>
 <p>{{ lang('ACP_USERREMINDER_ZEROPOSTER_EXPLAIN') }}</p>
@@ -72,21 +73,12 @@
 	{% endif %}
 
 	<fieldset class="display-options">
-		{{ lang('SORT_BY') ~ lang('COLON') }}
-		<select name="sort_key">
-			<option value="user_lastvisit" {% if SORT_KEY == 'user_lastvisit' %} selected {% endif %}>{{ lang('ACP_USERREMINDER_KEY_LV') }}</option>
-			<option value="user_regdate" {% if SORT_KEY == 'user_regdate' %} selected {% endif %}>{{ lang('ACP_USERREMINDER_KEY_RD') }}</option>
-			{% if SORT_ONE_ABLE %}
-				<option value="mot_reminded_one"{% if SORT_KEY == 'mot_reminded_one' %} selected {% endif %}>{{ lang('ACP_USERREMINDER_KEY_RO') }}</option>
-			{% endif %}
-			{% if SORT_TWO_ABLE %}
-				<option value="mot_reminded_two"{% if SORT_KEY == 'mot_reminded_two' %} selected {% endif %}>{{ lang('ACP_USERREMINDER_KEY_RT') }}</option>
-			{% endif %}
-		</select>&nbsp;
-		<select name="sort_dir">
-			<option value="DESC" {% if SORT_DIR == 'DESC' %} selected {% endif %}>{{ lang('ACP_USERREMINDER_SORT_DESC') }}</option>
-			<option value="ASC" {% if SORT_DIR == 'ASC' %} selected {% endif %}>{{ lang('ACP_USERREMINDER_SORT_ASC') }}</option>
-		</select>
+		{{ lang('SORT_BY') ~ lang('COLON') }}&nbsp;
+
+		{{ forms.select('sort_key', SORT_KEY, ACP_MOT_UR_SORT_KEY_ARR) }}&nbsp;
+
+		{{ forms.select('sort_dir', SORT_DIR, ACP_MOT_UR_SORT_DIR_ARR) }}&nbsp;
+
 		<input class="button2" type="submit" value="{{ lang('GO') }}" name="sort">
 	</fieldset>
 	<hr>

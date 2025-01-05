@@ -1,8 +1,8 @@
 <?php
 /**
 *
-* @package User Reminder v1.7.1
-* @copyright (c) 2019 - 2024 Mike-on-Tour
+* @package UserReminder v1.9.0
+* @copyright (c) 2019 - 2025 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
@@ -95,8 +95,8 @@ class mot_ur_reminder_cron extends \phpbb\cron\task\base
 		$mail_available = $this->config['mot_ur_mail_limit_number'];
 
 		// Get the number of users from the queue table for which we have a mail contingent
-		$sql = "SELECT * FROM " . $this->mot_userreminder_remind_queue . "
-				ORDER BY 'mot_last_login' ASC";
+		$sql = 'SELECT * FROM ' . $this->mot_userreminder_remind_queue . '
+				ORDER BY `mot_last_login` ASC';
 		$result = $this->db->sql_query_limit($sql, $mail_available);
 		$users_in_queue = $this->db->sql_fetchrowset($result);
 		$this->db->sql_freeresult($result);

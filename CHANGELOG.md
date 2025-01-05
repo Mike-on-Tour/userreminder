@@ -4,6 +4,23 @@ All changes to `Userreminder for phpBB` will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.9.0] - 2025-01-05
+
+### Added
+  
+### Changed
+-	The maximum possible PHP version to 8.4.x
+-	The look of the fieldset legends in the ACP
+-	Code improvements for the `select` dropdown selects with a TWIG macro (many thanks to LukeWCS for the macro)
+-	Code improvements within `controller/ur_acp.php`
+  
+### Fixed
+-	An SQL query in `cron/task/mot_ur_reminder_cron.php` which had incorrect single quotation marks for PostgreSQL 
+  
+### Removed
+-	The duplicate function `load_dirs()` from the `controller/ur_acp.php` file which uses the same function from `common.php`
+  
+  
 ## [1.8.1] - 2024-06-24
 
 ### Added
@@ -33,7 +50,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 -	A duplicate language key in the `language/xx/info_acp_mot_userreminder.php` and `adm/style/acp_ur_sleeper.html` files
 -	A missing ` alt=""` within the language key `ACP_USERREMINDER_VERSION` in the `language/xx/info_acp_mot_userreminder.php` files
 -	A problem reported in conjunction with the cron job not running properly because the config variable holding the time stamp of the last run was not dynamic
--	A bug which could lead to a fatal error if the reminder mails were not edited by the admin (`common.php`)
   
 ### Removed
   
