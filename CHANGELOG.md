@@ -4,6 +4,18 @@ All changes to `Userreminder for phpBB` will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.9.1] - 2025-01-06
+
+### Added
+  
+### Changed
+-	Code improvements for the `select` dropdown selects and multi selects with a TWIG macro (many thanks to LukeWCS for the macro and the controller structure)
+  
+### Fixed
+  
+### Removed
+  
+  
 ## [1.9.0] - 2025-01-05
 
 ### Added

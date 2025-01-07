@@ -1,7 +1,7 @@
 <?php
 /**
 *
-* @package Userreminder v1.9.0
+* @package Userreminder v1.9.1
 * @copyright (c) 2019 - 2025 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
@@ -82,8 +82,8 @@ class ur_acp
 		$this->userreminder_version = $this->md_manager->get_metadata('version');
 
 		$this->sort_dir_arr = [
-			'DESC'		=> $this->language->lang('ACP_USERREMINDER_SORT_DESC'),
-			'ASC'		=> $this->language->lang('ACP_USERREMINDER_SORT_ASC'),
+			'ACP_USERREMINDER_SORT_DESC'	=> 'DESC',
+			'ACP_USERREMINDER_SORT_ASC'		=> 'ASC',
 		];
 	}
 
@@ -288,14 +288,18 @@ class ur_acp
 		$result = $this->db->sql_query($sql);
 		$groups = $this->db->sql_fetchrowset($result);
 		$this->db->sql_freeresult($result);
+
 		$group_count = count($groups);
-		$protected_groups = '';
-		$protected_groups_arr = json_decode($this->config['mot_ur_protected_groups']);
+		$protected_groups = [];
 
 		foreach ($groups as $option)
 		{
-			$selected = in_array($option['group_id'], $protected_groups_arr) ? ' selected' : '';
-			$protected_groups .= '<option ' . (($option['group_type'] == GROUP_SPECIAL) ? ' class="sep"' : '') . ' value="' . $option['group_id'] . '"' . $selected . '>' . $this->group_helper->get_name($option['group_name']) . '</option>';
+			$protected_groups += [
+				$this->group_helper->get_name($option['group_name']) => [
+					$option['group_id'],
+					$option['group_type'] == GROUP_SPECIAL,
+				],
+			];
 		}
 
 		// Check total number of emails waiting in the mail queue
@@ -327,7 +331,7 @@ class ur_acp
 			'ACP_USERREMINDER_ZP_AUTODELETE'			=> $this->config['mot_ur_zp_autodelete'],
 			'ACP_USERREMINDER_PROTECTED_MEMBERS'		=> $protected_users_names,
 			'ACP_USERREMINDER_GROUP_COUNT'				=> $group_count,
-			'ACP_USERREMINDER_PROTECTED_GROUPS'			=> $protected_groups,
+			'ACP_USERREMINDER_PROTECTED_GROUPS'			=> $this->select_struct(json_decode($this->config['mot_ur_protected_groups']) ?? [], $protected_groups),
 			'ACP_USERREMINDER_MAIL_LIMIT_NUMBER'		=> $this->config['mot_ur_mail_limit_number'],
 			'ACP_USERREMINDER_MAIL_LIMIT_TIME'			=> $this->config['mot_ur_mail_limit_time_gc'],
 			'ACP_USERREMINDER_LAST_CRON_RUN'			=> $this->config['mot_ur_mail_limit_time_last_gc'] ? $this->user->format_date($this->config['mot_ur_mail_limit_time_last_gc']) : '-',
@@ -340,15 +344,12 @@ class ur_acp
 			'ACP_USERREMINDER_EMAIL_TEXT'				=> $ur_email_text,
 			'ACP_USERREMINDER_TEST_MAIL_ADDRESS'		=> $email_bcc != '' ? $email_bcc : ($email_cc != '' ? $email_cc : $this->language->lang('ACP_USERREMINDER_ENTER_EMAIL_ADDRESS')),
 			'U_ACTION'									=> $this->u_action,
-			'ACP_MOT_UR_LANGS_ARR'						=> $lang_dirs,
-			'ACP_MOT_UR_CHOOSE_LANG'					=> $ur_lang,
-			'ACP_MOT_UR_FILES_ARR'						=> [
-				'reminder_one'			=> $this->language->lang('ACP_USERREMINDER_MAIL_ONE'),
-				'reminder_two'			=> $this->language->lang('ACP_USERREMINDER_MAIL_TWO'),
-				'reminder_sleeper'		=> $this->language->lang('ACP_USERREMINDER_MAIL_SLEEPER'),
-			],
-			'ACP_MOT_UR_CHOOSE_FILE'					=> $ur_file,
-			'CHOOSE_FILE'								=> $ur_file,
+			'ACP_MOT_UR_LANGS_ARR'						=> $this->select_struct($ur_lang, $lang_dirs),
+			'ACP_MOT_UR_FILES_ARR'						=> $this->select_struct($ur_file, [
+				'ACP_USERREMINDER_MAIL_ONE'			=> 'reminder_one',
+				'ACP_USERREMINDER_MAIL_TWO'			=> 'reminder_two',
+				'ACP_USERREMINDER_MAIL_SLEEPER'		=> 'reminder_sleeper',
+			]),
 			'SHOW_FILECONTENT'							=> $show_filecontent,
 			'PREVIEW_TEXT'								=> $preview_text,
 			'SHOW_PREVIEW'								=> $show_preview,
@@ -541,17 +542,15 @@ class ur_acp
 		}
 
 		$sort_key_arr = [
-			'user_lastvisit'	=> $this->language->lang('ACP_USERREMINDER_KEY_LV'),
-			'user_regdate'		=> $this->language->lang('ACP_USERREMINDER_KEY_RD'),
+			'ACP_USERREMINDER_KEY_LV'	=> 'user_lastvisit',
+			'ACP_USERREMINDER_KEY_RD'	=> 'user_regdate',
 		];
-		$sort_key_arr = $enable_sort_one ? array_merge($sort_key_arr, ['mot_reminded_one' => $this->language->lang('ACP_USERREMINDER_KEY_RO')]) : $sort_key_arr;
-		$sort_key_arr = $enable_sort_two ? array_merge($sort_key_arr, ['mot_reminded_two' => $this->language->lang('ACP_USERREMINDER_KEY_RT')]) : $sort_key_arr;
+		$sort_key_arr = $enable_sort_one ? array_merge($sort_key_arr, ['ACP_USERREMINDER_KEY_RO' => 'mot_reminded_one']) : $sort_key_arr;
+		$sort_key_arr = $enable_sort_two ? array_merge($sort_key_arr, ['ACP_USERREMINDER_KEY_RT' => 'mot_reminded_two']) : $sort_key_arr;
 
 		$this->template->assign_vars([
-			'SORT_KEY'						=> $sort_key,
-			'ACP_MOT_UR_SORT_KEY_ARR'		=> $sort_key_arr,
-			'SORT_DIR'						=> $sort_dir,
-			'ACP_MOT_UR_SORT_DIR_ARR'		=> $this->sort_dir_arr,
+			'ACP_MOT_UR_SORT_KEY_ARR'		=> $this->select_struct($sort_key, $sort_key_arr),
+			'ACP_MOT_UR_SORT_DIR_ARR'		=> $this->select_struct($sort_dir, $this->sort_dir_arr),
 			'ENABLE_REMIND'					=> $enable_remind,
 			'ENABLE_DELETE'					=> $delete_enabled,
 			'SHOW_EXPERT_MODE'				=> $this->config['mot_ur_expert_mode'],
@@ -742,13 +741,11 @@ class ur_acp
 
 		$this->template->assign_vars([
 			'REMIND_SLEEPER'			=> $this->config['mot_ur_remind_sleeper'],
-			'SORT_KEY'					=> $sort_key,
-			'ACP_MOT_UR_SORT_KEY_ARR'	=> [
-				'user_regdate'				=> $this->language->lang('ACP_USERREMINDER_KEY_RD'),
-				'mot_sleeper_remind'		=> $this->language->lang('ACP_USERREMINDER_KEY_RE'),
-			],
-			'SORT_DIR'					=> $sort_dir,
-			'ACP_MOT_UR_SORT_DIR_ARR'	=> $this->sort_dir_arr,
+			'ACP_MOT_UR_SORT_KEY_ARR'	=> $this->select_struct($sort_key, [
+				'ACP_USERREMINDER_KEY_RD'	=> 'user_regdate',
+				'ACP_USERREMINDER_KEY_RE'	=> 'mot_sleeper_remind',
+			]),
+			'ACP_MOT_UR_SORT_DIR_ARR'	=> $this->select_struct($sort_dir, $this->sort_dir_arr),
 			'ENABLE_SORT_REMIND'		=> $enable_sort_remind,
 			'ENABLE_REMIND'				=> $enable_remind,
 			'ENABLE_DELETE'				=> $delete_enabled,
@@ -945,17 +942,15 @@ class ur_acp
 		}
 
 		$sort_key_arr = [
-			'user_lastvisit'	=> $this->language->lang('ACP_USERREMINDER_KEY_LV'),
-			'user_regdate'		=> $this->language->lang('ACP_USERREMINDER_KEY_RD'),
+			'ACP_USERREMINDER_KEY_LV'	=> 'user_lastvisit',
+			'ACP_USERREMINDER_KEY_RD'	=> 'user_regdate',
 		];
-		$sort_key_arr = $enable_sort_one ? array_merge($sort_key_arr, ['mot_reminded_one' => $this->language->lang('ACP_USERREMINDER_KEY_RO')]) : $sort_key_arr;
-		$sort_key_arr = $enable_sort_two ? array_merge($sort_key_arr, ['mot_reminded_two' => $this->language->lang('ACP_USERREMINDER_KEY_RT')]) : $sort_key_arr;
+		$sort_key_arr = ((bool) $this->config['mot_ur_remind_zeroposter'] && $enable_sort_one) ? array_merge($sort_key_arr, ['ACP_USERREMINDER_KEY_RO' => 'mot_reminded_one']) : $sort_key_arr;
+		$sort_key_arr = ((bool) $this->config['mot_ur_remind_zeroposter'] && $enable_sort_two) ? array_merge($sort_key_arr, ['ACP_USERREMINDER_KEY_RT' => 'mot_reminded_two']) : $sort_key_arr;
 
 		$this->template->assign_vars([
-			'SORT_KEY'						=> $sort_key,
-			'ACP_MOT_UR_SORT_KEY_ARR'		=> $sort_key_arr,
-			'SORT_DIR'						=> $sort_dir,
-			'ACP_MOT_UR_SORT_DIR_ARR'		=> $this->sort_dir_arr,
+			'ACP_MOT_UR_SORT_KEY_ARR'		=> $this->select_struct($sort_key, $sort_key_arr),
+			'ACP_MOT_UR_SORT_DIR_ARR'		=> $this->select_struct($sort_dir, $this->sort_dir_arr),
 			'REMIND_ZEROPOSTERS'			=> (bool) $this->config['mot_ur_remind_zeroposter'],
 			'ENABLE_REMIND'					=> $enable_remind,
 			'ENABLE_DELETE'					=> $delete_enabled,
@@ -980,5 +975,26 @@ class ur_acp
 		$this->u_action = $u_action;
 
 		return $this;
+	}
+
+	private function select_struct($cfg_value, array $options): array
+	{
+		$options_tpl = [];
+
+		foreach ($options as $opt_key => $opt_value)
+		{
+			if (!is_array($opt_value))
+			{
+				$opt_value = [$opt_value];
+			}
+			$options_tpl[] = [
+				'label'		=> $opt_key,
+				'value'		=> $opt_value[0],
+				'bold'		=> $opt_value[1] ?? false,
+				'selected'	=> is_array($cfg_value) ? in_array($opt_value[0], $cfg_value) : $opt_value[0] == $cfg_value,
+			];
+		}
+
+		return $options_tpl;
 	}
 }
