@@ -1,6 +1,6 @@
 {#
 *
-* @package UserReminder v1.9.0
+* @package UserReminder v1.9.1
 * @copyright (c) 2019 - 2025 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
@@ -123,7 +123,9 @@
 		</dl>
 		<dl>
 			<dt><label for="mot_ur_protected_groups">{{ lang('ACP_USERREMINDER_PROTECTED_GROUPS') ~ lang('COLON') }}</label></dt>
-            <dd><select class="no-scroll" id="mot_ur_protected_groups" name="mot_ur_protected_groups[]" size="{{ ACP_USERREMINDER_GROUP_COUNT }}" multiple="multiple">{{ ACP_USERREMINDER_PROTECTED_GROUPS }}</select></dd>
+            <dd>
+				{{ forms.select('mot_ur_protected_groups', ACP_USERREMINDER_PROTECTED_GROUPS, true, ACP_USERREMINDER_GROUP_COUNT) }}
+			</dd>
 		</dl>
 	</fieldset>
 
@@ -203,13 +205,13 @@
 		<dl>
 			<dt><label for="mot_ur_mail_lang">{{ lang('ACP_USERREMINDER_MAIL_LANG') ~ lang('COLON') }}</label></dt>
 			<dd>
-				{{ forms.select('mot_ur_mail_lang', ACP_MOT_UR_CHOOSE_LANG, ACP_MOT_UR_LANGS_ARR) }}
+				{{ forms.select('mot_ur_mail_lang', ACP_MOT_UR_LANGS_ARR) }}
 			</dd>
 		</dl>
 		<dl>
 			<dt><label for="mot_ur_mail_file">{{ lang('ACP_USERREMINDER_MAIL_FILE') ~ lang('COLON') }}</label></dt>
 			<dd>
-				{{ forms.select('mot_ur_mail_file', ACP_MOT_UR_CHOOSE_FILE, ACP_MOT_UR_FILES_ARR) }}
+				{{ forms.select('mot_ur_mail_file', ACP_MOT_UR_FILES_ARR) }}
 			</dd>
 		</dl>
 

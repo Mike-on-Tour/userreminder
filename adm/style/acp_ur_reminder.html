@@ -1,6 +1,6 @@
 {#
 *
-* @package UserReminder v1.9.0
+* @package UserReminder v1.9.1
 * @copyright (c) 2019 - 2025 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
@@ -76,9 +76,9 @@
 	<fieldset class="display-options">
 		{{ lang('SORT_BY') ~ lang('COLON') }}&nbsp;
 
-		{{ forms.select('sort_key', SORT_KEY, ACP_MOT_UR_SORT_KEY_ARR) }}&nbsp;
+		{{ forms.select('sort_key', ACP_MOT_UR_SORT_KEY_ARR) }}&nbsp;
 
-		{{ forms.select('sort_dir', SORT_DIR, ACP_MOT_UR_SORT_DIR_ARR) }}&nbsp;
+		{{ forms.select('sort_dir', ACP_MOT_UR_SORT_DIR_ARR) }}&nbsp;
 
 		<input class="button2" type="submit" value="{{ lang('GO') }}" name="sort">
 	</fieldset>
