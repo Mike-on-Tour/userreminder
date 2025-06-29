@@ -1,8 +1,8 @@
 <?php
 /**
 *
-* @package Userreminder v1.8.0
-* @copyright (c) 2019 - 2024 Mike-on-Tour
+* @package Userreminder v1.10.0
+* @copyright (c) 2019 - 2025 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
@@ -68,6 +68,7 @@ $lang = array_merge($lang, [
 	'LOG_INACTIVE_REMIND_ONE'					=> '<strong>Erste Erinnerungs-E-Mail an inaktive Benutzer verschickt</strong><br>» %s',
 	'LOG_INACTIVE_REMIND_TWO'					=> '<strong>Zweite Erinnerungs-E-Mail an inaktive Benutzer verschickt</strong><br>» %s',
 	'LOG_SLEEPER_REMIND'						=> '<strong>Erinnerungs-E-Mail an Schläfer verschickt</strong><br>» %s',
+	'LOG_MOT_USERREMINDER_USER_DELETE'			=> '<strong>Benutzer gelöscht durch Userreminder</strong><br>» %s',
 	//ACP Settings
 	'ACP_USERREMINDER'							=> 'User Reminder',
 	'ACP_USERREMINDER_SETTINGS'					=> 'Einstellungen',
@@ -83,7 +84,7 @@ $lang = array_merge($lang, [
 													jeweiligen Tabelle aufgelisteten Mitglieder erinnert bzw. gelöscht werden können.<br>
 													<span style="color:red">Weil insbesondere mit dem ´Alle löschen´-Button großer Schaden
 													angerichtet werden kann, wird die Nutzung dieser Option nur für Administratoren empfohlen,
-													die sich des damit einhergehenden Risikos bewusst sind!<br>
+													die sich des damit einhergehenden Risikos umfassend bewusst sind!<br>
 													Lesen Sie bitte den entsprechenden Abschnitt in der Datei ´README.md´ bevor Sie diese
 													Einstellung verwenden.</span>',
 	'ACP_USERREMINDER_TIME_SETTINGS_TITLE'		=> 'Konfiguration der Erinnerungsintervalle',

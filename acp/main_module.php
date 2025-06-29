@@ -1,8 +1,8 @@
 <?php
 /**
 *
-* @package User Reminder v1.4.0
-* @copyright (c) 2019 - 2021 Mike-on-Tour
+* @package User Reminder v1.10.0
+* @copyright (c) 2019 - 2025 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
@@ -18,12 +18,12 @@ class main_module
 	/**
 	 * Main ACP module
 	 *
-	 * @param	string	$id		The module identifier (\mot\userreminder\acp\main_module)
-	 *		string	$mode	The module mode (registrated_only|reminder|settings|zeroposter)
+	 * @params	$id		The module identifier (\mot\userreminder\acp\main_module)
+	 *		$mode	The module mode (registrated_only|reminder|settings|zeroposter)
 	 *
 	 * @throws \Exception
 	 */
-	public function main($id, $mode)
+	public function main(string $id, string $mode)
 	{
 		global $phpbb_container;
 

@@ -1,8 +1,10 @@
 # Userreminder
 
-![Version: 1.9.1](https://img.shields.io/badge/Version-1.9.1-green)  
+![Version: 1.10.0](https://img.shields.io/badge/Version-1.10.0-green)  
   
 ![phpBB 3.3.x Compatible](https://img.shields.io/badge/phpBB-3.3.x%20Compatible-009BDF)
+
+![PHP >= 7.4.0, < 8.5.0](https://img.shields.io/badge/PHP->=7.4.0,%20<8.5.0-blueviolet)
 
 [![Build Status](https://github.com/Mike-on-Tour/userreminder/workflows/Tests/badge.svg)](https://github.com/Mike-on-Tour/userreminder/actions)
 

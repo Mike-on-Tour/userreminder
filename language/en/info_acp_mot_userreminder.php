@@ -1,8 +1,8 @@
 <?php
 /**
 *
-* @package Userreminder v1.8.0
-* @copyright (c) 2019 - 2024 Mike-on-Tour
+* @package Userreminder v1.10.0
+* @copyright (c) 2019 - 2025 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
@@ -68,6 +68,7 @@ $lang = array_merge($lang, [
 	'LOG_INACTIVE_REMIND_ONE'					=> '<strong>Sent first reminder email to inactive users</strong><br>» %s',
 	'LOG_INACTIVE_REMIND_TWO'					=> '<strong>Sent second reminder email to inactive users</strong><br>» %s',
 	'LOG_SLEEPER_REMIND'						=> '<strong>Sent reminder email to sleepers</strong><br>» %s',
+	'LOG_MOT_USERREMINDER_USER_DELETE'			=> '<strong>User deleted with Userreminder</strong><br>» %s',
 	//ACP Settings
 	'ACP_USERREMINDER'							=> 'Userreminder',
 	'ACP_USERREMINDER_SETTINGS'					=> 'Settings for Userreminder',
@@ -79,8 +80,8 @@ $lang = array_merge($lang, [
 	'ACP_USERREMINDER_EXPERT_MODE'				=> 'Expert mode for the Reminder, Sleepers and Zeroposter tabs',
 	'ACP_USERREMINDER_EXPERT_MODE_TEXT'			=> 'If you choose ´Yes´ two additional buttons will be displayed beneath the tables on the Reminder, Sleepers
 													and Zeroposter tabs allowing you to remind or delete ALL members displayed in those tables.<br>
-													<span style="color:red">Since especially the ´Delete all´ button can cause severe harm usage of this
-													option is only recommended for administrators who are aware of the hazards involved!<br>
+													<span style="color:red">Since especially the ´Delete all´ button can cause severe harm, usage of this
+													option is only recommended for administrators who are fully aware of the hazards involved!<br>
 													Please read the respective section in the ´README.md´ file prior to using this setting.</span>',
 	'ACP_USERREMINDER_TIME_SETTINGS_TITLE'		=> 'Configure the reminder intervals',
 	'ACP_USERREMINDER_TIME_SETTING_TEXT'		=> 'Configure the time in days until a user is viewed as inactive, the time in days between the first and second e-mail to remind this member that a login is necessary and the following period until this user is deleted.',
