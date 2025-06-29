@@ -1,7 +1,7 @@
 <?php
 /**
 *
-* @package Userreminder v1.9.1
+* @package Userreminder v1.10.0
 * @copyright (c) 2019 - 2025 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
@@ -252,7 +252,6 @@ class ur_acp
 			$user_data['user_lang'] = $this->request->variable('mot_ur_mail_lang', '');
 			$user_data['user_email'] = $this->request->variable('mot_ur_test_mail', '');
 
-//			$this->common->email_arr = json_decode($this->config_text->get('mot_ur_email_texts'), true);
 			$this->common->reminder_mail($user_data, $messenger, $this->request->variable('mot_ur_mail_file', ''));
 			unset($messenger);
 
@@ -967,17 +966,20 @@ class ur_acp
 	/**
 	 * Set custom form action.
 	 *
-	 * @param	string	$u_action	Custom form action
-	 * @return acp		$this		This controller for chaining calls
+	 * @param	$u_action	Custom form action
+	 * @return	$this		This controller for chaining calls
 	 */
-	public function set_page_url($u_action)
+	public function set_page_url(string $u_action) : object
 	{
 		$this->u_action = $u_action;
 
 		return $this;
 	}
 
-	private function select_struct($cfg_value, array $options): array
+	/*
+	* Prepare options array for dropdown select fields
+	*/
+	private function select_struct(mixed $cfg_value, array $options): array
 	{
 		$options_tpl = [];
 

@@ -66,13 +66,13 @@ class ur_v_1_3_3_1 extends \phpbb\db\migration\migration
 	/*
 	*	Checks whether a modul identified by it's module_langname exists under a given parent (also identified by the module_langname) and in a given module class
 	*
-	*	@params	string	$class	Name of the module class, e.g.' acp'
-	*			string	$parent	Langname of the parent to be checked
-	*			string	$module	Langname of the module to be checked
+	*	@params	$class	Name of the module class, e.g.' acp'
+	*			$parent	Langname of the parent to be checked
+	*			$module	Langname of the module to be checked
 	*
-	*	@return	boolean			True if the module doesn't exist, false if either the parent doesn't exist or the module already exists
+	*	@return	True if the module doesn't exist, false if either the parent doesn't exist or the module already exists
 	*/
-	private function check_module($class, $parent, $module)
+	private function check_module(string $class, string $parent, string $module) : bool
 	{
 		// check if parent exists
 		$sql = 'SELECT module_id FROM ' . MODULES_TABLE . "

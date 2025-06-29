@@ -4,6 +4,21 @@ All changes to `Userreminder for phpBB` will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.10.0] - 2025-06-14
+
+### Added
+-	A language key to log deleting users which contains a reference to Userreminder in order to distinguish this log from the system log entry
+  
+### Changed
+-	All function declarations into parameters with type declarations
+-	Minimum PHP version to 8.0.0 due to usage of `mixed` type declaration in `controller/ur_acp.php`
+-	The custom function `init_ur` within `migrations/ur_v_0_5_0.php` to deal with the 10,000 rows insert limitation of MySQL (many thanks to the team of phpbb.com for the code)
+  
+### Fixed
+  
+### Removed
+  
+  
 ## [1.9.1] - 2025-01-06
 
 ### Added

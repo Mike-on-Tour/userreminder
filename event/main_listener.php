@@ -1,7 +1,7 @@
 <?php
 /**
 *
-* @package Userreminder v1.9.0
+* @package Userreminder v1.10.0
 * @copyright (c) 2019 - 2025 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
@@ -62,14 +62,14 @@ class main_listener implements EventSubscriberInterface
 	/**
 	* Check whether a user to be deleted (no matter from where and by whomsoever) is part of the protected members array. If he is, delete this user from the array as well
 	*
-	* @param array	$event	containing:
+	* @param	$event	containing:
 	*	key	string		mode				Mode of posts deletion (retain|delete)
 	*	key	array		user_ids			ID(s) of the user(s) bound to be deleted
 	*	key	bool		retain_username		True if username should be retained, false otherwise
 	*	key	array		user_rows			Array containing data of the user(s) bound to be deleted (since 3.2.4-RC1)
 	*
 	*/
-	public function check_for_protected_member($event)
+	public function check_for_protected_member(object $event)
 	{
 		foreach ($event['user_ids'] as $element)
 		{
@@ -95,7 +95,7 @@ class main_listener implements EventSubscriberInterface
 	*		session_page, session_forum_id, session_id]
 	*
 	*/
-	public function check_user_login($event)
+	public function check_user_login(object $event)
 	{
 		/*
 		* First we set the times of first, second and sleeper reminder to Zero to flag this user as active again in order to delete any reminders this user might have got
@@ -332,7 +332,12 @@ class main_listener implements EventSubscriberInterface
 		}
 	}
 
-	public function delete_replyto($event)
+	/*
+	* If the Reply-To address is to be suppressed we check for it here and remove it from the header every time a message is to be sent
+	*
+	* @param	$event 	containing an array with the message header
+	*/
+	public function delete_replyto(object $event)
 	{
 		if ($this->config['mot_ur_suppress_replyto'])
 		{

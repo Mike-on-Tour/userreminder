@@ -1,7 +1,7 @@
 <?php
 /**
 *
-* @package UserReminder v1.9.0
+* @package UserReminder v1.10.0
 * @copyright (c) 2019 - 2025 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
@@ -54,10 +54,8 @@ class mot_ur_reminder_cron extends \phpbb\cron\task\base
 
 	/**
 	* Runs this cron task.
-	*
-	* @return null
 	*/
-	public function run()
+	public function run() : void
 	{
 		$this->remind_queue();
 		$this->config->set('mot_ur_mail_limit_time_last_gc', time());
@@ -65,10 +63,8 @@ class mot_ur_reminder_cron extends \phpbb\cron\task\base
 
 	/**
 	* Returns whether this cron task can run, given current board configuration.
-	*
-	* @return bool
 	*/
-	public function is_runnable()
+	public function is_runnable() : bool
 	{
 		return true;
 	}
@@ -77,12 +73,10 @@ class mot_ur_reminder_cron extends \phpbb\cron\task\base
 	* Returns whether this cron task should run now, because enough time
 	* has passed since it was last run.
 	*
-	* The interval between topics tidying is specified in extension
-	* configuration.
+	* The interval between topics tidying is specified in extension configuration.
 	*
-	* @return bool
 	*/
-	public function should_run()
+	public function should_run() : bool
 	{
 		return $this->config['mot_ur_mail_limit_time_last_gc'] < time() - $this->config['mot_ur_mail_limit_time_gc'];
 	}
@@ -207,5 +201,4 @@ class mot_ur_reminder_cron extends \phpbb\cron\task\base
 		// finished with reminding (or there is nobody to be reminded), now set the config variable to the remaining number of e-mails so common.php knows how to handle users to be reminded
 		$this->config->set('mot_ur_mail_available', $mail_available);
 	}
-
 }
