@@ -2,8 +2,8 @@
 
 /**
 *
-* @package Userreminder v1.10.0
-* @copyright (c) 2019 - 2025 Mike-on-Tour
+* @package Userreminder v1.11.0
+* @copyright (c) 2019 - 2026 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
@@ -17,42 +17,9 @@ class common
 {
 	private const SECS_PER_DAY = 86400;
 
-	/** @var \phpbb\config\config */
-	protected $config;
-
-	/** @var \phpbb\config\db_text */
-	protected $config_text;
-
-	/** @var \phpbb\db\driver\driver_interface */
-	protected $db;
-
-	/** @var \phpbb\user */
-	protected $user;
-
-	/** @var \phpbb\log\log $log */
-	protected $log;
-
-	/** @var string phpBB root path */
-	protected $root_path;
-
-	/** @var string PHP extension */
-	protected $phpEx;
-
-	/** @var string mot.userreminder.tables.mot_userreminder_remind_queue */
-	protected $mot_userreminder_remind_queue;
-
-	public function __construct(\phpbb\config\config $config, \phpbb\config\db_text $config_text, \phpbb\db\driver\driver_interface $db,
-								\phpbb\user $user, \phpbb\log\log $log, $root_path, $phpEx, $mot_userreminder_remind_queue)
+	public function __construct(protected \phpbb\config\config $config, protected \phpbb\config\db_text $config_text, protected \phpbb\db\driver\driver_interface $db,
+								protected \phpbb\user $user, protected \phpbb\log\log $log, protected $root_path, protected $phpEx, protected $mot_userreminder_remind_queue)
 	{
-		$this->config = $config;
-		$this->config_text = $config_text;
-		$this->db = $db;
-		$this->user = $user;
-		$this->log = $log;
-		$this->root_path = $root_path;
-		$this->phpEx = $phpEx;
-		$this->mot_userreminder_remind_queue = $mot_userreminder_remind_queue;
-
 		$this->sitename = htmlspecialchars_decode($this->config['sitename'], ENT_COMPAT);
 		$script_path = (strlen($this->config['script_path']) > 1) ? $this->config['script_path'] : '';
 		$this->forgot_pass = $this->config['server_protocol'] . $this->config['server_name'] . $script_path . "/ucp." . $this->phpEx . "?mode=sendpassword";
@@ -139,11 +106,12 @@ class common
 
 				foreach ($second_reminders as $row)
 				{
-					$second_username_ary[] = $row['username'];
 					if ($mail_available > 0)
 					{
 						$this->reminder_mail($row, $messenger, 'reminder_two');
 						--$mail_available;
+						// Perceive only those users who will actually receive an e-mail
+						$second_username_ary[] = $row['username'];
 					}
 					else
 					{
@@ -188,11 +156,12 @@ class common
 				$first_username_ary = [];
 				foreach ($first_reminders as $row)
 				{
-					$first_username_ary[] = $row['username'];
 					if ($mail_available > 0)
 					{
 						$this->reminder_mail($row, $messenger, 'reminder_one');
 						--$mail_available;
+						// Perceive only those users who will actually receive an e-mail
+						$first_username_ary[] = $row['username'];
 					}
 					else
 					{
@@ -267,9 +236,10 @@ class common
 				{
 					if ($mail_available > 0)
 					{
-						$sleeper_username_ary[] = $row['username'];
 						$this->reminder_mail($row, $messenger, 'reminder_sleeper');
 						--$mail_available;
+						// Perceive only those users who will actually receive an e-mail
+						$sleeper_username_ary[] = $row['username'];
 					}
 					else
 					{
@@ -354,21 +324,7 @@ class common
 			$messenger->subject($subject[1]);
 			$messenger->msg = $text_arr[1];
 
-			switch ($row['user_notify_type'])
-			{
-				case NOTIFY_EMAIL:
-					$messenger->msg_email();
-				break;
-
-				case NOTIFY_IM:
-					$messenger->msg_jabber();
-				break;
-
-				case NOTIFY_BOTH:
-					$messenger->msg_email();
-					$messenger->msg_jabber();
-				break;
-			}
+			$messenger->msg_email();
 		}
 		// email is not in the config_text variable, load it from the file (which makes things easier since there are some convenient functions available for setting variables and sending)
 		else
@@ -388,7 +344,7 @@ class common
 				'DAYS_DEL_SLEEPERS'	=> $this->days_del_sleepers,
 			]);
 
-			$messenger->send($row['user_notify_type']);
+			$messenger->send();
 		}
 	}
 

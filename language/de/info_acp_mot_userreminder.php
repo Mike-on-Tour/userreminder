@@ -1,8 +1,8 @@
 <?php
 /**
 *
-* @package Userreminder v1.10.0
-* @copyright (c) 2019 - 2025 Mike-on-Tour
+* @package Userreminder v1.11.0
+* @copyright (c) 2019 - 2026 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
@@ -39,7 +39,7 @@ if (empty($lang) || !is_array($lang))
 $lang = array_merge($lang, [
 	// language pack author
 	'ACP_USERREMINDER_LANG_DESC'				=> 'Deutsch (Du)',
-	'ACP_USERREMINDER_LANG_EXT_VER' 			=> '1.8.0',
+	'ACP_USERREMINDER_LANG_EXT_VER' 			=> '1.11.0',
 	'ACP_USERREMINDER_LANG_AUTHOR' 				=> 'Mike-on-Tour',
 
 	// Module
@@ -63,8 +63,8 @@ $lang = array_merge($lang, [
 	'ACP_USERREMINDER_MARK_DELETE'				=> 'Löschen',
 	'ACP_USERREMINDER_REMIND_MARKED'			=> 'Markierte erinnern',
 	'ACP_USERREMINDER_REMIND_ALL'				=> 'Alle erinnern',
-	'ACP_USERREMINDER_REMIND_ALL_TEXT'			=> 'Erinnert alle zur Erinnerung heranstehenden Mitglieder in dieser Tabelle.',
-	'ACP_USERREMINDER_DELETE_ALL_TEXT'			=> '<span style="color:red">Löscht <b>ALLE</b> in dieser Tabelle gelisteten Mitglieder!</span>',
+	'ACP_USERREMINDER_REMIND_ALL_TEXT'			=> 'Erinnert alle zur Erinnerung heranstehenden Mitglieder (%1$d) in dieser Tabelle.',
+	'ACP_USERREMINDER_DELETE_ALL_TEXT'			=> '<span style="color:red">Löscht <b>ALLE</b> in dieser Tabelle gelisteten Mitglieder (%1$d)!</span>',
 	'LOG_INACTIVE_REMIND_ONE'					=> '<strong>Erste Erinnerungs-E-Mail an inaktive Benutzer verschickt</strong><br>» %s',
 	'LOG_INACTIVE_REMIND_TWO'					=> '<strong>Zweite Erinnerungs-E-Mail an inaktive Benutzer verschickt</strong><br>» %s',
 	'LOG_SLEEPER_REMIND'						=> '<strong>Erinnerungs-E-Mail an Schläfer verschickt</strong><br>» %s',

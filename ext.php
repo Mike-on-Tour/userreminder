@@ -2,8 +2,8 @@
 
 /**
 *
-* @package Userreminder v1.9.0
-* @copyright (c) 2019 - 2025 Mike-on-Tour
+* @package Userreminder v1.11.0
+* @copyright (c) 2019 - 2026 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
@@ -13,10 +13,10 @@ namespace mot\userreminder;
 class ext extends \phpbb\extension\base
 {
 	protected $error_message = [];
-	protected $phpbb_min_ver = '3.3.0';
+	protected $phpbb_min_ver = '3.3.4';
 	protected $phpbb_below_ver = '3.4.0@dev';
-	protected $php_min_ver = '8.0.0';
-	protected $php_below_ver = '8.5.0';
+	protected $php_min_ver = '8.0.30';
+	protected $php_below_ver = '8.6.0@dev';
 
 	public function is_enableable()
 	{

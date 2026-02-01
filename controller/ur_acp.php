@@ -1,7 +1,7 @@
 <?php
 /**
 *
-* @package Userreminder v1.10.0
+* @package Userreminder v1.10.1
 * @copyright (c) 2019 - 2025 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
@@ -13,71 +13,15 @@ class ur_acp
 {
 	private const SECS_PER_DAY = 86400;
 
-	/** @var \mot\userreminder\common */
-	protected $common;
-
-	/** @var \phpbb\config\config */
-	protected $config;
-
-	/** @var \phpbb\config\db_text */
-	protected $config_text;
-
-	/** @var \phpbb\db\driver\driver_interface */
-	protected $db;
-
-	/* @var \phpbb\group\helper */
-	protected $group_helper;
-
-	/** @var \phpbb\language\language $language Language object */
-	protected $language;
-
-	/** @var \phpbb\pagination  */
-	protected $pagination;
-
-	/** @var \phpbb\extension\manager */
-	protected $phpbb_extension_manager;
-
-	/** @var \phpbb\request\request_interface */
-	protected $request;
-
-	/** @var \phpbb\template\template */
-	protected $template;
-
-	/** @var \phpbb\user */
-	protected $user;
-
-	/** @var string PHP extension */
-	protected $php_ext;
-
-	/** @var string phpBB phpbb root path */
-	protected $root_path;
-
-	/** @var string mot.userreminder.tables.mot_userreminder_remind_queue */
-	protected $mot_userreminder_remind_queue;
-
 	/**
 	 * {@inheritdoc
 	 */
-	public function __construct(\mot\userreminder\common $common, \phpbb\config\config $config, \phpbb\config\db_text $config_text,
-								\phpbb\db\driver\driver_interface $db, \phpbb\group\helper $group_helper, \phpbb\language\language $language,
-								\phpbb\pagination $pagination, \phpbb\extension\manager $phpbb_extension_manager, \phpbb\request\request_interface $request,
-								\phpbb\template\template $template, \phpbb\user $user, $php_ext, $root_path, $mot_userreminder_remind_queue)
+	public function __construct(protected \mot\userreminder\common $common, protected \phpbb\config\config $config, protected \phpbb\config\db_text $config_text,
+								protected \phpbb\db\driver\driver_interface $db, protected \phpbb\group\helper $group_helper, protected \phpbb\language\language $language,
+								protected \phpbb\pagination $pagination, protected \phpbb\extension\manager $phpbb_extension_manager, protected \phpbb\request\request_interface $request,
+								protected \phpbb\template\template $template, protected \phpbb\user $user, protected $php_ext, protected $root_path,
+								protected $mot_userreminder_remind_queue,)
 	{
-		$this->common = $common;
-		$this->config = $config;
-		$this->config_text = $config_text;
-		$this->db = $db;
-		$this->group_helper = $group_helper;
-		$this->language = $language;
-		$this->pagination = $pagination;
-		$this->phpbb_extension_manager = $phpbb_extension_manager;
-		$this->request = $request;
-		$this->template = $template;
-		$this->user = $user;
-		$this->php_ext = $php_ext;
-		$this->root_path = $root_path;
-		$this->mot_userreminder_remind_queue = $mot_userreminder_remind_queue;
-
 		$this->md_manager = $this->phpbb_extension_manager->create_extension_metadata_manager('mot/userreminder');
 		$this->userreminder_version = $this->md_manager->get_metadata('version');
 
@@ -352,7 +296,7 @@ class ur_acp
 			'SHOW_FILECONTENT'							=> $show_filecontent,
 			'PREVIEW_TEXT'								=> $preview_text,
 			'SHOW_PREVIEW'								=> $show_preview,
-			'USERREMINDER_VERSION'						=> $this->language->lang('ACP_USERREMINDER_VERSION', $this->userreminder_version, date('Y')),
+			'ACP_MOT_UR_VERSION'						=> $this->language->lang('ACP_USERREMINDER_VERSION', $this->userreminder_version, date('Y')),
 		]);
 	}
 
@@ -498,10 +442,6 @@ class ur_acp
 			}
 		}
 
-		$result = $this->db->sql_query_limit( $sql, $limit, $start );
-		$reminders = $this->db->sql_fetchrowset($result);
-		$this->db->sql_freeresult($result);
-
 		//base url for pagination, filtering and sorting
 		$base_url = $this->u_action
 									. "&amp;sort_key=" . $sort_key
@@ -511,9 +451,13 @@ class ur_acp
 		$start = $this->pagination->validate_start($start, $limit, $count_reminders);
 		$this->pagination->generate_template_pagination($base_url, 'pagination', 'start', $count_reminders, $limit, $start);
 
+		$result = $this->db->sql_query_limit( $sql, $limit, $start );
+		$reminders = $this->db->sql_fetchrowset($result);
+		$this->db->sql_freeresult($result);
+
 		// write data into reminder array (output by template)
 		$enable_remind = $delete_enabled = false;
-		foreach ($reminders as $row)
+		foreach ($reminders as &$row)
 		{
 			$reminder_one_ago = ($row['mot_reminded_one'] > 0) ? (int) (($now - $row['mot_reminded_one']) / self::SECS_PER_DAY) : '-';
 			$reminder_enabled = (($row['mot_reminded_one'] == 0) || (($row['mot_reminded_two'] == 0) && ($reminder_one_ago >= $this->config['mot_ur_days_reminded'])));
@@ -522,22 +466,16 @@ class ur_acp
 			$enable_remind = $reminder_enabled ? true : $enable_remind;
 			$delete_enabled = $enable_delete ? true : $delete_enabled;
 
-			$this->template->assign_block_vars('reminders', [
-				'SERVER_CONFIG'		=> append_sid("{$this->root_path}memberlist.$this->php_ext", ['mode' => 'viewprofile', 'u' => $row['user_id']]),
-				'USERNAME'			=> $row['username'],
-				'USER_COLOUR'		=> $row['user_colour'],
-				'JOINED'			=> $this->user->format_date($row['user_regdate']),
-				'USER_POSTS'		=> $row['user_posts'],
-				'LAST_VISIT'		=> $this->user->format_date($row['mot_last_login']),
-				'OFFLINE_DAYS'		=> (int) (($now - $row['mot_last_login']) / self::SECS_PER_DAY),
-				'REMINDER_ONE'		=> ($row['mot_reminded_one'] > 0) ? $this->user->format_date($row['mot_reminded_one']) : '-',
-				'ONE_AGO'			=> $reminder_one_ago,
-				'REMINDER_ENABLED'	=> $reminder_enabled,
-				'REMINDER_TWO'		=> ($row['mot_reminded_two'] > 0) ? $this->user->format_date($row['mot_reminded_two']) : '-',
-				'TWO_AGO'			=> $reminder_two_ago,
-				'DEL_ENABLED'		=> $enable_delete,
-				'USER_ID'			=> $row['user_id'],
-			]);
+			$row['server_config'] = append_sid("{$this->root_path}memberlist.$this->php_ext", ['mode' => 'viewprofile', 'u' => $row['user_id']]);
+			$row['user_regdate'] = $this->user->format_date($row['user_regdate']);
+			$row['offline_days'] = (int) (($now - $row['mot_last_login']) / self::SECS_PER_DAY);
+			$row['mot_last_login'] = $this->user->format_date($row['mot_last_login']);
+			$row['mot_reminded_one'] = ($row['mot_reminded_one'] > 0) ? $this->user->format_date($row['mot_reminded_one']) : '-';
+			$row['one_ago'] = $reminder_one_ago;
+			$row['reminder_enabled'] = $reminder_enabled;
+			$row['mot_reminded_two'] = ($row['mot_reminded_two'] > 0) ? $this->user->format_date($row['mot_reminded_two']) : '-';
+			$row['two_ago'] = $reminder_two_ago;
+			$row['del_enabled'] = $enable_delete;
 		}
 
 		$sort_key_arr = [
@@ -548,12 +486,14 @@ class ur_acp
 		$sort_key_arr = $enable_sort_two ? array_merge($sort_key_arr, ['ACP_USERREMINDER_KEY_RT' => 'mot_reminded_two']) : $sort_key_arr;
 
 		$this->template->assign_vars([
+			'ACP_MOT_UR_REMINDERS'			=> $reminders,
+			'ACP_MOT_UR_NUMBER_2_REMIND'	=> count($reminder_ids),
 			'ACP_MOT_UR_SORT_KEY_ARR'		=> $this->select_struct($sort_key, $sort_key_arr),
 			'ACP_MOT_UR_SORT_DIR_ARR'		=> $this->select_struct($sort_dir, $this->sort_dir_arr),
-			'ENABLE_REMIND'					=> $enable_remind,
-			'ENABLE_DELETE'					=> $delete_enabled,
-			'SHOW_EXPERT_MODE'				=> $this->config['mot_ur_expert_mode'],
-			'USERREMINDER_VERSION'			=> $this->language->lang('ACP_USERREMINDER_VERSION', $this->userreminder_version, date('Y')),
+			'ACP_MOT_UR_ENABLE_REMIND'		=> $enable_remind,
+			'ACP_MOT_UR_ENABLE_DELETE'		=> $delete_enabled,
+			'ACP_MOT_UR_SHOW_EXPERT_MODE'	=> $this->config['mot_ur_expert_mode'],
+			'ACP_MOT_UR_VERSION'			=> $this->language->lang('ACP_USERREMINDER_VERSION', $this->userreminder_version, date('Y')),
 			'ACP_MOT_UR_REMIND_COUNT'		=> $count_reminders,
 		]);
 	}
@@ -561,9 +501,11 @@ class ur_acp
 
 	public function sleeper()
 	{
-		add_form_key('acp_userreminder_registered_only');
+		add_form_key('acp_userreminder_sleeper');
 
 		$now = time();
+
+		$remind_sleepers = (bool) $this->config['mot_ur_remind_sleeper'];
 
 		// set parameter for pagination
 		$limit = $this->config['mot_ur_rows_per_page'];	// max lines per page
@@ -643,7 +585,7 @@ class ur_acp
 		// Get all unproteced sleepers
 		$sql = 'SELECT user_id, group_id, username, user_colour, user_regdate, mot_sleeper_remind
 				FROM  ' . USERS_TABLE . '
-				WHERE ' . $this->db->sql_in_set('user_type', [USER_NORMAL,USER_FOUNDER]) . '
+				WHERE ' . $this->db->sql_in_set('user_type', [USER_NORMAL, USER_FOUNDER]) . '
 				AND mot_last_login = 0';															// select users who have never been online
 		$sql .= !empty($protected_members) ? ' AND ' . $this->db->sql_in_set('user_id', $protected_members, true) : '';	// prevent sql errors due to empty arrays
 		$sql .= !empty($protected_groups) ? ' AND ' . $this->db->sql_in_set('group_id', $protected_groups, true) : '';
@@ -654,16 +596,11 @@ class ur_acp
 		$count_sleepers = count($sleepers);
 		$this->db->sql_freeresult($result);
 
-		$enable_sort_remind = false;
 		$sleeper_inactive_days = $this->config['mot_ur_sleeper_inactive_days'];
 		$del_sleeper_ids = [];
 		$rem_sleeper_ids = [];
 		foreach ($sleepers as $row)
 		{
-			if ($row['mot_sleeper_remind'] > 0)
-			{
-				$enable_sort_remind = true;
-			}
 			$del_sleeper_ids[] = $row['user_id'];	// Get all ID's for 'delete all'
 			if (($row['mot_sleeper_remind'] == 0) && (($now - $row['user_regdate']) >= $sleeper_inactive_days))
 			{
@@ -700,10 +637,6 @@ class ur_acp
 			}
 		}
 
-		$result = $this->db->sql_query_limit( $sql, $limit, $start );
-		$registered_only = $this->db->sql_fetchrowset($result);
-		$this->db->sql_freeresult($result);
-
 		//base url for pagination, filtering and sorting
 		$base_url = $this->u_action
 									. "&amp;sort_key=" . $sort_key
@@ -713,63 +646,74 @@ class ur_acp
 		$start = $this->pagination->validate_start($start, $limit, $count_sleepers);
 		$this->pagination->generate_template_pagination($base_url, 'pagination', 'start', $count_sleepers, $limit, $start);
 
-		$enable_remind = $delete_enabled = false;
+		$result = $this->db->sql_query_limit( $sql, $limit, $start );
+		$sleepers = $this->db->sql_fetchrowset($result);
+		$this->db->sql_freeresult($result);
+
+		// Initialize the overall template variables to show the '(un)mark all' links
+		$enable_remind = $enable_delete = false;
 
 		// write data into sleeper array (output by template)
-		foreach ($registered_only as $row)
+		foreach ($sleepers as &$row)
 		{
 			// since still all sleepers are displayed we have to make certain that only those with more than the selected number of inactive days are selectable for reminding
-			$reminder_enabled = (($row['mot_sleeper_remind'] == 0) && (($now - $row['user_regdate']) >= $this->config['mot_ur_sleeper_inactive_days'])) ? true : false;
-			$enable_delete = (($row['mot_sleeper_remind'] > 0) && (($now - $row['mot_sleeper_remind']) >= $this->config['mot_ur_sleeper_deletetime'])) ? true : false;
-			$enable_remind = $reminder_enabled ? true : $enable_remind;
-			$delete_enabled = $enable_delete ? true : $delete_enabled;
+			$reminder_enabled = (($row['mot_sleeper_remind'] == 0) && (($now - $row['user_regdate']) >= ($this->config['mot_ur_sleeper_inactive_days'] * self::SECS_PER_DAY))) ? true : false;
+			$delete_enabled = match ($remind_sleepers) {
+				true	=> (($row['mot_sleeper_remind'] > 0) && (($now - $row['mot_sleeper_remind']) >= ($this->config['mot_ur_sleeper_deletetime'] * self::SECS_PER_DAY))),
+				false	=> true,
+			};
 
-			$this->template->assign_block_vars('registered_only', [
-				'SERVER_CONFIG'		=> append_sid("{$this->root_path}memberlist.$this->php_ext", ['mode' => 'viewprofile', 'u' => $row['user_id']]),
-				'USERNAME'			=> $row['username'],
-				'USER_COLOUR'		=> $row['user_colour'],
-				'JOINED'			=> $this->user->format_date($row['user_regdate']),
-				'OFFLINE_DAYS'		=> (int) (( $now - $row['user_regdate']) / self::SECS_PER_DAY),
-				'REMINDED_DATE'		=> ($row['mot_sleeper_remind'] > 0) ? $this->user->format_date($row['mot_sleeper_remind']) : '-',
-				'REMINDED_AGO'		=> ($row['mot_sleeper_remind'] > 0) ? (int) (($now - $row['mot_sleeper_remind']) / self::SECS_PER_DAY) : '-',
-				'REMINDER_ENABLED'	=> $reminder_enabled,
-				'DEL_ENABLED'		=> $enable_delete,
-				'USER_ID'			=> $row['user_id'],
-			]);
+			$enable_remind = $remind_sleepers && $reminder_enabled ? true : $enable_remind;
+			$enable_delete = $delete_enabled ? true : $enable_delete;
+
+			$row['server_config'] = append_sid("{$this->root_path}memberlist.$this->php_ext", ['mode' => 'viewprofile', 'u' => $row['user_id']]);
+			$row['joined'] = $this->user->format_date($row['user_regdate']);
+			$row['offline_days'] = (int) (( $now - $row['user_regdate']) / self::SECS_PER_DAY);
+			if ($remind_sleepers)
+			{
+				$row['reminded_date'] = ($row['mot_sleeper_remind'] > 0) ? $this->user->format_date($row['mot_sleeper_remind']) : '-';
+				$row['reminded_ago'] = ($row['mot_sleeper_remind'] > 0) ? (int) (($now - $row['mot_sleeper_remind']) / self::SECS_PER_DAY) : '-';
+				$row['reminder_enabled'] = $reminder_enabled;
+			}
+			$row['del_enabled'] = $delete_enabled;
 		}
 
+		$sort_key_arr = ['ACP_USERREMINDER_KEY_RD'	=> 'user_regdate'];
+		$sort_key_arr = $remind_sleepers ?  array_merge($sort_key_arr, ['ACP_USERREMINDER_KEY_RE'	=> 'mot_sleeper_remind']) : $sort_key_arr;
+
 		$this->template->assign_vars([
-			'REMIND_SLEEPER'			=> $this->config['mot_ur_remind_sleeper'],
-			'ACP_MOT_UR_SORT_KEY_ARR'	=> $this->select_struct($sort_key, [
-				'ACP_USERREMINDER_KEY_RD'	=> 'user_regdate',
-				'ACP_USERREMINDER_KEY_RE'	=> 'mot_sleeper_remind',
-			]),
-			'ACP_MOT_UR_SORT_DIR_ARR'	=> $this->select_struct($sort_dir, $this->sort_dir_arr),
-			'ENABLE_SORT_REMIND'		=> $enable_sort_remind,
-			'ENABLE_REMIND'				=> $enable_remind,
-			'ENABLE_DELETE'				=> $delete_enabled,
-			'SHOW_EXPERT_MODE'			=> $this->config['mot_ur_expert_mode'],
-			'USERREMINDER_VERSION'		=> $this->language->lang('ACP_USERREMINDER_VERSION', $this->userreminder_version, date('Y')),
-			'ACP_MOT_UR_SLEEPER_COUNT'	=> $count_sleepers,
+			'ACP_MOT_UR_SLEEPERS'			=> $sleepers,
+			'ACP_MOT_UR_REMIND_SLEEPERS'	=> $remind_sleepers,
+			'ACP_MOT_UR_NUMBER_2_REMIND'	=> count($rem_sleeper_ids),
+			'ACP_MOT_UR_SORT_KEY_ARR'		=> $this->select_struct($sort_key, $sort_key_arr),
+			'ACP_MOT_UR_SORT_DIR_ARR'		=> $this->select_struct($sort_dir, $this->sort_dir_arr),
+			'ACP_MOT_UR_ENABLE_REMIND'		=> $enable_remind,
+			'ACP_MOT_UR_ENABLE_DELETE'		=> $enable_delete,
+			'ACP_MOT_UR_SHOW_EXPERT_MODE'	=> (bool) $this->config['mot_ur_expert_mode'],
+			'ACP_MOT_UR_VERSION'			=> $this->language->lang('ACP_USERREMINDER_VERSION', $this->userreminder_version, date('Y')),
+			'ACP_MOT_UR_SLEEPER_COUNT'		=> $count_sleepers,
 		]);
 	}
 
 
 	public function zeroposter()
 	{
+		add_form_key('acp_userreminder_zeroposter');
+
 		$now = time();
-		$day_limit = $now - (self::SECS_PER_DAY * (int) $this->config['mot_ur_zp_inactive_days']);
+
+		$remind_zeroposter = (bool) $this->config['mot_ur_remind_zeroposter'];
 
 		// set parameter for pagination
 		$limit = $this->config['mot_ur_rows_per_page'];	// max lines per page
+
+		$day_limit = $now - (self::SECS_PER_DAY * (int) $this->config['mot_ur_zp_inactive_days']);
 
 		// get sort variables from template (if we are in a loop of the pagination). At first call there are no variables from the (so far uncalled) template -> we have to set initial parameters for sorting
 		$sort_key = $this->request->is_set('sort_key') ? $this->request->variable('sort_key', '') : 'mot_last_login';
 		$sort_dir = $this->request->is_set('sort_dir') ? $this->request->variable('sort_dir', '') : 'ASC';
 
 		$enable_sort_one = $enable_sort_two = false;
-
-		add_form_key('acp_userreminder_zeroposter');
 
 		if ($this->request->is_set_post('rem_marked'))
 		{
@@ -851,12 +795,13 @@ class ur_acp
 		$sql .= ' ORDER BY ' . $this->db->sql_escape($sort_key) . ' ' . $this->db->sql_escape($sort_dir);
 
 		$result = $this->db->sql_query($sql);
-		$zero_posters = $this->db->sql_fetchrowset($result);
-		$count_zeroposters = count($zero_posters);
+		$zeroposters = $this->db->sql_fetchrowset($result);
+		$count_zeroposters = count($zeroposters);
 		$this->db->sql_freeresult($result);
 		$del_zero_poster_ids = [];
 		$rem_zero_poster_ids = [];
-		foreach ($zero_posters as $row)			// those variables need to be set here because otherwise it would depend on the values of users shown on the current pagination page
+
+		foreach ($zeroposters as $row)			// those variables need to be set here because otherwise it would depend on the values of users shown on the current pagination page
 		{
 			$enable_sort_one = $row['mot_reminded_one'] > 0 ? true : $enable_sort_one;
 			$enable_sort_two = $row['mot_reminded_two'] > 0 ? true : $enable_sort_two;
@@ -897,10 +842,6 @@ class ur_acp
 			}
 		}
 
-		$result = $this->db->sql_query_limit( $sql, $limit, $start );
-		$zero_posters = $this->db->sql_fetchrowset($result);
-		$this->db->sql_freeresult($result);
-
 		//base url for pagination, filtering and sorting
 		$base_url = $this->u_action
 									. "&amp;sort_key=" . $sort_key
@@ -910,34 +851,38 @@ class ur_acp
 		$start = $this->pagination->validate_start($start, $limit, $count_zeroposters);
 		$this->pagination->generate_template_pagination($base_url, 'pagination', 'start', $count_zeroposters, $limit, $start);
 
+		$result = $this->db->sql_query_limit( $sql, $limit, $start );
+		$zeroposters = $this->db->sql_fetchrowset($result);
+		$this->db->sql_freeresult($result);
+
 		// write data into zeroposter array (output by template)
-		$enable_remind = $delete_enabled = false;
-		foreach ($zero_posters as $row)
+		$enable_remind = $enable_delete = false;
+		foreach ($zeroposters as &$row)
 		{
 			$no_of_days = (int) (($now - $row['mot_last_login']) / self::SECS_PER_DAY);
 			$reminder_one_ago = ($row['mot_reminded_one'] > 0) ? (int) (($now - $row['mot_reminded_one']) / self::SECS_PER_DAY) : '-';
 			// since still all zeroposters are displayed we have to make certain that only those with more than the selected number of inactive days are selectable for reminding
 			$reminder_enabled = ((($row['mot_reminded_one'] == 0) && ($no_of_days >= $this->config['mot_ur_zp_inactive_days'])) || (($row['mot_reminded_two'] == 0) && ($reminder_one_ago >= $this->config['mot_ur_days_reminded']))) ? true : false;
 			$reminder_two_ago = ($row['mot_reminded_two'] > 0) ? (int) (($now - $row['mot_reminded_two']) / self::SECS_PER_DAY) : '-';
-			$enable_delete = ($reminder_two_ago >= $this->config['mot_ur_zp_days_until_deleted']) ? true : false;
-			$enable_remind = $reminder_enabled ? true : $enable_remind;
-			$delete_enabled = $enable_delete ? true : $delete_enabled;
+			$del_enabled = match($remind_zeroposter)
+			{
+				true	=> $reminder_two_ago >= $this->config['mot_ur_zp_days_until_deleted'],
+				false	=> true,
+			};
 
-			$this->template->assign_block_vars('zeroposter', [
-				'SERVER_CONFIG'		=> append_sid("{$this->root_path}memberlist.$this->php_ext", ['mode' => 'viewprofile', 'u' => $row['user_id'],]),
-				'USERNAME'			=> $row['username'],
-				'USER_COLOUR'		=> $row['user_colour'],
-				'JOINED'			=> $this->user->format_date($row['user_regdate']),
-				'LAST_VISIT'		=> $this->user->format_date($row['mot_last_login']),
-				'OFFLINE_DAYS'		=> $no_of_days,
-				'REMINDER_ONE'		=> ($row['mot_reminded_one'] > 0) ? $this->user->format_date($row['mot_reminded_one']) : '-',
-				'ONE_AGO'			=> $reminder_one_ago,
-				'REMINDER_ENABLED'	=> $reminder_enabled,
-				'REMINDER_TWO'		=> ($row['mot_reminded_two'] > 0) ? $this->user->format_date($row['mot_reminded_two']) : '-',
-				'TWO_AGO'			=> $reminder_two_ago,
-				'DEL_ENABLED'		=> $enable_delete,
-				'USER_ID'			=> $row['user_id'],
-			]);
+			$enable_remind = $remind_zeroposter && $reminder_enabled ? true : $enable_remind;
+			$enable_delete = $del_enabled ? true : $enable_delete;
+
+			$row['server_config'] = append_sid("{$this->root_path}memberlist.$this->php_ext", ['mode' => 'viewprofile', 'u' => $row['user_id'],]);
+			$row['joined'] = $this->user->format_date($row['user_regdate']);
+			$row['last_visit'] = $this->user->format_date($row['mot_last_login']);
+			$row['offline_days'] = $no_of_days;
+			$row['reminder_one'] = ($row['mot_reminded_one'] > 0) ? $this->user->format_date($row['mot_reminded_one']) : '-';
+			$row['one_ago'] = $reminder_one_ago;
+			$row['reminder_enabled'] = $reminder_enabled;
+			$row['reminder_two'] = ($row['mot_reminded_two'] > 0) ? $this->user->format_date($row['mot_reminded_two']) : '-';
+			$row['two_ago'] = $reminder_two_ago;
+			$row['del_enabled'] = $del_enabled;
 		}
 
 		$sort_key_arr = [
@@ -948,13 +893,15 @@ class ur_acp
 		$sort_key_arr = ((bool) $this->config['mot_ur_remind_zeroposter'] && $enable_sort_two) ? array_merge($sort_key_arr, ['ACP_USERREMINDER_KEY_RT' => 'mot_reminded_two']) : $sort_key_arr;
 
 		$this->template->assign_vars([
+			'ACP_MOT_UR_ZEROPOSTERS'		=> $zeroposters,
 			'ACP_MOT_UR_SORT_KEY_ARR'		=> $this->select_struct($sort_key, $sort_key_arr),
 			'ACP_MOT_UR_SORT_DIR_ARR'		=> $this->select_struct($sort_dir, $this->sort_dir_arr),
-			'REMIND_ZEROPOSTERS'			=> (bool) $this->config['mot_ur_remind_zeroposter'],
-			'ENABLE_REMIND'					=> $enable_remind,
-			'ENABLE_DELETE'					=> $delete_enabled,
-			'SHOW_EXPERT_MODE'				=> $this->config['mot_ur_expert_mode'],
-			'USERREMINDER_VERSION'			=> $this->language->lang('ACP_USERREMINDER_VERSION', $this->userreminder_version, date('Y')),
+			'ACP_MOT_UR_REMIND_ZEROPOSTERS'	=> $remind_zeroposter,
+			'ACP_MOT_UR_NUMBER_2_REMIND'	=> count($rem_zero_poster_ids),
+			'ACP_MOT_UR_ENABLE_REMIND'		=> $enable_remind,
+			'ACP_MOT_UR_ENABLE_DELETE'		=> $enable_delete,
+			'ACP_MOT_UR_SHOW_EXPERT_MODE'	=> (bool) $this->config['mot_ur_expert_mode'],
+			'ACP_MOT_UR_VERSION'			=> $this->language->lang('ACP_USERREMINDER_VERSION', $this->userreminder_version, date('Y')),
 			'U_ACTION'						=> $this->u_action,
 			'ACP_MOT_UR_ZP_COUNT'			=> $count_zeroposters,
 		]);
