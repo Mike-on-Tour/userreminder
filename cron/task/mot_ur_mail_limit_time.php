@@ -1,54 +1,22 @@
 <?php
 /**
 *
-* @package UserReminder v1.10.0
-* @copyright (c) 2019 - 2025 Mike-on-Tour
+* @package UserReminder v1.11..0
+* @copyright (c) 2019 - 2026 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
 
 namespace mot\userreminder\cron\task;
 
-class mot_ur_reminder_cron extends \phpbb\cron\task\base
+class mot_ur_mail_limit_time extends \phpbb\cron\task\base
 {
-	/** @var \mot\userreminder\common */
-	protected $common;
-
-	/** @var \phpbb\config\config */
-	protected $config;
-
-	/** @var \phpbb\db\driver\driver_interface */
-	protected $db;
-
-	/** @var \phpbb\log\log $log */
-	protected $log;
-
-	/** @var \phpbb\user */
-	protected $user;
-
-	/** @var string phpBB phpbb root path */
-	protected $root_path;
-
-	/** @var string PHP extension */
-	protected $phpEx;
-
-	/** @var string mot.userreminder.tables.mot_userreminder_remind_queue */
-	protected $mot_userreminder_remind_queue;
-
 	/**
 	 * {@inheritdoc
 	 */
-	public function __construct(\mot\userreminder\common $common, \phpbb\config\config $config, \phpbb\db\driver\driver_interface $db,
-								\phpbb\log\log $log, \phpbb\user $user, $root_path, $phpEx, $mot_userreminder_remind_queue)
+	public function __construct(protected \mot\userreminder\common $common, protected \phpbb\config\config $config, protected \phpbb\db\driver\driver_interface $db,
+								protected \phpbb\log\log $log, protected \phpbb\user $user, protected $root_path, protected $phpEx, protected $mot_userreminder_remind_queue)
 	{
-		$this->common = $common;
-		$this->config = $config;
-		$this->db = $db;
-		$this->log = $log;
-		$this->user = $user;
-		$this->root_path = $root_path;
-		$this->phpEx = $phpEx;
-		$this->mot_userreminder_remind_queue = $mot_userreminder_remind_queue;
 	}
 
 

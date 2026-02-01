@@ -4,6 +4,47 @@ All changes to `Userreminder for phpBB` will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.11.0] - 2026-02-01
+
+### Added
+-	A check for bots to the `check_user_login()` function of `event/main_listener.php` in order to reduce the load on that function since known bots (those with a user id) are
+	logging in every few seconds (in addition this is assumed to prevent simultaneous reminding in automatic mode and thus sending out redundant reminder mails)
+-	A new config variable `mot_ur_block_login_proc` to mark the checking process for automatic reminding and deletion as blocked for users who log in simultaneously
+  
+### Changed
+-	Minimum version of phpBB to 3.3.4 and PHP versions to minimum 8.0.30 and maximum version to 8.5.x
+-	Re-wrote the `sleeper()` function of `controller/ur_acp.php` in order to clean up, improve and optimize it, e.g. for usage of TWIG array functions
+-	Re-wrote the ACP sleepers tab's template in order to tidy it up
+-	Improved the code of the `reminder()` and `zeroposter()` functions of `controller/ur_acp.php` in order to optimize it for usage of TWIG array functions
+-	Added to the link description the number of members to be reminded or deleted if the expert mode is activated in order to clarify how many members are due for the intended action
+-	In the sleeper and zeroposter tabs the "Remind all" button of the expert mode is now only displayed if the remind function is activated
+-	In the `remind_users()` function of `common.php` now only the username of those users who will actually receive an e-mail will be logged and no longer users who
+	will be stored in the reminder queue (which resulted in at least some users being mentioned more than once)
+-	Renamed the cron task's file and class name to have them match the task's CONFIG_TABLE variable names
+  
+### Fixed
+-	A missing sort key dropdown field within the sleepers tab
+-	A faulty computation of the dates to remind or delete sleepers within the `sleeper()` function of `controller/ur_acp.php`
+-	A faulty language variable in `language/en/info_acp_mot_userreminder.php`
+-	The wrong sequence of first querying the DB and then validate the `$start` parameter which resulted in an empty table if a user manually selected a higher than the maximum
+	page number when pagination was active
+   
+### Removed
+-	Removed the Jabber notification in the `reminder_mail()` function of `common.php` (using only e-mail from now on)
+  
+  
+## [1.10.1] - 2025-09-29
+
+### Added
+  
+### Changed
+-	All constructor declarations to [Constructor Property Promotion](https://www.php.net/releases/8.0/de.php#constructor-property-promotion) (a new PHP feature starting with PHP 8.0)
+  
+### Fixed
+  
+### Removed
+  
+  
 ## [1.10.0] - 2025-06-14
 
 ### Added

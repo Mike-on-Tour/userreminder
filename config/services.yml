@@ -42,8 +42,8 @@ services:
             - '%core.root_path%'
             - '%mot.userreminder.tables.mot_userreminder_remind_queue%'
 
-    mot.userreminder.cron.task.mot_ur_reminder_cron:
-        class: mot\userreminder\cron\task\mot_ur_reminder_cron
+    mot.userreminder.cron.task.mot_ur_mail_limit_time:
+        class: mot\userreminder\cron\task\mot_ur_mail_limit_time
         arguments:
             - '@mot.userreminder.common'
             - '@config'
@@ -54,6 +54,6 @@ services:
             - '%core.php_ext%'
             - '%mot.userreminder.tables.mot_userreminder_remind_queue%'
         calls:
-            - [set_name, [cron.task.mot_ur_reminder_cron]]
+            - [set_name, [cron.task.mot_ur_mail_limit_time]]
         tags:
             - { name: cron.task }

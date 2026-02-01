@@ -1,7 +1,7 @@
 {#
 *
-* @package UserReminder v1.9.1
-* @copyright (c) 2019 - 2025 Mike-on-Tour
+* @package UserReminder v1.11.0
+* @copyright (c) 2019 - 2026 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 #}
@@ -45,19 +45,19 @@
 			</tr>
 		</thead>
 		<tbody>
-		{% for reminder in reminders %}
+		{% for reminder in ACP_MOT_UR_REMINDERS %}
 			<tr>
-				<td><a href="{{ reminder.SERVER_CONFIG }}" target="_blank" {% if reminder.USER_COLOUR %}style="color: #{{ reminder.USER_COLOUR }};" class="username-coloured"{% endif %}>{{ reminder.USERNAME }}</a></td>
-				<td style="text-align: center;">{{ reminder.USER_POSTS }}</td>
-				<td style="text-align: center;">{{ reminder.JOINED }}</td>
-				<td style="text-align: center;">{{ reminder.LAST_VISIT }}</td>
-				<td style="text-align: center;">{{ reminder.OFFLINE_DAYS }}</td>
-				<td style="text-align: center;">{{ reminder.REMINDER_ONE }}</td>
-				<td style="text-align: center;">{{ reminder.ONE_AGO }}</td>
-				<td style="text-align: center;">{{ reminder.REMINDER_TWO }}</td>
-				<td style="text-align: center;">{{ reminder.TWO_AGO }}</td>
-				<td style="text-align: center;">{% if reminder.REMINDER_ENABLED == 1 %}<input type="checkbox" class="radio" name="mark_remind[]" value="{{ reminder.USER_ID }}">{% endif %}</td>
-				<td style="text-align: center;">{% if reminder.DEL_ENABLED == 1 %}<input type="checkbox" class="radio" name="mark_delete[]" value="{{ reminder.USER_ID }}">{% endif %}</td>
+				<td><a href="{{ reminder.server_config }}" target="_blank" {% if reminder.USER_COLOUR %}style="color: #{{ reminder.user_colour }};" class="username-coloured"{% endif %}>{{ reminder.username }}</a></td>
+				<td style="text-align: center;">{{ reminder.user_posts }}</td>
+				<td style="text-align: center;">{{ reminder.user_regdate }}</td>
+				<td style="text-align: center;">{{ reminder.mot_last_login }}</td>
+				<td style="text-align: center;">{{ reminder.offline_days }}</td>
+				<td style="text-align: center;">{{ reminder.mot_reminded_one }}</td>
+				<td style="text-align: center;">{{ reminder.one_ago }}</td>
+				<td style="text-align: center;">{{ reminder.mot_reminded_two }}</td>
+				<td style="text-align: center;">{{ reminder.two_ago }}</td>
+				<td style="text-align: center;">{% if reminder.reminder_enabled == 1 %}<input type="checkbox" class="radio" name="mark_remind[]" value="{{ reminder.user_id }}">{% endif %}</td>
+				<td style="text-align: center;">{% if reminder.del_enabled == 1 %}<input type="checkbox" class="radio" name="mark_delete[]" value="{{ reminder.user_id }}">{% endif %}</td>
 			</tr>
 		{% else %}
 		<tr>
@@ -73,49 +73,54 @@
 		</div>
 	{% endif %}
 
-	<fieldset class="display-options">
-		{{ lang('SORT_BY') ~ lang('COLON') }}&nbsp;
+	{% if ACP_MOT_UR_REMIND_COUNT > 1 %}
+		<fieldset class="display-options">
+			{{ lang('SORT_BY') ~ lang('COLON') }}&nbsp;
 
-		{{ forms.select('sort_key', ACP_MOT_UR_SORT_KEY_ARR) }}&nbsp;
+			{{ forms.select('sort_key', ACP_MOT_UR_SORT_KEY_ARR) }}&nbsp;
 
-		{{ forms.select('sort_dir', ACP_MOT_UR_SORT_DIR_ARR) }}&nbsp;
+			{{ forms.select('sort_dir', ACP_MOT_UR_SORT_DIR_ARR) }}&nbsp;
 
-		<input class="button2" type="submit" value="{{ lang('GO') }}" name="sort">
-	</fieldset>
-	<hr>
+			<input class="button2" type="submit" value="{{ lang('GO') }}" name="sort">
+		</fieldset>
+		<hr>
+	{% endif %}
 
-	{% if ENABLE_REMIND %}
+	{% if ACP_MOT_UR_ENABLE_REMIND %}
 	<fieldset class="quick">
 		<input class="button2" type="submit" name="rem_marked" value="{{ lang('ACP_USERREMINDER_REMIND_MARKED') }}"><br>
 		<p class="small"><a href="#" onclick="marklist('acp_userreminder_reminder', 'mark_remind', true); return false;">{{ lang('MARK_ALL') }}</a> &bull; <a href="#" onclick="marklist('acp_userreminder_reminder', 'mark_remind', false); return false;">{{ lang('UNMARK_ALL') }}</a></p>
 	</fieldset>
 	{% endif %}
 
-	{% if ENABLE_REMIND and ENABLE_DELETE %}		{# Let's show the horizontal ruler only if both sets of buttons are shown #}
+	{% if ACP_MOT_UR_ENABLE_REMIND and ACP_MOT_UR_ENABLE_DELETE %}		{# Let's show the horizontal ruler only if both sets of buttons are shown #}
 	<hr>
 	{% endif %}
 
-	{% if ENABLE_DELETE %}
+	{% if ACP_MOT_UR_ENABLE_DELETE %}
 	<fieldset class="quick">
 		<input class="button2" type="submit" name="delmarked" value="{{ lang('DELETE_MARKED') }}"><br>
 		<p class="small"><a href="#" onclick="marklist('acp_userreminder_reminder', 'mark_delete', true); return false;">{{ lang('MARK_ALL') }}</a> &bull; <a href="#" onclick="marklist('acp_userreminder_reminder', 'mark_delete', false); return false;">{{ lang('UNMARK_ALL') }}</a></p>
 	</fieldset>
 	{% endif %}
+
 	{{ S_FORM_TOKEN }}
 
-	{% if SHOW_EXPERT_MODE %}
+	{% if ACP_MOT_UR_SHOW_EXPERT_MODE and ACP_MOT_UR_REMIND_COUNT > 0 %}
 		<hr>
 		<fieldset class="quick">
 			<div class="mot_ur_expert_div">
-				{{ lang('ACP_USERREMINDER_REMIND_ALL_TEXT') }} <input class="button2" type="submit" name="remind_all" value="{{ lang('ACP_USERREMINDER_REMIND_ALL') }}"><br>
+				{{ lang('ACP_USERREMINDER_REMIND_ALL_TEXT', ACP_MOT_UR_NUMBER_2_REMIND) }} <input class="button2" type="submit" name="remind_all" value="{{ lang('ACP_USERREMINDER_REMIND_ALL') }}"><br>
 			</div>
 			<div class="mot_ur_expert_div">
-				{{ lang('ACP_USERREMINDER_DELETE_ALL_TEXT') }} <input class="button2" type="submit" name="delete_all" value="{{ lang('DELETE_ALL') }}">
+				{{ lang('ACP_USERREMINDER_DELETE_ALL_TEXT', ACP_MOT_UR_REMIND_COUNT) }} <input class="button2" type="submit" name="delete_all" value="{{ lang('DELETE_ALL') }}">
 			</div>
 		</fieldset>
 	{% endif %}
-
-	<p id="centered_text">{{ USERREMINDER_VERSION }}</p>
 </form>
+
+<br>
+
+<p id="centered_text">{{ ACP_MOT_UR_VERSION }}</p>
 
 {% include 'overall_footer.html' %}
