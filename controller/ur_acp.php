@@ -1,8 +1,8 @@
 <?php
 /**
 *
-* @package Userreminder v1.10.1
-* @copyright (c) 2019 - 2025 Mike-on-Tour
+* @package Userreminder v1.12.0
+* @copyright (c) 2019 - 2026 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
@@ -389,7 +389,7 @@ class ur_acp
 
 		// ignore anonymous (=== guest), bots, inactive and deactivated users
 		// ignore users who have never posted anything (they are dealt with in the "zeroposter" tab)
-		$sql = 'SELECT user_id, group_id, user_regdate, username, user_posts, mot_last_login, user_colour, mot_reminded_one, mot_reminded_two ' .
+		$sql = 'SELECT user_id, group_id, user_regdate, username, user_email, user_posts, mot_last_login, user_colour, mot_reminded_one, mot_reminded_two ' .
 				'FROM  ' . USERS_TABLE . '
 				WHERE ' . $this->db->sql_in_set('user_type', [USER_NORMAL, USER_FOUNDER]) . '
 				AND user_posts > 0
@@ -583,7 +583,7 @@ class ur_acp
 		$this->db->sql_freeresult($result);
 
 		// Get all unproteced sleepers
-		$sql = 'SELECT user_id, group_id, username, user_colour, user_regdate, mot_sleeper_remind
+		$sql = 'SELECT user_id, group_id, username, user_colour, user_email, user_regdate, mot_sleeper_remind
 				FROM  ' . USERS_TABLE . '
 				WHERE ' . $this->db->sql_in_set('user_type', [USER_NORMAL, USER_FOUNDER]) . '
 				AND mot_last_login = 0';															// select users who have never been online
@@ -784,7 +784,7 @@ class ur_acp
 		}
 		$this->db->sql_freeresult($result);
 
-		$sql = 'SELECT user_id, group_id, username, user_colour, user_regdate, mot_last_login, mot_reminded_one, mot_reminded_two
+		$sql = 'SELECT user_id, group_id, username, user_colour, user_email, user_regdate, mot_last_login, mot_reminded_one, mot_reminded_two
 				FROM  ' . USERS_TABLE . '
 				WHERE ' . $this->db->sql_in_set('user_type', [USER_NORMAL, USER_FOUNDER]) . ' ' .		// ignore anonymous (=== guest), bots, inactive and deactivated users
 				'AND user_posts = 0 ' .							// only users with zero posts (zeroposters)

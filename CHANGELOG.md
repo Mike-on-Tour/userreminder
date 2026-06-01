@@ -4,6 +4,25 @@ All changes to `Userreminder for phpBB` will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.12.0] - 2026-05-28
+
+### Added
+-	A function to the `ext.php` file to get the minimum and maximum versions and their respective conditions from the `require` section of the `composer.json` file in order to
+	prevent errors due to the duplicate entries in those two files
+-	The column `user_email` to the sql queries getting reminders, sleepers and zeroposters
+  
+### Changed
+-	Minimum PHP version to 8.1.33 and minimum phpBB version to 3.3.9
+-	The ACP settings page to the updated toggle control `lukewcs/togglectrl 1.3.x`
+-	`adm/style/admin_mot_userreminder.css` to Nested CSS
+  
+### Fixed
+-	Wrong TWIG variables (uppercase instead of lowercase) `user_colour` in `adm/style/acp_ur_reminder.html` and `adm/style/acp_ur_zeroposter.html` which prevented usernames to be
+	displayed correctly with the color of their default group
+   
+### Removed
+  
+  
 ## [1.11.0] - 2026-02-01
 
 ### Added

@@ -1,6 +1,6 @@
 {#
 *
-* @package UserReminder v1.11.0
+* @package UserReminder v1.12.0
 * @copyright (c) 2019 - 2026 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
@@ -47,7 +47,7 @@
 		<tbody>
 		{% for reminder in ACP_MOT_UR_REMINDERS %}
 			<tr>
-				<td><a href="{{ reminder.server_config }}" target="_blank" {% if reminder.USER_COLOUR %}style="color: #{{ reminder.user_colour }};" class="username-coloured"{% endif %}>{{ reminder.username }}</a></td>
+				<td><a href="{{ reminder.server_config }}" target="_blank" {% if reminder.user_colour %}style="color: #{{ reminder.user_colour }};" class="username-coloured"{% endif %}>{{ reminder.username }}</a></td>
 				<td style="text-align: center;">{{ reminder.user_posts }}</td>
 				<td style="text-align: center;">{{ reminder.user_regdate }}</td>
 				<td style="text-align: center;">{{ reminder.mot_last_login }}</td>
