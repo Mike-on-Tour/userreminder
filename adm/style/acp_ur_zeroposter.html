@@ -1,6 +1,6 @@
 {#
 *
-* @package UserReminder v1.11.0
+* @package UserReminder v1.12.0
 * @copyright (c) 2019 - 2026 Mike-on-Tour
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
@@ -82,7 +82,7 @@
 			<tbody>
 			{% for zeroposter in ACP_MOT_UR_ZEROPOSTERS %}
 				<tr>
-					<td><a href="{{ zeroposter.server_config }}" target="_blank" {% if zeroposter.USER_COLOUR %}style="color: #{{ zeroposter.user_colour }};" class="username-coloured"{% endif %}>{{ zeroposter.username }}</a></td>
+					<td><a href="{{ zeroposter.server_config }}" target="_blank" {% if zeroposter.user_colour %}style="color: #{{ zeroposter.user_colour }};" class="username-coloured"{% endif %}>{{ zeroposter.username }}</a></td>
 					<td style="text-align: center;">{{ zeroposter.joined }}</td>
 					<td style="text-align: center;">{{ zeroposter.last_visit }}</td>
 					<td style="text-align: center;">{{ zeroposter.offline_days }}</td>
